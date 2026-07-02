@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: hsk
+      POSTGRES_USER: hsk
+      POSTGRES_PASSWORD: hsk
+    ports:
+      - "5432:5432"
+    volumes:
+      - hsk_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hsk -d hsk"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://hsk:hsk@postgres:5432/hsk
+      JWT_SECRET: dev-hsk-mobile-secret
+      CORS_ORIGINS: '["*"]'
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  hsk_postgres_data:
