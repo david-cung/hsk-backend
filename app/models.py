@@ -35,6 +35,7 @@ class Profile(TimestampMixin, Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True)
     target_hsk_level: Mapped[int] = mapped_column(Integer, default=1)
     current_hsk_level: Mapped[int] = mapped_column(Integer, default=1)
+    learning_goal: Mapped[str | None] = mapped_column(String(80), nullable=True)
     daily_goal_minutes: Mapped[int] = mapped_column(Integer, default=30)
     study_streak_days: Mapped[int] = mapped_column(Integer, default=0)
     onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -107,6 +108,7 @@ class QuizAttempt(Base):
     total_questions: Mapped[int] = mapped_column(Integer)
     correct_count: Mapped[int] = mapped_column(Integer)
     answers: Mapped[dict[str, str]] = mapped_column(JSONB)
+    results: Mapped[list[dict[str, Any]] | None] = mapped_column(JSONB, nullable=True)
     finished_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
