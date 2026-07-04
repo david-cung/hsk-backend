@@ -83,6 +83,7 @@ class QuizSubmitIn(BaseModel):
 
 class QuizResultItem(BaseModel):
     question_id: int
+    prompt: str | None = None
     correct: bool
     user_answer: str
     correct_answer: str
@@ -100,8 +101,16 @@ class QuizSubmitOut(BaseModel):
 class RecentAttemptOut(BaseModel):
     attempt_id: int
     lesson_id: int
+    lesson_title: str | None = None
     score: int
     finished_at: datetime
+
+
+class SkillBreakdownOut(BaseModel):
+    lesson_type: str
+    completed: int
+    total: int
+    average_score: int | None
 
 
 class ProgressDashboardOut(BaseModel):
@@ -112,6 +121,12 @@ class ProgressDashboardOut(BaseModel):
     study_streak_days: int
     lessons_completed: int
     lessons_in_progress: int
+    total_lessons: int
+    current_level_total_lessons: int
+    current_level_completed_lessons: int
+    current_level_progress_percent: int
+    exam_readiness_percent: int
+    skill_breakdown: list[SkillBreakdownOut]
     recent_attempts: list[RecentAttemptOut]
 
 
@@ -143,3 +158,20 @@ class MockTestOut(BaseModel):
     hsk_level: int
     duration_minutes: int
     question_count: int
+
+
+class MockTestQuestionOut(QuestionOut):
+    lesson_id: int
+    lesson_title: str
+
+
+class MistakeOut(BaseModel):
+    attempt_id: int
+    lesson_id: int
+    lesson_title: str | None
+    question_id: int
+    prompt: str | None
+    user_answer: str
+    correct_answer: str
+    explanation: str | None = None
+    finished_at: datetime
