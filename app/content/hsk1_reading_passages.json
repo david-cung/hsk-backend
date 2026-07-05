@@ -1,0 +1,1502 @@
+[
+  {
+    "title": "Reading 001: Hello",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["你", "好", "我", "是", "学生", "吗"],
+    "chinese_text": "你好。我是学生。你是学生吗？",
+    "pinyin": "Nǐ hǎo. Wǒ shì xuésheng. Nǐ shì xuésheng ma?",
+    "english_translation": "Hello. I am a student. Are you a student?",
+    "vietnamese_translation": "Xin chào. Tôi là học sinh. Bạn là học sinh phải không?",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is a student?", "options": ["I", "You", "Teacher", "Doctor"]},
+      {"id": "q2", "question": "What is asked?", "options": ["Name", "Student identity", "Age", "Price"]}
+    ],
+    "answer_key": {"q1": "I", "q2": "Student identity"},
+    "explanation": "The passage introduces 我是学生 and asks a yes-no question with 吗."
+  },
+  {
+    "title": "Reading 002: The Teacher",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["她", "是", "老师", "我", "学生", "好"],
+    "chinese_text": "她是老师。我是学生。老师好。",
+    "pinyin": "Tā shì lǎoshī. Wǒ shì xuésheng. Lǎoshī hǎo.",
+    "english_translation": "She is a teacher. I am a student. Hello, teacher.",
+    "vietnamese_translation": "Cô ấy là giáo viên. Tôi là học sinh. Em chào cô/thầy.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is the teacher?", "options": ["She", "I", "You", "He"]},
+      {"id": "q2", "question": "What does the student say?", "options": ["Goodbye", "Hello teacher", "Thank you", "Sorry"]}
+    ],
+    "answer_key": {"q1": "She", "q2": "Hello teacher"},
+    "explanation": "她是老师 identifies her role, and 老师好 is a greeting to a teacher."
+  },
+  {
+    "title": "Reading 003: At School",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["老师", "在", "学校", "学生", "也", "在"],
+    "chinese_text": "老师在学校。学生也在学校。",
+    "pinyin": "Lǎoshī zài xuéxiào. Xuésheng yě zài xuéxiào.",
+    "english_translation": "The teacher is at school. The students are also at school.",
+    "vietnamese_translation": "Giáo viên ở trường. Học sinh cũng ở trường.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where is the teacher?", "options": ["At school", "At home", "At the store", "At the hospital"]},
+      {"id": "q2", "question": "Who is also at school?", "options": ["Students", "Doctors", "Cats", "Sons"]}
+    ],
+    "answer_key": {"q1": "At school", "q2": "Students"},
+    "explanation": "Both sentences use 在学校 to show location."
+  },
+  {
+    "title": "Reading 004: My Family",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "家", "有", "爸爸", "妈妈", "和", "我"],
+    "chinese_text": "我家有爸爸、妈妈和我。",
+    "pinyin": "Wǒ jiā yǒu bàba, māma hé wǒ.",
+    "english_translation": "My family has dad, mom, and me.",
+    "vietnamese_translation": "Nhà tôi có bố, mẹ và tôi.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is in the family?", "options": ["Dad, mom, and me", "Teacher only", "Doctor only", "Friend only"]},
+      {"id": "q2", "question": "What does 有 show?", "options": ["Possession/existence", "Question", "Negation", "Time"]}
+    ],
+    "answer_key": {"q1": "Dad, mom, and me", "q2": "Possession/existence"},
+    "explanation": "我家有 introduces the people in the family."
+  },
+  {
+    "title": "Reading 005: Dad and Mom",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["爸爸", "是", "医生", "妈妈", "是", "老师"],
+    "chinese_text": "爸爸是医生。妈妈是老师。",
+    "pinyin": "Bàba shì yīshēng. Māma shì lǎoshī.",
+    "english_translation": "Dad is a doctor. Mom is a teacher.",
+    "vietnamese_translation": "Bố là bác sĩ. Mẹ là giáo viên.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is dad's job?", "options": ["Doctor", "Teacher", "Student", "Friend"]},
+      {"id": "q2", "question": "What is mom's job?", "options": ["Teacher", "Doctor", "Student", "Miss"]}
+    ],
+    "answer_key": {"q1": "Doctor", "q2": "Teacher"},
+    "explanation": "The structure A 是 B identifies each person's role."
+  },
+  {
+    "title": "Reading 006: A Friend",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["他", "是", "我", "的", "朋友", "我们", "都", "是", "学生"],
+    "chinese_text": "他是我的朋友。我们都是学生。",
+    "pinyin": "Tā shì wǒ de péngyou. Wǒmen dōu shì xuésheng.",
+    "english_translation": "He is my friend. We are all students.",
+    "vietnamese_translation": "Anh ấy là bạn của tôi. Chúng tôi đều là học sinh.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is he?", "options": ["My friend", "My teacher", "My doctor", "My dad"]},
+      {"id": "q2", "question": "What are we all?", "options": ["Students", "Teachers", "Doctors", "Sons"]}
+    ],
+    "answer_key": {"q1": "My friend", "q2": "Students"},
+    "explanation": "我的朋友 shows possession, and 都 means all."
+  },
+  {
+    "title": "Reading 007: This Book",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["这", "个", "是", "书", "那", "也", "是", "书"],
+    "chinese_text": "这个是书。那个也是书。",
+    "pinyin": "Zhè ge shì shū. Nà ge yě shì shū.",
+    "english_translation": "This one is a book. That one is also a book.",
+    "vietnamese_translation": "Cái này là sách. Cái kia cũng là sách.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is this one?", "options": ["A book", "Water", "A cat", "A chair"]},
+      {"id": "q2", "question": "What is that one?", "options": ["Also a book", "A doctor", "A school", "Money"]}
+    ],
+    "answer_key": {"q1": "A book", "q2": "Also a book"},
+    "explanation": "这 and 那 point to two things, and 也 shows the second is also a book."
+  },
+  {
+    "title": "Reading 008: Water",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "有", "水", "你", "有", "水", "吗"],
+    "chinese_text": "我有水。你有水吗？",
+    "pinyin": "Wǒ yǒu shuǐ. Nǐ yǒu shuǐ ma?",
+    "english_translation": "I have water. Do you have water?",
+    "vietnamese_translation": "Tôi có nước. Bạn có nước không?",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What do I have?", "options": ["Water", "Tea", "Book", "Money"]},
+      {"id": "q2", "question": "What is asked?", "options": ["Whether you have water", "Where school is", "What time it is", "Who he is"]}
+    ],
+    "answer_key": {"q1": "Water", "q2": "Whether you have water"},
+    "explanation": "有 expresses possession, and 吗 turns the second sentence into a question."
+  },
+  {
+    "title": "Reading 009: Tea",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["老师", "喝", "茶", "学生", "喝", "水"],
+    "chinese_text": "老师喝茶。学生喝水。",
+    "pinyin": "Lǎoshī hē chá. Xuésheng hē shuǐ.",
+    "english_translation": "The teacher drinks tea. The student drinks water.",
+    "vietnamese_translation": "Giáo viên uống trà. Học sinh uống nước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the teacher drink?", "options": ["Tea", "Water", "Milk", "Coffee"]},
+      {"id": "q2", "question": "What does the student drink?", "options": ["Water", "Tea", "Rice", "Fruit"]}
+    ],
+    "answer_key": {"q1": "Tea", "q2": "Water"},
+    "explanation": "The verb 喝 is followed by different drinks."
+  },
+  {
+    "title": "Reading 010: Rice",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["中午", "我", "吃", "米饭", "也", "喝", "水"],
+    "chinese_text": "中午我吃米饭，也喝水。",
+    "pinyin": "Zhōngwǔ wǒ chī mǐfàn, yě hē shuǐ.",
+    "english_translation": "At noon I eat rice and also drink water.",
+    "vietnamese_translation": "Buổi trưa tôi ăn cơm và cũng uống nước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When does the person eat?", "options": ["At noon", "In the morning", "Tomorrow", "Yesterday"]},
+      {"id": "q2", "question": "What does the person drink?", "options": ["Water", "Tea", "Nothing", "Soup"]}
+    ],
+    "answer_key": {"q1": "At noon", "q2": "Water"},
+    "explanation": "中午 sets the time; 也 adds another action."
+  },
+  {
+    "title": "Reading 011: Apples",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "喜欢", "苹果", "妈妈", "也", "喜欢", "苹果"],
+    "chinese_text": "我喜欢苹果。妈妈也喜欢苹果。",
+    "pinyin": "Wǒ xǐhuan píngguǒ. Māma yě xǐhuan píngguǒ.",
+    "english_translation": "I like apples. Mom also likes apples.",
+    "vietnamese_translation": "Tôi thích táo. Mẹ cũng thích táo.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What fruit is liked?", "options": ["Apples", "Tea", "Rice", "Water"]},
+      {"id": "q2", "question": "Who also likes apples?", "options": ["Mom", "Teacher", "Doctor", "Cat"]}
+    ],
+    "answer_key": {"q1": "Apples", "q2": "Mom"},
+    "explanation": "也喜欢 shows that mom has the same preference."
+  },
+  {
+    "title": "Reading 012: Buying Fruit",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["爸爸", "去", "商店", "买", "水果", "和", "苹果"],
+    "chinese_text": "爸爸去商店买水果和苹果。",
+    "pinyin": "Bàba qù shāngdiàn mǎi shuǐguǒ hé píngguǒ.",
+    "english_translation": "Dad goes to the store to buy fruit and apples.",
+    "vietnamese_translation": "Bố đi cửa hàng mua hoa quả và táo.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does dad go?", "options": ["Store", "School", "Hospital", "Home"]},
+      {"id": "q2", "question": "What does dad buy?", "options": ["Fruit and apples", "Books", "Water only", "A chair"]}
+    ],
+    "answer_key": {"q1": "Store", "q2": "Fruit and apples"},
+    "explanation": "去商店买 shows purpose: going to the store to buy something."
+  },
+  {
+    "title": "Reading 013: How Much",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["这", "个", "苹果", "多少", "钱", "三", "块"],
+    "chinese_text": "这个苹果多少钱？三块。",
+    "pinyin": "Zhè ge píngguǒ duōshao qián? Sān kuài.",
+    "english_translation": "How much is this apple? Three yuan.",
+    "vietnamese_translation": "Quả táo này bao nhiêu tiền? Ba tệ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is being bought?", "options": ["Apple", "Book", "Tea", "Computer"]},
+      {"id": "q2", "question": "How much is it?", "options": ["Three yuan", "Ten yuan", "One yuan", "Eight yuan"]}
+    ],
+    "answer_key": {"q1": "Apple", "q2": "Three yuan"},
+    "explanation": "多少钱 asks price, and 三块 gives the spoken price."
+  },
+  {
+    "title": "Reading 014: Hot Weather",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "天气", "很", "热", "我", "喝", "水"],
+    "chinese_text": "今天天气很热。我喝水。",
+    "pinyin": "Jīntiān tiānqì hěn rè. Wǒ hē shuǐ.",
+    "english_translation": "The weather is hot today. I drink water.",
+    "vietnamese_translation": "Hôm nay thời tiết rất nóng. Tôi uống nước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How is the weather?", "options": ["Hot", "Cold", "Rainy", "Good only"]},
+      {"id": "q2", "question": "What does the person drink?", "options": ["Water", "Tea", "Nothing", "Rice"]}
+    ],
+    "answer_key": {"q1": "Hot", "q2": "Water"},
+    "explanation": "很热 describes the weather, and the second sentence gives the action."
+  },
+  {
+    "title": "Reading 015: Cold Weather",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["明天", "天气", "很", "冷", "妈妈", "在", "家"],
+    "chinese_text": "明天天气很冷。妈妈在家。",
+    "pinyin": "Míngtiān tiānqì hěn lěng. Māma zài jiā.",
+    "english_translation": "The weather will be cold tomorrow. Mom is at home.",
+    "vietnamese_translation": "Ngày mai thời tiết rất lạnh. Mẹ ở nhà.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When is the weather cold?", "options": ["Tomorrow", "Today", "Yesterday", "At noon"]},
+      {"id": "q2", "question": "Where is mom?", "options": ["At home", "At school", "At the store", "In Beijing"]}
+    ],
+    "answer_key": {"q1": "Tomorrow", "q2": "At home"},
+    "explanation": "明天 gives future time, and 在家 gives location."
+  },
+  {
+    "title": "Reading 016: Rain",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "下雨", "老师", "不", "去", "学校"],
+    "chinese_text": "今天下雨。老师不去学校。",
+    "pinyin": "Jīntiān xià yǔ. Lǎoshī bú qù xuéxiào.",
+    "english_translation": "It is raining today. The teacher does not go to school.",
+    "vietnamese_translation": "Hôm nay trời mưa. Giáo viên không đi học/trường.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is the weather today?", "options": ["Rainy", "Hot", "Cold", "Sunny"]},
+      {"id": "q2", "question": "Where does the teacher not go?", "options": ["School", "Home", "Store", "Hospital"]}
+    ],
+    "answer_key": {"q1": "Rainy", "q2": "School"},
+    "explanation": "不去学校 means the teacher does not go to school."
+  },
+  {
+    "title": "Reading 017: Today and Tomorrow",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "我", "在", "家", "明天", "我", "去", "学校"],
+    "chinese_text": "今天我在家。明天我去学校。",
+    "pinyin": "Jīntiān wǒ zài jiā. Míngtiān wǒ qù xuéxiào.",
+    "english_translation": "Today I am at home. Tomorrow I go to school.",
+    "vietnamese_translation": "Hôm nay tôi ở nhà. Ngày mai tôi đi học.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where is the person today?", "options": ["At home", "At school", "At the store", "At the hospital"]},
+      {"id": "q2", "question": "Where will the person go tomorrow?", "options": ["School", "Home", "Beijing", "Restaurant"]}
+    ],
+    "answer_key": {"q1": "At home", "q2": "School"},
+    "explanation": "今天 and 明天 mark two different days."
+  },
+  {
+    "title": "Reading 018: Yesterday",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["昨天", "我", "看", "书", "今天", "我", "学习", "汉语"],
+    "chinese_text": "昨天我看书。今天我学习汉语。",
+    "pinyin": "Zuótiān wǒ kàn shū. Jīntiān wǒ xuéxí Hànyǔ.",
+    "english_translation": "Yesterday I read a book. Today I study Chinese.",
+    "vietnamese_translation": "Hôm qua tôi đọc sách. Hôm nay tôi học tiếng Trung.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What did the person do yesterday?", "options": ["Read", "Drink tea", "Buy apples", "Sleep"]},
+      {"id": "q2", "question": "What does the person study today?", "options": ["Chinese", "Weather", "Money", "Fruit"]}
+    ],
+    "answer_key": {"q1": "Read", "q2": "Chinese"},
+    "explanation": "昨天 and 今天 show the timing of two actions."
+  },
+  {
+    "title": "Reading 019: What Time",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["现在", "几", "点", "现在", "八", "点"],
+    "chinese_text": "现在几点？现在八点。",
+    "pinyin": "Xiànzài jǐ diǎn? Xiànzài bā diǎn.",
+    "english_translation": "What time is it now? It is eight o'clock now.",
+    "vietnamese_translation": "Bây giờ mấy giờ? Bây giờ tám giờ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What question is asked?", "options": ["The time", "The price", "The name", "The place"]},
+      {"id": "q2", "question": "What time is it?", "options": ["Eight o'clock", "Three o'clock", "Noon", "Ten o'clock"]}
+    ],
+    "answer_key": {"q1": "The time", "q2": "Eight o'clock"},
+    "explanation": "几点 asks about clock time."
+  },
+  {
+    "title": "Reading 020: Morning",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["上午", "我", "学习", "下午", "我", "看", "书"],
+    "chinese_text": "上午我学习。下午我看书。",
+    "pinyin": "Shàngwǔ wǒ xuéxí. Xiàwǔ wǒ kàn shū.",
+    "english_translation": "In the morning I study. In the afternoon I read.",
+    "vietnamese_translation": "Buổi sáng tôi học. Buổi chiều tôi đọc sách.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the person do in the morning?", "options": ["Study", "Sleep", "Shop", "Call"]},
+      {"id": "q2", "question": "What does the person do in the afternoon?", "options": ["Read", "Eat rice", "Drink tea", "Go home"]}
+    ],
+    "answer_key": {"q1": "Study", "q2": "Read"},
+    "explanation": "上午 and 下午 appear before the actions."
+  },
+  {
+    "title": "Reading 021: Noon Meal",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["中午", "我们", "在", "饭店", "吃", "米饭"],
+    "chinese_text": "中午我们在饭店吃米饭。",
+    "pinyin": "Zhōngwǔ wǒmen zài fàndiàn chī mǐfàn.",
+    "english_translation": "At noon we eat rice at the restaurant.",
+    "vietnamese_translation": "Buổi trưa chúng tôi ăn cơm ở nhà hàng.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where do they eat?", "options": ["Restaurant", "School", "Hospital", "Store"]},
+      {"id": "q2", "question": "What do they eat?", "options": ["Rice", "Apples", "Tea", "Water"]}
+    ],
+    "answer_key": {"q1": "Restaurant", "q2": "Rice"},
+    "explanation": "在饭店 gives the location of the action 吃米饭."
+  },
+  {
+    "title": "Reading 022: Sleep",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "我", "很", "冷", "我", "想", "睡觉"],
+    "chinese_text": "今天我很冷。我想睡觉。",
+    "pinyin": "Jīntiān wǒ hěn lěng. Wǒ xiǎng shuìjiào.",
+    "english_translation": "Today I am cold. I want to sleep.",
+    "vietnamese_translation": "Hôm nay tôi lạnh. Tôi muốn ngủ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How does the person feel?", "options": ["Cold", "Happy", "Hot", "Good"]},
+      {"id": "q2", "question": "What does the person want to do?", "options": ["Sleep", "Study", "Buy fruit", "Call"]}
+    ],
+    "answer_key": {"q1": "Cold", "q2": "Sleep"},
+    "explanation": "想睡觉 means want to sleep."
+  },
+  {
+    "title": "Reading 023: Reading a Book",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["她", "在", "学校", "看", "书", "老师", "也", "看"],
+    "chinese_text": "她在学校看书。老师也看书。",
+    "pinyin": "Tā zài xuéxiào kàn shū. Lǎoshī yě kàn shū.",
+    "english_translation": "She reads at school. The teacher also reads.",
+    "vietnamese_translation": "Cô ấy đọc sách ở trường. Giáo viên cũng đọc sách.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does she read?", "options": ["At school", "At home", "At the store", "At the restaurant"]},
+      {"id": "q2", "question": "Who also reads?", "options": ["Teacher", "Doctor", "Dad", "Cat"]}
+    ],
+    "answer_key": {"q1": "At school", "q2": "Teacher"},
+    "explanation": "在学校 comes before the action 看书."
+  },
+  {
+    "title": "Reading 024: Studying Chinese",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我们", "学习", "汉语", "老师", "说", "汉语"],
+    "chinese_text": "我们学习汉语。老师说汉语。",
+    "pinyin": "Wǒmen xuéxí Hànyǔ. Lǎoshī shuō Hànyǔ.",
+    "english_translation": "We study Chinese. The teacher speaks Chinese.",
+    "vietnamese_translation": "Chúng tôi học tiếng Trung. Giáo viên nói tiếng Trung.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What do we study?", "options": ["Chinese", "English", "Money", "Weather"]},
+      {"id": "q2", "question": "Who speaks Chinese?", "options": ["Teacher", "Cat", "Dog", "Store"]}
+    ],
+    "answer_key": {"q1": "Chinese", "q2": "Teacher"},
+    "explanation": "汉语 is used as the object of both 学习 and 说."
+  },
+  {
+    "title": "Reading 025: Writing Characters",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "会", "写", "字", "你", "会", "写", "吗"],
+    "chinese_text": "我会写字。你会写吗？",
+    "pinyin": "Wǒ huì xiě zì. Nǐ huì xiě ma?",
+    "english_translation": "I can write characters. Can you write?",
+    "vietnamese_translation": "Tôi biết viết chữ. Bạn biết viết không?",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What can I do?", "options": ["Write characters", "Fly", "Buy fruit", "Watch movies"]},
+      {"id": "q2", "question": "What is asked?", "options": ["Whether you can write", "Where you live", "How old you are", "What you drink"]}
+    ],
+    "answer_key": {"q1": "Write characters", "q2": "Whether you can write"},
+    "explanation": "会 expresses learned ability."
+  },
+  {
+    "title": "Reading 026: Speaking",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["他", "会", "说话", "也", "会", "说", "汉语"],
+    "chinese_text": "他会说话，也会说汉语。",
+    "pinyin": "Tā huì shuōhuà, yě huì shuō Hànyǔ.",
+    "english_translation": "He can speak, and he can also speak Chinese.",
+    "vietnamese_translation": "Anh ấy biết nói, và cũng biết nói tiếng Trung.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What can he do?", "options": ["Speak", "Sleep only", "Buy books", "Open a store"]},
+      {"id": "q2", "question": "What language can he speak?", "options": ["Chinese", "No language", "Vietnamese", "English"]}
+    ],
+    "answer_key": {"q1": "Speak", "q2": "Chinese"},
+    "explanation": "也会 adds another ability."
+  },
+  {
+    "title": "Reading 027: Listening",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["学生", "听", "老师", "说话", "老师", "很", "高兴"],
+    "chinese_text": "学生听老师说话。老师很高兴。",
+    "pinyin": "Xuésheng tīng lǎoshī shuōhuà. Lǎoshī hěn gāoxìng.",
+    "english_translation": "The student listens to the teacher speak. The teacher is happy.",
+    "vietnamese_translation": "Học sinh nghe giáo viên nói. Giáo viên rất vui.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who does the student listen to?", "options": ["Teacher", "Doctor", "Dad", "Friend"]},
+      {"id": "q2", "question": "How does the teacher feel?", "options": ["Happy", "Cold", "Tired", "Busy"]}
+    ],
+    "answer_key": {"q1": "Teacher", "q2": "Happy"},
+    "explanation": "听老师说话 means listen to the teacher speak."
+  },
+  {
+    "title": "Reading 028: Television",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["下午", "我", "看", "电视", "爸爸", "也", "看"],
+    "chinese_text": "下午我看电视。爸爸也看。",
+    "pinyin": "Xiàwǔ wǒ kàn diànshì. Bàba yě kàn.",
+    "english_translation": "In the afternoon I watch TV. Dad also watches.",
+    "vietnamese_translation": "Buổi chiều tôi xem TV. Bố cũng xem.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the person watch?", "options": ["TV", "A book", "A movie only", "A cat"]},
+      {"id": "q2", "question": "Who also watches?", "options": ["Dad", "Mom", "Teacher", "Doctor"]}
+    ],
+    "answer_key": {"q1": "TV", "q2": "Dad"},
+    "explanation": "看电视 means watch TV; 也 shows dad does the same."
+  },
+  {
+    "title": "Reading 029: Movie",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "我们", "看", "电影", "很", "好"],
+    "chinese_text": "今天我们看电影。电影很好。",
+    "pinyin": "Jīntiān wǒmen kàn diànyǐng. Diànyǐng hěn hǎo.",
+    "english_translation": "Today we watch a movie. The movie is good.",
+    "vietnamese_translation": "Hôm nay chúng tôi xem phim. Bộ phim rất hay.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What do they watch?", "options": ["A movie", "TV", "A book", "A phone"]},
+      {"id": "q2", "question": "How is the movie?", "options": ["Good", "Cold", "Small", "Expensive"]}
+    ],
+    "answer_key": {"q1": "A movie", "q2": "Good"},
+    "explanation": "很好 evaluates the movie positively."
+  },
+  {
+    "title": "Reading 030: Computer",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["这", "个", "电脑", "很", "好", "老师", "看", "电脑"],
+    "chinese_text": "这个电脑很好。老师看电脑。",
+    "pinyin": "Zhè ge diànnǎo hěn hǎo. Lǎoshī kàn diànnǎo.",
+    "english_translation": "This computer is good. The teacher looks at the computer.",
+    "vietnamese_translation": "Máy tính này rất tốt. Giáo viên xem máy tính.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How is the computer?", "options": ["Good", "Bad", "Cold", "Small"]},
+      {"id": "q2", "question": "Who looks at the computer?", "options": ["Teacher", "Student", "Doctor", "Mom"]}
+    ],
+    "answer_key": {"q1": "Good", "q2": "Teacher"},
+    "explanation": "这个电脑 is described with 很好."
+  },
+  {
+    "title": "Reading 031: Phone Call",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["喂", "妈妈", "我", "在", "学校", "我", "打电话"],
+    "chinese_text": "喂，妈妈。我在学校。我打电话。",
+    "pinyin": "Wéi, māma. Wǒ zài xuéxiào. Wǒ dǎ diànhuà.",
+    "english_translation": "Hello, Mom. I am at school. I am making a phone call.",
+    "vietnamese_translation": "Alo, mẹ. Con ở trường. Con gọi điện thoại.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is being called?", "options": ["Mom", "Teacher", "Doctor", "Friend"]},
+      {"id": "q2", "question": "Where is the caller?", "options": ["At school", "At home", "At the store", "At the restaurant"]}
+    ],
+    "answer_key": {"q1": "Mom", "q2": "At school"},
+    "explanation": "喂 is used when answering or starting a phone call."
+  },
+  {
+    "title": "Reading 032: Taxi",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "坐", "出租车", "去", "医院", "看", "医生"],
+    "chinese_text": "我坐出租车去医院看医生。",
+    "pinyin": "Wǒ zuò chūzūchē qù yīyuàn kàn yīshēng.",
+    "english_translation": "I take a taxi to the hospital to see a doctor.",
+    "vietnamese_translation": "Tôi đi taxi đến bệnh viện gặp bác sĩ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What transportation is used?", "options": ["Taxi", "Airplane", "Chair", "Computer"]},
+      {"id": "q2", "question": "Where does the person go?", "options": ["Hospital", "School", "Store", "Home"]}
+    ],
+    "answer_key": {"q1": "Taxi", "q2": "Hospital"},
+    "explanation": "坐出租车 means take a taxi, and 去医院 gives the destination."
+  },
+  {
+    "title": "Reading 033: Airplane",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["明天", "爸爸", "坐", "飞机", "去", "北京"],
+    "chinese_text": "明天爸爸坐飞机去北京。",
+    "pinyin": "Míngtiān bàba zuò fēijī qù Běijīng.",
+    "english_translation": "Tomorrow Dad takes a plane to Beijing.",
+    "vietnamese_translation": "Ngày mai bố đi máy bay đến Bắc Kinh.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When does dad go?", "options": ["Tomorrow", "Today", "Yesterday", "Noon"]},
+      {"id": "q2", "question": "Where does dad go?", "options": ["Beijing", "School", "Hospital", "Store"]}
+    ],
+    "answer_key": {"q1": "Tomorrow", "q2": "Beijing"},
+    "explanation": "坐飞机去北京 means take a plane to Beijing."
+  },
+  {
+    "title": "Reading 034: Hotel",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我们", "在", "北京", "住", "饭店", "饭店", "很", "大"],
+    "chinese_text": "我们在北京住饭店。饭店很大。",
+    "pinyin": "Wǒmen zài Běijīng zhù fàndiàn. Fàndiàn hěn dà.",
+    "english_translation": "We stay at a hotel in Beijing. The hotel is big.",
+    "vietnamese_translation": "Chúng tôi ở khách sạn tại Bắc Kinh. Khách sạn rất lớn.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where do they stay?", "options": ["Hotel", "School", "Hospital", "Store"]},
+      {"id": "q2", "question": "How is the hotel?", "options": ["Big", "Small", "Cold", "Hot"]}
+    ],
+    "answer_key": {"q1": "Hotel", "q2": "Big"},
+    "explanation": "饭店 can mean hotel/restaurant in beginner HSK context; here 住饭店 means stay at a hotel."
+  },
+  {
+    "title": "Reading 035: Hospital",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["医生", "在", "医院", "妈妈", "去", "医院", "看", "医生"],
+    "chinese_text": "医生在医院。妈妈去医院看医生。",
+    "pinyin": "Yīshēng zài yīyuàn. Māma qù yīyuàn kàn yīshēng.",
+    "english_translation": "The doctor is at the hospital. Mom goes to the hospital to see the doctor.",
+    "vietnamese_translation": "Bác sĩ ở bệnh viện. Mẹ đi bệnh viện khám bác sĩ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where is the doctor?", "options": ["Hospital", "School", "Store", "Home"]},
+      {"id": "q2", "question": "Who goes to the hospital?", "options": ["Mom", "Dad", "Teacher", "Student"]}
+    ],
+    "answer_key": {"q1": "Hospital", "q2": "Mom"},
+    "explanation": "在医院 gives the doctor's location, and 去医院 shows mom's destination."
+  },
+  {
+    "title": "Reading 036: Chair and Table",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["桌子", "前面", "有", "椅子", "书", "在", "桌子", "上"],
+    "chinese_text": "桌子前面有椅子。书在桌子上。",
+    "pinyin": "Zhuōzi qiánmiàn yǒu yǐzi. Shū zài zhuōzi shàng.",
+    "english_translation": "There is a chair in front of the table. The book is on the table.",
+    "vietnamese_translation": "Trước bàn có ghế. Sách ở trên bàn.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is in front of the table?", "options": ["Chair", "Doctor", "Taxi", "Apple"]},
+      {"id": "q2", "question": "Where is the book?", "options": ["On the table", "At school", "In the hospital", "Behind dad"]}
+    ],
+    "answer_key": {"q1": "Chair", "q2": "On the table"},
+    "explanation": "前面 and 上 are location words."
+  },
+  {
+    "title": "Reading 037: In the Room",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["家", "里", "有", "桌子", "椅子", "和", "电脑"],
+    "chinese_text": "家里有桌子、椅子和电脑。",
+    "pinyin": "Jiā lǐ yǒu zhuōzi, yǐzi hé diànnǎo.",
+    "english_translation": "At home there are a table, chairs, and a computer.",
+    "vietnamese_translation": "Trong nhà có bàn, ghế và máy tính.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is at home?", "options": ["Table, chairs, and computer", "Only water", "Only a doctor", "Only a plane"]},
+      {"id": "q2", "question": "What does 家里 mean here?", "options": ["At/in home", "At school", "In Beijing", "At the store"]}
+    ],
+    "answer_key": {"q1": "Table, chairs, and computer", "q2": "At/in home"},
+    "explanation": "Place + 有 introduces things that exist in that place."
+  },
+  {
+    "title": "Reading 038: Front and Back",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["老师", "在", "前面", "学生", "在", "后面"],
+    "chinese_text": "老师在前面。学生在后面。",
+    "pinyin": "Lǎoshī zài qiánmiàn. Xuésheng zài hòumiàn.",
+    "english_translation": "The teacher is in front. The students are behind.",
+    "vietnamese_translation": "Giáo viên ở phía trước. Học sinh ở phía sau.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is in front?", "options": ["Teacher", "Student", "Doctor", "Dad"]},
+      {"id": "q2", "question": "Where are the students?", "options": ["Behind", "In front", "At home", "At the store"]}
+    ],
+    "answer_key": {"q1": "Teacher", "q2": "Behind"},
+    "explanation": "前面 and 后面 describe relative position."
+  },
+  {
+    "title": "Reading 039: Going Home",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["下午", "学生", "回", "家", "老师", "也", "回", "家"],
+    "chinese_text": "下午学生回家。老师也回家。",
+    "pinyin": "Xiàwǔ xuésheng huí jiā. Lǎoshī yě huí jiā.",
+    "english_translation": "In the afternoon the students go home. The teacher also goes home.",
+    "vietnamese_translation": "Buổi chiều học sinh về nhà. Giáo viên cũng về nhà.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When do the students go home?", "options": ["Afternoon", "Morning", "Noon", "Tomorrow"]},
+      {"id": "q2", "question": "Who also goes home?", "options": ["Teacher", "Doctor", "Friend", "Cat"]}
+    ],
+    "answer_key": {"q1": "Afternoon", "q2": "Teacher"},
+    "explanation": "回家 means return/go home, and 也 shows the teacher does the same."
+  },
+  {
+    "title": "Reading 040: Coming to School",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["上午", "老师", "来", "学校", "学生", "也", "来"],
+    "chinese_text": "上午老师来学校。学生也来学校。",
+    "pinyin": "Shàngwǔ lǎoshī lái xuéxiào. Xuésheng yě lái xuéxiào.",
+    "english_translation": "In the morning the teacher comes to school. The students also come to school.",
+    "vietnamese_translation": "Buổi sáng giáo viên đến trường. Học sinh cũng đến trường.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who comes to school in the morning?", "options": ["Teacher", "Doctor", "Dad", "Cat"]},
+      {"id": "q2", "question": "Who also comes?", "options": ["Students", "Doctors", "Sons", "Daughters"]}
+    ],
+    "answer_key": {"q1": "Teacher", "q2": "Students"},
+    "explanation": "来学校 means come to school."
+  },
+  {
+    "title": "Reading 041: Beijing",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "在", "北京", "学习", "汉语", "北京", "很", "大"],
+    "chinese_text": "我在北京学习汉语。北京很大。",
+    "pinyin": "Wǒ zài Běijīng xuéxí Hànyǔ. Běijīng hěn dà.",
+    "english_translation": "I study Chinese in Beijing. Beijing is big.",
+    "vietnamese_translation": "Tôi học tiếng Trung ở Bắc Kinh. Bắc Kinh rất lớn.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does the person study Chinese?", "options": ["Beijing", "Home", "Hospital", "Store"]},
+      {"id": "q2", "question": "How is Beijing described?", "options": ["Big", "Small", "Cold", "Rainy"]}
+    ],
+    "answer_key": {"q1": "Beijing", "q2": "Big"},
+    "explanation": "在北京 shows location, and 很大 describes Beijing."
+  },
+  {
+    "title": "Reading 042: China",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["他", "是", "中国", "人", "他", "会", "说", "汉语"],
+    "chinese_text": "他是中国人。他会说汉语。",
+    "pinyin": "Tā shì Zhōngguó rén. Tā huì shuō Hànyǔ.",
+    "english_translation": "He is Chinese. He can speak Chinese.",
+    "vietnamese_translation": "Anh ấy là người Trung Quốc. Anh ấy biết nói tiếng Trung.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What nationality is he?", "options": ["Chinese", "Teacher", "Student", "Doctor"]},
+      {"id": "q2", "question": "What can he speak?", "options": ["Chinese", "No language", "Only numbers", "Only names"]}
+    ],
+    "answer_key": {"q1": "Chinese", "q2": "Chinese"},
+    "explanation": "中国人 means Chinese person, and 会说汉语 means can speak Chinese."
+  },
+  {
+    "title": "Reading 043: Where Do You Live",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["你", "住", "哪儿", "我", "住", "北京"],
+    "chinese_text": "你住哪儿？我住北京。",
+    "pinyin": "Nǐ zhù nǎr? Wǒ zhù Běijīng.",
+    "english_translation": "Where do you live? I live in Beijing.",
+    "vietnamese_translation": "Bạn sống ở đâu? Tôi sống ở Bắc Kinh.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is asked?", "options": ["Where you live", "What you eat", "How much money", "What time"]},
+      {"id": "q2", "question": "Where does the person live?", "options": ["Beijing", "School", "Hospital", "Store"]}
+    ],
+    "answer_key": {"q1": "Where you live", "q2": "Beijing"},
+    "explanation": "哪儿 asks about location."
+  },
+  {
+    "title": "Reading 044: Knowing a Friend",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "认识", "他", "他", "是", "我", "朋友"],
+    "chinese_text": "我认识他。他是我朋友。",
+    "pinyin": "Wǒ rènshi tā. Tā shì wǒ péngyou.",
+    "english_translation": "I know him. He is my friend.",
+    "vietnamese_translation": "Tôi quen anh ấy. Anh ấy là bạn tôi.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Does the speaker know him?", "options": ["Yes", "No", "Not stated", "Only by phone"]},
+      {"id": "q2", "question": "Who is he?", "options": ["Friend", "Doctor", "Teacher", "Son"]}
+    ],
+    "answer_key": {"q1": "Yes", "q2": "Friend"},
+    "explanation": "认识 means to know or be acquainted with someone."
+  },
+  {
+    "title": "Reading 045: Who Is She",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["她", "是", "谁", "她", "是", "老师"],
+    "chinese_text": "她是谁？她是老师。",
+    "pinyin": "Tā shì shéi? Tā shì lǎoshī.",
+    "english_translation": "Who is she? She is a teacher.",
+    "vietnamese_translation": "Cô ấy là ai? Cô ấy là giáo viên.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What question word is used?", "options": ["Who", "Where", "How much", "What time"]},
+      {"id": "q2", "question": "Who is she?", "options": ["Teacher", "Student", "Doctor", "Mom"]}
+    ],
+    "answer_key": {"q1": "Who", "q2": "Teacher"},
+    "explanation": "谁 asks about a person."
+  },
+  {
+    "title": "Reading 046: What Is This",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["这", "是", "什么", "这", "是", "书"],
+    "chinese_text": "这是什么？这是书。",
+    "pinyin": "Zhè shì shénme? Zhè shì shū.",
+    "english_translation": "What is this? This is a book.",
+    "vietnamese_translation": "Đây là cái gì? Đây là sách.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is asked?", "options": ["What this is", "Who she is", "Where school is", "How old someone is"]},
+      {"id": "q2", "question": "What is this?", "options": ["Book", "Water", "Apple", "Chair"]}
+    ],
+    "answer_key": {"q1": "What this is", "q2": "Book"},
+    "explanation": "什么 asks for the identity of the thing."
+  },
+  {
+    "title": "Reading 047: Where Is School",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["学校", "在", "哪儿", "学校", "在", "前面"],
+    "chinese_text": "学校在哪儿？学校在前面。",
+    "pinyin": "Xuéxiào zài nǎr? Xuéxiào zài qiánmiàn.",
+    "english_translation": "Where is the school? The school is in front.",
+    "vietnamese_translation": "Trường ở đâu? Trường ở phía trước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What place is asked about?", "options": ["School", "Hospital", "Store", "Home"]},
+      {"id": "q2", "question": "Where is it?", "options": ["In front", "Behind", "At home", "In China"]}
+    ],
+    "answer_key": {"q1": "School", "q2": "In front"},
+    "explanation": "在哪儿 asks for location."
+  },
+  {
+    "title": "Reading 048: Which Student",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["哪", "个", "学生", "是", "你", "的", "朋友"],
+    "chinese_text": "哪个学生是你的朋友？",
+    "pinyin": "Nǎ ge xuésheng shì nǐ de péngyou?",
+    "english_translation": "Which student is your friend?",
+    "vietnamese_translation": "Học sinh nào là bạn của bạn?",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is being asked?", "options": ["Which student is your friend", "Where the teacher is", "How much the book is", "What time it is"]},
+      {"id": "q2", "question": "What does 哪个 mean?", "options": ["Which one", "This one", "That one", "All"]}
+    ],
+    "answer_key": {"q1": "Which student is your friend", "q2": "Which one"},
+    "explanation": "哪个 asks which one from a group."
+  },
+  {
+    "title": "Reading 049: How Many People",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["你", "家", "有", "几", "个", "人", "我", "家", "有", "三", "个", "人"],
+    "chinese_text": "你家有几个人？我家有三个人。",
+    "pinyin": "Nǐ jiā yǒu jǐ ge rén? Wǒ jiā yǒu sān ge rén.",
+    "english_translation": "How many people are in your family? My family has three people.",
+    "vietnamese_translation": "Nhà bạn có mấy người? Nhà tôi có ba người.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is asked?", "options": ["Number of people in the family", "Price of apples", "Time", "Weather"]},
+      {"id": "q2", "question": "How many people are in my family?", "options": ["Three", "One", "Five", "Ten"]}
+    ],
+    "answer_key": {"q1": "Number of people in the family", "q2": "Three"},
+    "explanation": "几个人 asks for a small number of people."
+  },
+  {
+    "title": "Reading 050: Age",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["你", "多", "大", "我", "二十", "岁"],
+    "chinese_text": "你多大？我二十岁。",
+    "pinyin": "Nǐ duō dà? Wǒ èrshí suì.",
+    "english_translation": "How old are you? I am twenty years old.",
+    "vietnamese_translation": "Bạn bao nhiêu tuổi? Tôi hai mươi tuổi.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is asked?", "options": ["Age", "Name", "Price", "Location"]},
+      {"id": "q2", "question": "How old is the speaker?", "options": ["Twenty", "Ten", "Eight", "Three"]}
+    ],
+    "answer_key": {"q1": "Age", "q2": "Twenty"},
+    "explanation": "多大 asks age, and 岁 marks years old."
+  },
+  {
+    "title": "Reading 051: Birthday Date",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "是", "一", "月", "一", "号", "明天", "是", "二", "号"],
+    "chinese_text": "今天是一月一号。明天是二号。",
+    "pinyin": "Jīntiān shì yī yuè yī hào. Míngtiān shì èr hào.",
+    "english_translation": "Today is January 1st. Tomorrow is the 2nd.",
+    "vietnamese_translation": "Hôm nay là ngày 1 tháng 1. Ngày mai là mùng 2.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What date is today?", "options": ["January 1", "January 2", "February 1", "March 3"]},
+      {"id": "q2", "question": "What date is tomorrow?", "options": ["The 2nd", "The 1st", "The 10th", "The 8th"]}
+    ],
+    "answer_key": {"q1": "January 1", "q2": "The 2nd"},
+    "explanation": "Chinese date order is month before day."
+  },
+  {
+    "title": "Reading 052: Year and Month",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["现在", "是", "七", "月", "天气", "很", "热"],
+    "chinese_text": "现在是七月。七月天气很热。",
+    "pinyin": "Xiànzài shì qī yuè. Qī yuè tiānqì hěn rè.",
+    "english_translation": "Now it is July. The weather in July is hot.",
+    "vietnamese_translation": "Bây giờ là tháng 7. Thời tiết tháng 7 rất nóng.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What month is it now?", "options": ["July", "January", "June", "October"]},
+      {"id": "q2", "question": "How is the weather in July?", "options": ["Hot", "Cold", "Rainy", "Small"]}
+    ],
+    "answer_key": {"q1": "July", "q2": "Hot"},
+    "explanation": "月 marks the month, and 很热 describes the weather."
+  },
+  {
+    "title": "Reading 053: Weekday",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "星期", "一", "明天", "星期", "二"],
+    "chinese_text": "今天星期一。明天星期二。",
+    "pinyin": "Jīntiān xīngqī yī. Míngtiān xīngqī èr.",
+    "english_translation": "Today is Monday. Tomorrow is Tuesday.",
+    "vietnamese_translation": "Hôm nay là thứ Hai. Ngày mai là thứ Ba.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What day is today?", "options": ["Monday", "Tuesday", "Sunday", "Friday"]},
+      {"id": "q2", "question": "What day is tomorrow?", "options": ["Tuesday", "Monday", "Wednesday", "Saturday"]}
+    ],
+    "answer_key": {"q1": "Monday", "q2": "Tuesday"},
+    "explanation": "星期 plus a number gives the weekday."
+  },
+  {
+    "title": "Reading 054: Good Weather",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "天气", "很", "好", "我们", "去", "学校"],
+    "chinese_text": "今天天气很好。我们去学校。",
+    "pinyin": "Jīntiān tiānqì hěn hǎo. Wǒmen qù xuéxiào.",
+    "english_translation": "The weather is good today. We go to school.",
+    "vietnamese_translation": "Hôm nay thời tiết rất tốt. Chúng tôi đi học.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How is today's weather?", "options": ["Good", "Cold", "Rainy", "Too hot"]},
+      {"id": "q2", "question": "Where do they go?", "options": ["School", "Hospital", "Restaurant", "Store"]}
+    ],
+    "answer_key": {"q1": "Good", "q2": "School"},
+    "explanation": "很好 describes the weather positively."
+  },
+  {
+    "title": "Reading 055: Too Hot",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["水", "太", "热", "了", "我", "不", "喝"],
+    "chinese_text": "水太热了。我不喝。",
+    "pinyin": "Shuǐ tài rè le. Wǒ bù hē.",
+    "english_translation": "The water is too hot. I do not drink it.",
+    "vietnamese_translation": "Nước nóng quá. Tôi không uống.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How is the water?", "options": ["Too hot", "Cold", "Good", "Small"]},
+      {"id": "q2", "question": "Does the person drink it?", "options": ["No", "Yes", "Not stated", "Only tea"]}
+    ],
+    "answer_key": {"q1": "Too hot", "q2": "No"},
+    "explanation": "太...了 expresses a strong degree; 不喝 is negative."
+  },
+  {
+    "title": "Reading 056: Some Fruit",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["桌子", "上", "有", "水果", "我", "吃", "苹果"],
+    "chinese_text": "桌子上有水果。我吃苹果。",
+    "pinyin": "Zhuōzi shàng yǒu shuǐguǒ. Wǒ chī píngguǒ.",
+    "english_translation": "There is fruit on the table. I eat an apple.",
+    "vietnamese_translation": "Trên bàn có hoa quả. Tôi ăn táo.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where is the fruit?", "options": ["On the table", "At school", "In the taxi", "Behind the chair"]},
+      {"id": "q2", "question": "What does the person eat?", "options": ["Apple", "Rice", "Tea", "Water"]}
+    ],
+    "answer_key": {"q1": "On the table", "q2": "Apple"},
+    "explanation": "桌子上有 introduces what is on the table."
+  },
+  {
+    "title": "Reading 057: Dog",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "家", "有", "狗", "狗", "很", "大"],
+    "chinese_text": "我家有狗。狗很大。",
+    "pinyin": "Wǒ jiā yǒu gǒu. Gǒu hěn dà.",
+    "english_translation": "My family has a dog. The dog is big.",
+    "vietnamese_translation": "Nhà tôi có chó. Con chó rất to.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What animal is at home?", "options": ["Dog", "Cat", "Fish", "Bird"]},
+      {"id": "q2", "question": "How is the dog?", "options": ["Big", "Small", "Cold", "Pretty"]}
+    ],
+    "answer_key": {"q1": "Dog", "q2": "Big"},
+    "explanation": "狗 is the subject of the second sentence and is described with 很大."
+  },
+  {
+    "title": "Reading 058: Cat",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["她", "有", "猫", "猫", "很", "小", "也", "很", "漂亮"],
+    "chinese_text": "她有猫。猫很小，也很漂亮。",
+    "pinyin": "Tā yǒu māo. Māo hěn xiǎo, yě hěn piàoliang.",
+    "english_translation": "She has a cat. The cat is small and also pretty.",
+    "vietnamese_translation": "Cô ấy có mèo. Con mèo nhỏ và cũng rất đẹp.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What animal does she have?", "options": ["Cat", "Dog", "Horse", "Bird"]},
+      {"id": "q2", "question": "How is the cat?", "options": ["Small and pretty", "Big and hot", "Cold and tired", "Old and expensive"]}
+    ],
+    "answer_key": {"q1": "Cat", "q2": "Small and pretty"},
+    "explanation": "也很漂亮 adds another description of the cat."
+  },
+  {
+    "title": "Reading 059: Daughter",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "女儿", "是", "学生", "她", "在", "学校"],
+    "chinese_text": "我女儿是学生。她在学校。",
+    "pinyin": "Wǒ nǚ'ér shì xuésheng. Tā zài xuéxiào.",
+    "english_translation": "My daughter is a student. She is at school.",
+    "vietnamese_translation": "Con gái tôi là học sinh. Con bé ở trường.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is a student?", "options": ["My daughter", "My son", "My teacher", "My doctor"]},
+      {"id": "q2", "question": "Where is she?", "options": ["At school", "At home", "At the store", "In the taxi"]}
+    ],
+    "answer_key": {"q1": "My daughter", "q2": "At school"},
+    "explanation": "女儿 is identified as a student, then her location is given."
+  },
+  {
+    "title": "Reading 060: Son",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "儿子", "不", "是", "老师", "他", "是", "学生"],
+    "chinese_text": "我儿子不是老师。他是学生。",
+    "pinyin": "Wǒ érzi bú shì lǎoshī. Tā shì xuésheng.",
+    "english_translation": "My son is not a teacher. He is a student.",
+    "vietnamese_translation": "Con trai tôi không phải giáo viên. Nó là học sinh.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Is the son a teacher?", "options": ["No", "Yes", "Not stated", "Only in the morning"]},
+      {"id": "q2", "question": "What is he?", "options": ["Student", "Doctor", "Teacher", "Friend"]}
+    ],
+    "answer_key": {"q1": "No", "q2": "Student"},
+    "explanation": "不是 negates identity, and the next sentence gives the correct identity."
+  },
+  {
+    "title": "Reading 061: Mister and Miss",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["先生", "小姐", "都", "在", "商店", "买", "东西"],
+    "chinese_text": "先生和小姐都在商店买东西。",
+    "pinyin": "Xiānsheng hé xiǎojiě dōu zài shāngdiàn mǎi dōngxi.",
+    "english_translation": "The gentleman and the young lady are both buying things at the store.",
+    "vietnamese_translation": "Ông ấy và cô ấy đều đang mua đồ ở cửa hàng.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where are they?", "options": ["Store", "School", "Hospital", "Home"]},
+      {"id": "q2", "question": "What are they doing?", "options": ["Buying things", "Sleeping", "Watching TV", "Reading"]}
+    ],
+    "answer_key": {"q1": "Store", "q2": "Buying things"},
+    "explanation": "都 applies to both 先生 and 小姐."
+  },
+  {
+    "title": "Reading 062: Name",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["你", "叫", "什么", "名字", "我", "叫", "学生"],
+    "chinese_text": "你叫什么名字？我叫学生。",
+    "pinyin": "Nǐ jiào shénme míngzi? Wǒ jiào xuésheng.",
+    "english_translation": "What is your name? I am called Student.",
+    "vietnamese_translation": "Bạn tên là gì? Tôi tên là Học Sinh.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is asked?", "options": ["Name", "Age", "Price", "Weather"]},
+      {"id": "q2", "question": "What word means name?", "options": ["名字", "学校", "天气", "水果"]}
+    ],
+    "answer_key": {"q1": "Name", "q2": "名字"},
+    "explanation": "叫什么名字 is the standard HSK1 pattern for asking a name."
+  },
+  {
+    "title": "Reading 063: Happy",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "我", "很", "高兴", "我", "看见", "朋友"],
+    "chinese_text": "今天我很高兴。我看见朋友。",
+    "pinyin": "Jīntiān wǒ hěn gāoxìng. Wǒ kànjiàn péngyou.",
+    "english_translation": "Today I am happy. I see a friend.",
+    "vietnamese_translation": "Hôm nay tôi rất vui. Tôi nhìn thấy bạn.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How does the person feel?", "options": ["Happy", "Cold", "Tired", "Hot"]},
+      {"id": "q2", "question": "Who does the person see?", "options": ["Friend", "Teacher", "Doctor", "Cat"]}
+    ],
+    "answer_key": {"q1": "Happy", "q2": "Friend"},
+    "explanation": "看见 means to see, and 很高兴 describes feeling."
+  },
+  {
+    "title": "Reading 064: Likes",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "喜欢", "看", "书", "他", "喜欢", "看", "电影"],
+    "chinese_text": "我喜欢看书。他喜欢看电影。",
+    "pinyin": "Wǒ xǐhuan kàn shū. Tā xǐhuan kàn diànyǐng.",
+    "english_translation": "I like reading books. He likes watching movies.",
+    "vietnamese_translation": "Tôi thích đọc sách. Anh ấy thích xem phim.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What do I like?", "options": ["Reading books", "Watching movies", "Buying apples", "Sleeping"]},
+      {"id": "q2", "question": "What does he like?", "options": ["Watching movies", "Reading books", "Drinking tea", "Writing"]}
+    ],
+    "answer_key": {"q1": "Reading books", "q2": "Watching movies"},
+    "explanation": "喜欢 can be followed by a verb phrase."
+  },
+  {
+    "title": "Reading 065: Want Water",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "想", "喝", "水", "你", "想", "喝", "茶", "吗"],
+    "chinese_text": "我想喝水。你想喝茶吗？",
+    "pinyin": "Wǒ xiǎng hē shuǐ. Nǐ xiǎng hē chá ma?",
+    "english_translation": "I want to drink water. Do you want to drink tea?",
+    "vietnamese_translation": "Tôi muốn uống nước. Bạn muốn uống trà không?",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the speaker want to drink?", "options": ["Water", "Tea", "Rice", "Fruit"]},
+      {"id": "q2", "question": "What is the listener asked about?", "options": ["Drinking tea", "Reading", "Sleeping", "Going home"]}
+    ],
+    "answer_key": {"q1": "Water", "q2": "Drinking tea"},
+    "explanation": "想 + verb expresses wanting to do something."
+  },
+  {
+    "title": "Reading 066: Can Come",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["明天", "你", "能", "来", "吗", "我", "能", "来"],
+    "chinese_text": "明天你能来吗？我能来。",
+    "pinyin": "Míngtiān nǐ néng lái ma? Wǒ néng lái.",
+    "english_translation": "Can you come tomorrow? I can come.",
+    "vietnamese_translation": "Ngày mai bạn có thể đến không? Tôi có thể đến.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When is the person asked to come?", "options": ["Tomorrow", "Today", "Yesterday", "Noon"]},
+      {"id": "q2", "question": "Can the speaker come?", "options": ["Yes", "No", "Not stated", "Only in Beijing"]}
+    ],
+    "answer_key": {"q1": "Tomorrow", "q2": "Yes"},
+    "explanation": "能来 means be able to come."
+  },
+  {
+    "title": "Reading 067: Please Sit",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["请", "坐", "这", "个", "椅子", "很", "好"],
+    "chinese_text": "请坐。这个椅子很好。",
+    "pinyin": "Qǐng zuò. Zhè ge yǐzi hěn hǎo.",
+    "english_translation": "Please sit. This chair is good.",
+    "vietnamese_translation": "Mời ngồi. Cái ghế này rất tốt.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What request is made?", "options": ["Please sit", "Please drink", "Please buy", "Please write"]},
+      {"id": "q2", "question": "How is the chair?", "options": ["Good", "Bad", "Hot", "Cold"]}
+    ],
+    "answer_key": {"q1": "Please sit", "q2": "Good"},
+    "explanation": "请 makes the command polite."
+  },
+  {
+    "title": "Reading 068: Sorry",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["对不起", "没关系", "我", "没有", "书"],
+    "chinese_text": "对不起，我没有书。没关系。",
+    "pinyin": "Duìbuqǐ, wǒ méi yǒu shū. Méi guānxi.",
+    "english_translation": "Sorry, I do not have a book. It's okay.",
+    "vietnamese_translation": "Xin lỗi, tôi không có sách. Không sao.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the speaker not have?", "options": ["Book", "Water", "Money", "Computer"]},
+      {"id": "q2", "question": "What is the response?", "options": ["It's okay", "Goodbye", "Thank you", "How much"]}
+    ],
+    "answer_key": {"q1": "Book", "q2": "It's okay"},
+    "explanation": "没有 is the negative form of 有."
+  },
+  {
+    "title": "Reading 069: Thanks",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["谢谢", "不客气", "请", "喝", "茶"],
+    "chinese_text": "请喝茶。谢谢。不客气。",
+    "pinyin": "Qǐng hē chá. Xièxie. Bú kèqi.",
+    "english_translation": "Please drink tea. Thank you. You're welcome.",
+    "vietnamese_translation": "Mời uống trà. Cảm ơn. Không có gì.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is offered?", "options": ["Tea", "Rice", "Book", "Taxi"]},
+      {"id": "q2", "question": "What does 不客气 mean?", "options": ["You're welcome", "Sorry", "Goodbye", "How much"]}
+    ],
+    "answer_key": {"q1": "Tea", "q2": "You're welcome"},
+    "explanation": "谢谢 and 不客气 form a basic polite exchange."
+  },
+  {
+    "title": "Reading 070: Goodbye",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["老师", "再见", "学生", "也", "说", "再见"],
+    "chinese_text": "老师说再见。学生也说再见。",
+    "pinyin": "Lǎoshī shuō zàijiàn. Xuésheng yě shuō zàijiàn.",
+    "english_translation": "The teacher says goodbye. The students also say goodbye.",
+    "vietnamese_translation": "Giáo viên nói tạm biệt. Học sinh cũng nói tạm biệt.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the teacher say?", "options": ["Goodbye", "Thank you", "Sorry", "Hello"]},
+      {"id": "q2", "question": "Who also says goodbye?", "options": ["Students", "Doctors", "Parents", "Friends only"]}
+    ],
+    "answer_key": {"q1": "Goodbye", "q2": "Students"},
+    "explanation": "也说再见 shows the students repeat the same farewell."
+  },
+  {
+    "title": "Reading 071: A Little",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "会", "说", "一点儿", "汉语", "老师", "很", "高兴"],
+    "chinese_text": "我会说一点儿汉语。老师很高兴。",
+    "pinyin": "Wǒ huì shuō yìdiǎnr Hànyǔ. Lǎoshī hěn gāoxìng.",
+    "english_translation": "I can speak a little Chinese. The teacher is happy.",
+    "vietnamese_translation": "Tôi biết nói một chút tiếng Trung. Giáo viên rất vui.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How much Chinese can the person speak?", "options": ["A little", "A lot", "None", "Only numbers"]},
+      {"id": "q2", "question": "How does the teacher feel?", "options": ["Happy", "Cold", "Busy", "Sorry"]}
+    ],
+    "answer_key": {"q1": "A little", "q2": "Happy"},
+    "explanation": "一点儿 means a little amount."
+  },
+  {
+    "title": "Reading 072: Many and Few",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["学校", "有", "很", "多", "学生", "老师", "不", "多"],
+    "chinese_text": "学校有很多学生。老师不多。",
+    "pinyin": "Xuéxiào yǒu hěn duō xuésheng. Lǎoshī bù duō.",
+    "english_translation": "The school has many students. There are not many teachers.",
+    "vietnamese_translation": "Trường có rất nhiều học sinh. Giáo viên không nhiều.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the school have many of?", "options": ["Students", "Teachers", "Doctors", "Cats"]},
+      {"id": "q2", "question": "Are there many teachers?", "options": ["No", "Yes", "Not stated", "Only one"]}
+    ],
+    "answer_key": {"q1": "Students", "q2": "No"},
+    "explanation": "很 + 多 means many, while 不多 means not many."
+  },
+  {
+    "title": "Reading 073: Big and Small",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["这", "个", "学校", "很", "大", "那", "个", "商店", "很", "小"],
+    "chinese_text": "这个学校很大。那个商店很小。",
+    "pinyin": "Zhè ge xuéxiào hěn dà. Nà ge shāngdiàn hěn xiǎo.",
+    "english_translation": "This school is big. That store is small.",
+    "vietnamese_translation": "Trường này rất lớn. Cửa hàng kia rất nhỏ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "How is this school?", "options": ["Big", "Small", "Hot", "Cold"]},
+      {"id": "q2", "question": "How is that store?", "options": ["Small", "Big", "Pretty", "Good"]}
+    ],
+    "answer_key": {"q1": "Big", "q2": "Small"},
+    "explanation": "很大 and 很小 describe size."
+  },
+  {
+    "title": "Reading 074: Pretty",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["她", "的", "女儿", "很", "漂亮", "也", "很", "高兴"],
+    "chinese_text": "她的女儿很漂亮，也很高兴。",
+    "pinyin": "Tā de nǚ'ér hěn piàoliang, yě hěn gāoxìng.",
+    "english_translation": "Her daughter is pretty and also happy.",
+    "vietnamese_translation": "Con gái của cô ấy rất xinh và cũng rất vui.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is pretty?", "options": ["Her daughter", "Her teacher", "Her doctor", "Her friend"]},
+      {"id": "q2", "question": "How else does the daughter feel?", "options": ["Happy", "Cold", "Tired", "Sorry"]}
+    ],
+    "answer_key": {"q1": "Her daughter", "q2": "Happy"},
+    "explanation": "也很高兴 adds a second adjective."
+  },
+  {
+    "title": "Reading 075: How Is It",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["这", "个", "电影", "怎么样", "很", "好"],
+    "chinese_text": "这个电影怎么样？这个电影很好。",
+    "pinyin": "Zhè ge diànyǐng zěnmeyàng? Zhè ge diànyǐng hěn hǎo.",
+    "english_translation": "How is this movie? This movie is good.",
+    "vietnamese_translation": "Bộ phim này thế nào? Bộ phim này rất hay.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is asked about?", "options": ["The movie", "The teacher", "The price", "The weather"]},
+      {"id": "q2", "question": "How is the movie?", "options": ["Good", "Bad", "Cold", "Small"]}
+    ],
+    "answer_key": {"q1": "The movie", "q2": "Good"},
+    "explanation": "怎么样 asks how something is."
+  },
+  {
+    "title": "Reading 076: Work",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["爸爸", "在", "医院", "工作", "妈妈", "在", "学校", "工作"],
+    "chinese_text": "爸爸在医院工作。妈妈在学校工作。",
+    "pinyin": "Bàba zài yīyuàn gōngzuò. Māma zài xuéxiào gōngzuò.",
+    "english_translation": "Dad works at the hospital. Mom works at school.",
+    "vietnamese_translation": "Bố làm việc ở bệnh viện. Mẹ làm việc ở trường.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does dad work?", "options": ["Hospital", "School", "Store", "Home"]},
+      {"id": "q2", "question": "Where does mom work?", "options": ["School", "Hospital", "Restaurant", "Beijing"]}
+    ],
+    "answer_key": {"q1": "Hospital", "q2": "School"},
+    "explanation": "在 + place + 工作 shows where someone works."
+  },
+  {
+    "title": "Reading 077: Dishes",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["饭店", "有", "很", "多", "菜", "我", "喜欢", "这", "个", "菜"],
+    "chinese_text": "饭店有很多菜。我喜欢这个菜。",
+    "pinyin": "Fàndiàn yǒu hěn duō cài. Wǒ xǐhuan zhè ge cài.",
+    "english_translation": "The restaurant has many dishes. I like this dish.",
+    "vietnamese_translation": "Nhà hàng có nhiều món ăn. Tôi thích món này.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the restaurant have?", "options": ["Many dishes", "Many teachers", "Many cats", "Many chairs only"]},
+      {"id": "q2", "question": "Which dish does the speaker like?", "options": ["This dish", "That book", "Water", "Rice only"]}
+    ],
+    "answer_key": {"q1": "Many dishes", "q2": "This dish"},
+    "explanation": "菜 means dish/food, and 这个菜 identifies a specific dish."
+  },
+  {
+    "title": "Reading 078: Cup",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["桌子", "上", "有", "杯子", "杯子", "里", "有", "水"],
+    "chinese_text": "桌子上有杯子。杯子里有水。",
+    "pinyin": "Zhuōzi shàng yǒu bēizi. Bēizi lǐ yǒu shuǐ.",
+    "english_translation": "There is a cup on the table. There is water in the cup.",
+    "vietnamese_translation": "Trên bàn có cái cốc. Trong cốc có nước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where is the cup?", "options": ["On the table", "In the school", "Behind the doctor", "At the store"]},
+      {"id": "q2", "question": "What is in the cup?", "options": ["Water", "Tea", "Rice", "Money"]}
+    ],
+    "answer_key": {"q1": "On the table", "q2": "Water"},
+    "explanation": "上 and 里 show location."
+  },
+  {
+    "title": "Reading 079: Store Is Open",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["商店", "开", "了", "我", "去", "买", "东西"],
+    "chinese_text": "商店开了。我去买东西。",
+    "pinyin": "Shāngdiàn kāi le. Wǒ qù mǎi dōngxi.",
+    "english_translation": "The store is open now. I go to buy things.",
+    "vietnamese_translation": "Cửa hàng mở rồi. Tôi đi mua đồ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What happened to the store?", "options": ["It opened", "It is at school", "It has no money", "It is cold"]},
+      {"id": "q2", "question": "Why does the person go?", "options": ["To buy things", "To sleep", "To see a doctor", "To read"]}
+    ],
+    "answer_key": {"q1": "It opened", "q2": "To buy things"},
+    "explanation": "了 shows a new situation: the store has opened."
+  },
+  {
+    "title": "Reading 080: I See You",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "看见", "你", "你", "在", "学校", "前面"],
+    "chinese_text": "我看见你。你在学校前面。",
+    "pinyin": "Wǒ kànjiàn nǐ. Nǐ zài xuéxiào qiánmiàn.",
+    "english_translation": "I see you. You are in front of the school.",
+    "vietnamese_translation": "Tôi nhìn thấy bạn. Bạn ở trước trường.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who does the speaker see?", "options": ["You", "Teacher", "Doctor", "Cat"]},
+      {"id": "q2", "question": "Where are you?", "options": ["In front of the school", "At home", "In the hospital", "Behind the store"]}
+    ],
+    "answer_key": {"q1": "You", "q2": "In front of the school"},
+    "explanation": "看见 means see, and 学校前面 gives the location."
+  },
+  {
+    "title": "Reading 081: Return to Beijing",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["爸爸", "今天", "回", "北京", "我们", "很", "高兴"],
+    "chinese_text": "爸爸今天回北京。我们很高兴。",
+    "pinyin": "Bàba jīntiān huí Běijīng. Wǒmen hěn gāoxìng.",
+    "english_translation": "Dad returns to Beijing today. We are happy.",
+    "vietnamese_translation": "Hôm nay bố về Bắc Kinh. Chúng tôi rất vui.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does dad return?", "options": ["Beijing", "School", "Hospital", "Store"]},
+      {"id": "q2", "question": "How do they feel?", "options": ["Happy", "Cold", "Tired", "Sorry"]}
+    ],
+    "answer_key": {"q1": "Beijing", "q2": "Happy"},
+    "explanation": "回北京 means return to Beijing."
+  },
+  {
+    "title": "Reading 082: Sitting",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["学生", "坐", "在", "椅子", "上", "老师", "在", "前面"],
+    "chinese_text": "学生坐在椅子上。老师在前面。",
+    "pinyin": "Xuésheng zuò zài yǐzi shàng. Lǎoshī zài qiánmiàn.",
+    "english_translation": "The student sits on the chair. The teacher is in front.",
+    "vietnamese_translation": "Học sinh ngồi trên ghế. Giáo viên ở phía trước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does the student sit?", "options": ["On the chair", "On the table", "At the store", "At home"]},
+      {"id": "q2", "question": "Where is the teacher?", "options": ["In front", "Behind", "At the hospital", "In the taxi"]}
+    ],
+    "answer_key": {"q1": "On the chair", "q2": "In front"},
+    "explanation": "坐在椅子上 describes sitting on the chair."
+  },
+  {
+    "title": "Reading 083: Living at Home",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "和", "爸爸", "妈妈", "住", "在", "中国"],
+    "chinese_text": "我和爸爸妈妈住在中国。",
+    "pinyin": "Wǒ hé bàba māma zhù zài Zhōngguó.",
+    "english_translation": "My parents and I live in China.",
+    "vietnamese_translation": "Tôi và bố mẹ sống ở Trung Quốc.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who lives together?", "options": ["I, dad, and mom", "Teacher and doctor", "Students only", "Friends only"]},
+      {"id": "q2", "question": "Where do they live?", "options": ["China", "School", "Hospital", "Store"]}
+    ],
+    "answer_key": {"q1": "I, dad, and mom", "q2": "China"},
+    "explanation": "住在中国 gives the place of living."
+  },
+  {
+    "title": "Reading 084: Doing Homework",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "在", "家", "做", "工作", "妈妈", "看", "书"],
+    "chinese_text": "我在家做工作。妈妈看书。",
+    "pinyin": "Wǒ zài jiā zuò gōngzuò. Māma kàn shū.",
+    "english_translation": "I do work at home. Mom reads a book.",
+    "vietnamese_translation": "Tôi làm việc ở nhà. Mẹ đọc sách.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where does the person work?", "options": ["At home", "At school", "At the store", "In Beijing"]},
+      {"id": "q2", "question": "What does mom do?", "options": ["Reads", "Sleeps", "Buys fruit", "Calls"]}
+    ],
+    "answer_key": {"q1": "At home", "q2": "Reads"},
+    "explanation": "在家 shows where the action 做工作 happens."
+  },
+  {
+    "title": "Reading 085: Writing at School",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["学生", "在", "学校", "写", "字", "老师", "看"],
+    "chinese_text": "学生在学校写字。老师看。",
+    "pinyin": "Xuésheng zài xuéxiào xiě zì. Lǎoshī kàn.",
+    "english_translation": "The student writes characters at school. The teacher watches.",
+    "vietnamese_translation": "Học sinh viết chữ ở trường. Giáo viên xem.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the student write?", "options": ["Characters", "Money", "Fruit", "Water"]},
+      {"id": "q2", "question": "Who watches?", "options": ["Teacher", "Doctor", "Dad", "Friend"]}
+    ],
+    "answer_key": {"q1": "Characters", "q2": "Teacher"},
+    "explanation": "写字 is the action, and 在学校 gives the location."
+  },
+  {
+    "title": "Reading 086: Classmates",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我们", "是", "同学", "我们", "都", "学习", "汉语"],
+    "chinese_text": "我们是同学。我们都学习汉语。",
+    "pinyin": "Wǒmen shì tóngxué. Wǒmen dōu xuéxí Hànyǔ.",
+    "english_translation": "We are classmates. We all study Chinese.",
+    "vietnamese_translation": "Chúng tôi là bạn học. Chúng tôi đều học tiếng Trung.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What are we?", "options": ["Classmates", "Doctors", "Teachers", "Family"]},
+      {"id": "q2", "question": "What do we all study?", "options": ["Chinese", "Money", "Weather", "Movies"]}
+    ],
+    "answer_key": {"q1": "Classmates", "q2": "Chinese"},
+    "explanation": "同学 means classmate, and 都 applies to all of 我们."
+  },
+  {
+    "title": "Reading 087: No Money",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "没有", "钱", "我", "不", "买", "东西"],
+    "chinese_text": "我没有钱。我不买东西。",
+    "pinyin": "Wǒ méi yǒu qián. Wǒ bù mǎi dōngxi.",
+    "english_translation": "I do not have money. I do not buy things.",
+    "vietnamese_translation": "Tôi không có tiền. Tôi không mua đồ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the person not have?", "options": ["Money", "Water", "Book", "Chair"]},
+      {"id": "q2", "question": "What does the person not do?", "options": ["Buy things", "Read", "Drink water", "Go home"]}
+    ],
+    "answer_key": {"q1": "Money", "q2": "Buy things"},
+    "explanation": "没有钱 explains why the person does not buy things."
+  },
+  {
+    "title": "Reading 088: Buying Things",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["妈妈", "有", "钱", "她", "去", "商店", "买", "东西"],
+    "chinese_text": "妈妈有钱。她去商店买东西。",
+    "pinyin": "Māma yǒu qián. Tā qù shāngdiàn mǎi dōngxi.",
+    "english_translation": "Mom has money. She goes to the store to buy things.",
+    "vietnamese_translation": "Mẹ có tiền. Mẹ đi cửa hàng mua đồ.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who has money?", "options": ["Mom", "Dad", "Teacher", "Student"]},
+      {"id": "q2", "question": "Where does she go?", "options": ["Store", "School", "Hospital", "Home"]}
+    ],
+    "answer_key": {"q1": "Mom", "q2": "Store"},
+    "explanation": "去商店买东西 shows destination and purpose."
+  },
+  {
+    "title": "Reading 089: Now",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["现在", "我", "在", "学校", "现在", "老师", "说话"],
+    "chinese_text": "现在我在学校。现在老师说话。",
+    "pinyin": "Xiànzài wǒ zài xuéxiào. Xiànzài lǎoshī shuōhuà.",
+    "english_translation": "Now I am at school. Now the teacher is speaking.",
+    "vietnamese_translation": "Bây giờ tôi ở trường. Bây giờ giáo viên đang nói.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where is the speaker now?", "options": ["At school", "At home", "At the store", "At the hospital"]},
+      {"id": "q2", "question": "Who is speaking?", "options": ["Teacher", "Student", "Doctor", "Mom"]}
+    ],
+    "answer_key": {"q1": "At school", "q2": "Teacher"},
+    "explanation": "现在 sets the present time for both sentences."
+  },
+  {
+    "title": "Reading 090: In Front of Home",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "家", "前面", "有", "商店", "后面", "有", "学校"],
+    "chinese_text": "我家前面有商店，后面有学校。",
+    "pinyin": "Wǒ jiā qiánmiàn yǒu shāngdiàn, hòumiàn yǒu xuéxiào.",
+    "english_translation": "In front of my home there is a store, and behind it there is a school.",
+    "vietnamese_translation": "Trước nhà tôi có cửa hàng, phía sau có trường học.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is in front of the home?", "options": ["Store", "School", "Hospital", "Restaurant"]},
+      {"id": "q2", "question": "What is behind the home?", "options": ["School", "Store", "Taxi", "Table"]}
+    ],
+    "answer_key": {"q1": "Store", "q2": "School"},
+    "explanation": "前面 and 后面 contrast two locations."
+  },
+  {
+    "title": "Reading 091: Everyone at Home",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["爸爸", "妈妈", "和", "我", "都", "在", "家"],
+    "chinese_text": "爸爸、妈妈和我都在家。",
+    "pinyin": "Bàba, māma hé wǒ dōu zài jiā.",
+    "english_translation": "Dad, mom, and I are all at home.",
+    "vietnamese_translation": "Bố, mẹ và tôi đều ở nhà.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who is at home?", "options": ["Dad, mom, and me", "Only dad", "Only mom", "Only teacher"]},
+      {"id": "q2", "question": "What does 都 mean here?", "options": ["All", "Also", "Not", "Who"]}
+    ],
+    "answer_key": {"q1": "Dad, mom, and me", "q2": "All"},
+    "explanation": "都 means all members of the listed group are at home."
+  },
+  {
+    "title": "Reading 092: Also a Teacher",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["他", "是", "老师", "她", "也", "是", "老师"],
+    "chinese_text": "他是老师。她也是老师。",
+    "pinyin": "Tā shì lǎoshī. Tā yě shì lǎoshī.",
+    "english_translation": "He is a teacher. She is also a teacher.",
+    "vietnamese_translation": "Anh ấy là giáo viên. Cô ấy cũng là giáo viên.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is he?", "options": ["Teacher", "Student", "Doctor", "Friend"]},
+      {"id": "q2", "question": "What is she?", "options": ["Also a teacher", "A student", "A doctor", "A daughter"]}
+    ],
+    "answer_key": {"q1": "Teacher", "q2": "Also a teacher"},
+    "explanation": "也 comes before 是 to mean also is."
+  },
+  {
+    "title": "Reading 093: Both Like Tea",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["我", "和", "朋友", "都", "喜欢", "喝", "茶"],
+    "chinese_text": "我和朋友都喜欢喝茶。",
+    "pinyin": "Wǒ hé péngyou dōu xǐhuan hē chá.",
+    "english_translation": "My friend and I both like drinking tea.",
+    "vietnamese_translation": "Tôi và bạn đều thích uống trà.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who likes tea?", "options": ["My friend and I", "Only teacher", "Only dad", "Only doctor"]},
+      {"id": "q2", "question": "What do they like drinking?", "options": ["Tea", "Water", "Milk", "Coffee"]}
+    ],
+    "answer_key": {"q1": "My friend and I", "q2": "Tea"},
+    "explanation": "都 applies to both 我 and 朋友."
+  },
+  {
+    "title": "Reading 094: Morning Call",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["上午", "妈妈", "打电话", "她", "说", "你", "好", "吗"],
+    "chinese_text": "上午妈妈打电话。她说：你好吗？",
+    "pinyin": "Shàngwǔ māma dǎ diànhuà. Tā shuō: Nǐ hǎo ma?",
+    "english_translation": "In the morning Mom makes a phone call. She says: How are you?",
+    "vietnamese_translation": "Buổi sáng mẹ gọi điện. Mẹ nói: Bạn khỏe không?",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When does mom call?", "options": ["Morning", "Afternoon", "Noon", "Tomorrow"]},
+      {"id": "q2", "question": "What does she ask?", "options": ["How are you?", "How much?", "Where are you?", "Who is he?"]}
+    ],
+    "answer_key": {"q1": "Morning", "q2": "How are you?"},
+    "explanation": "你好吗 is a simple greeting question."
+  },
+  {
+    "title": "Reading 095: Eating at Home",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "我们", "不", "去", "饭店", "在", "家", "吃", "米饭"],
+    "chinese_text": "今天我们不去饭店。我们在家吃米饭。",
+    "pinyin": "Jīntiān wǒmen bú qù fàndiàn. Wǒmen zài jiā chī mǐfàn.",
+    "english_translation": "Today we do not go to the restaurant. We eat rice at home.",
+    "vietnamese_translation": "Hôm nay chúng tôi không đi nhà hàng. Chúng tôi ăn cơm ở nhà.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Do they go to the restaurant today?", "options": ["No", "Yes", "Not stated", "Only at noon"]},
+      {"id": "q2", "question": "Where do they eat?", "options": ["At home", "At school", "At the hospital", "At the store"]}
+    ],
+    "answer_key": {"q1": "No", "q2": "At home"},
+    "explanation": "不去 negates going, and 在家吃饭 gives the alternative."
+  },
+  {
+    "title": "Reading 096: Doctor's Question",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["医生", "说", "你", "怎么样", "我", "说", "我", "很", "好"],
+    "chinese_text": "医生说：你怎么样？我说：我很好。",
+    "pinyin": "Yīshēng shuō: Nǐ zěnmeyàng? Wǒ shuō: Wǒ hěn hǎo.",
+    "english_translation": "The doctor says: How are you? I say: I am fine.",
+    "vietnamese_translation": "Bác sĩ nói: Bạn thế nào? Tôi nói: Tôi khỏe.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Who speaks first?", "options": ["Doctor", "Teacher", "Mom", "Student"]},
+      {"id": "q2", "question": "How is the speaker?", "options": ["Fine", "Cold", "Tired", "Not good"]}
+    ],
+    "answer_key": {"q1": "Doctor", "q2": "Fine"},
+    "explanation": "怎么样 asks about condition, and 很好 answers positively."
+  },
+  {
+    "title": "Reading 097: Asking for a Book",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["老师", "有", "书", "吗", "老师", "说", "有"],
+    "chinese_text": "老师有书吗？老师说：有。",
+    "pinyin": "Lǎoshī yǒu shū ma? Lǎoshī shuō: Yǒu.",
+    "english_translation": "Does the teacher have a book? The teacher says: Yes.",
+    "vietnamese_translation": "Giáo viên có sách không? Giáo viên nói: Có.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What does the question ask?", "options": ["Whether the teacher has a book", "Where the teacher is", "What time it is", "How much the book is"]},
+      {"id": "q2", "question": "Does the teacher have a book?", "options": ["Yes", "No", "Not stated", "Only one apple"]}
+    ],
+    "answer_key": {"q1": "Whether the teacher has a book", "q2": "Yes"},
+    "explanation": "有 is repeated as a short positive answer."
+  },
+  {
+    "title": "Reading 098: No Tea",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["家", "里", "没有", "茶", "我", "喝", "水"],
+    "chinese_text": "家里没有茶。我喝水。",
+    "pinyin": "Jiā lǐ méi yǒu chá. Wǒ hē shuǐ.",
+    "english_translation": "There is no tea at home. I drink water.",
+    "vietnamese_translation": "Trong nhà không có trà. Tôi uống nước.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "What is not at home?", "options": ["Tea", "Water", "Book", "Rice"]},
+      {"id": "q2", "question": "What does the person drink?", "options": ["Water", "Tea", "Nothing", "Coffee"]}
+    ],
+    "answer_key": {"q1": "Tea", "q2": "Water"},
+    "explanation": "没有 negates existence, and the second sentence gives the replacement drink."
+  },
+  {
+    "title": "Reading 099: Review Day",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["星期天", "我", "在", "家", "看", "书", "学习", "汉语"],
+    "chinese_text": "星期天我在家看书，学习汉语。",
+    "pinyin": "Xīngqītiān wǒ zài jiā kàn shū, xuéxí Hànyǔ.",
+    "english_translation": "On Sunday I read at home and study Chinese.",
+    "vietnamese_translation": "Chủ nhật tôi đọc sách ở nhà và học tiếng Trung.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "When does the person study?", "options": ["Sunday", "Monday", "Tuesday", "Friday"]},
+      {"id": "q2", "question": "Where is the person?", "options": ["At home", "At school", "At the store", "At the hospital"]}
+    ],
+    "answer_key": {"q1": "Sunday", "q2": "At home"},
+    "explanation": "星期天 gives the day, and 在家 gives the location."
+  },
+  {
+    "title": "Reading 100: HSK1 Mini Passage",
+    "hsk_level": "HSK1",
+    "vocabulary_list": ["今天", "天气", "很", "好", "我", "和", "朋友", "去", "学校", "学习", "汉语", "我们", "都", "高兴"],
+    "chinese_text": "今天天气很好。我和朋友去学校学习汉语。我们都很高兴。",
+    "pinyin": "Jīntiān tiānqì hěn hǎo. Wǒ hé péngyou qù xuéxiào xuéxí Hànyǔ. Wǒmen dōu hěn gāoxìng.",
+    "english_translation": "The weather is good today. My friend and I go to school to study Chinese. We are all happy.",
+    "vietnamese_translation": "Hôm nay thời tiết rất tốt. Tôi và bạn đi học tiếng Trung ở trường. Chúng tôi đều rất vui.",
+    "comprehension_questions": [
+      {"id": "q1", "question": "Where do the speaker and friend go?", "options": ["School", "Hospital", "Store", "Restaurant"]},
+      {"id": "q2", "question": "How do they feel?", "options": ["Happy", "Cold", "Tired", "Sorry"]}
+    ],
+    "answer_key": {"q1": "School", "q2": "Happy"},
+    "explanation": "This final passage combines weather, people, school, study, and emotion using HSK1 vocabulary."
+  }
+]
