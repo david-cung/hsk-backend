@@ -27,8 +27,11 @@ from app.schemas import (
     HskLevelOut,
     LessonDetailOut,
     LessonListOut,
+    MistakeOut,
+    MockTestQuestionOut,
     MockTestOut,
     ProfileOut,
+    ProgressDashboardOut,
     ProfileUpdate,
     QuestionOut,
     QuizResultItem,
@@ -102,6 +105,42 @@ def award_achievements(db: Session, user_id: int) -> None:
     achievements = db.scalars(select(Achievement).where(Achievement.code.in_(unlocks))).all()
     for achievement in achievements:
         db.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
+
+
+def score_questions(rows: list[Question], answers: dict[str, str]) -> tuple[int, int, list[QuizResultItem]]:
+    results = []
+    correct_count = 0
+    for question in rows:
+        user_answer = answers.get(str(question.id), "")
+        correct = user_answer == question.correct_answer
+        correct_count += int(correct)
+        results.append(
+            QuizResultItem(
+                question_id=question.id,
+                prompt=question.prompt,
+                correct=correct,
+                user_answer=user_answer,
+                correct_answer=question.correct_answer,
+                explanation=question.explanation,
+            )
+        )
+    score = round((correct_count / len(rows)) * 100) if rows else 0
+    return score, correct_count, results
+
+
+def get_mock_test_questions(db: Session, mock_test: MockTest) -> list[Question]:
+    return (
+        db.scalars(
+            select(Question)
+            .join(Lesson, Lesson.id == Question.lesson_id)
+            .join(HskLevel, HskLevel.id == Lesson.hsk_level_id)
+            .where(HskLevel.level_number == mock_test.hsk_level)
+            .order_by(Lesson.sort_order, Lesson.id, Question.sort_order)
+            .limit(mock_test.question_count)
+        )
+        .unique()
+        .all()
+    )
 
 
 @app.post("/api/v1/auth/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
@@ -235,22 +274,7 @@ def submit_quiz(
     if not rows:
         raise HTTPException(status_code=400, detail="Lesson has no quiz questions")
 
-    results = []
-    correct_count = 0
-    for question in rows:
-        user_answer = payload.answers.get(str(question.id), "")
-        correct = user_answer == question.correct_answer
-        correct_count += int(correct)
-        results.append(
-            QuizResultItem(
-                question_id=question.id,
-                correct=correct,
-                user_answer=user_answer,
-                correct_answer=question.correct_answer,
-                explanation=question.explanation,
-            )
-        )
-    score = round((correct_count / len(rows)) * 100)
+    score, correct_count, results = score_questions(rows, payload.answers)
     attempt = QuizAttempt(
         user_id=user.id,
         lesson_id=lesson_id,
@@ -283,51 +307,182 @@ def submit_quiz(
     )
 
 
-@app.get("/api/v1/progress/dashboard")
-def progress_dashboard(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    completed = db.scalar(
-        select(func.count()).select_from(LessonProgress).where(
-            LessonProgress.user_id == user.id, LessonProgress.status == "completed"
+@app.get("/api/v1/progress/dashboard", response_model=ProgressDashboardOut)
+def progress_dashboard(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> ProgressDashboardOut:
+    progress_rows = db.scalars(select(LessonProgress).where(LessonProgress.user_id == user.id)).all()
+    progress_by_lesson = {progress.lesson_id: progress for progress in progress_rows}
+
+    completed = sum(1 for progress in progress_rows if progress.status == "completed")
+    in_progress = sum(1 for progress in progress_rows if progress.status == "in_progress")
+
+    today = datetime.now(UTC).date()
+
+    def updated_today(progress: LessonProgress) -> bool:
+        if not progress.updated_at:
+            return False
+        updated_at = progress.updated_at
+        if updated_at.tzinfo is None:
+            updated_at = updated_at.replace(tzinfo=UTC)
+        return updated_at.astimezone(UTC).date() == today
+
+    lessons = (
+        db.scalars(
+            select(Lesson)
+            .join(HskLevel, HskLevel.id == Lesson.hsk_level_id)
+            .where(HskLevel.level_number <= user.profile.target_hsk_level)
+            .order_by(HskLevel.level_number, Lesson.sort_order, Lesson.id)
         )
+        .unique()
+        .all()
     )
-    in_progress = db.scalar(
-        select(func.count()).select_from(LessonProgress).where(
-            LessonProgress.user_id == user.id, LessonProgress.status == "in_progress"
+    total_lessons = db.scalar(select(func.count()).select_from(Lesson)) or 0
+    current_level = db.scalar(select(HskLevel).where(HskLevel.level_number == user.profile.current_hsk_level))
+    current_level_lessons = [
+        lesson for lesson in lessons if current_level and lesson.hsk_level_id == current_level.id
+    ]
+
+    def percent(done: int, total: int) -> int:
+        return round((done / total) * 100) if total else 0
+
+    current_level_completed = sum(
+        1
+        for lesson in current_level_lessons
+        if progress_by_lesson.get(lesson.id) and progress_by_lesson[lesson.id].status == "completed"
+    )
+    exam_completed = sum(
+        1
+        for lesson in lessons
+        if progress_by_lesson.get(lesson.id) and progress_by_lesson[lesson.id].status == "completed"
+    )
+
+    skill_totals: dict[str, dict[str, object]] = {}
+    for lesson in lessons:
+        bucket = skill_totals.setdefault(
+            lesson.lesson_type,
+            {"lesson_type": lesson.lesson_type, "completed": 0, "total": 0, "scores": []},
         )
+        bucket["total"] = int(bucket["total"]) + 1
+        progress = progress_by_lesson.get(lesson.id)
+        if not progress:
+            continue
+        if progress.status == "completed":
+            bucket["completed"] = int(bucket["completed"]) + 1
+        if progress.score_percent is not None:
+            scores = bucket["scores"]
+            if isinstance(scores, list):
+                scores.append(progress.score_percent)
+
+    attempt_rows = (
+        db.execute(
+            select(QuizAttempt, Lesson.title)
+            .join(Lesson, Lesson.id == QuizAttempt.lesson_id)
+            .where(QuizAttempt.user_id == user.id)
+            .order_by(QuizAttempt.finished_at.desc())
+            .limit(5)
+        )
+        .unique()
+        .all()
     )
-    minutes = db.scalar(
-        select(func.coalesce(func.sum(LessonProgress.minutes_studied), 0)).where(LessonProgress.user_id == user.id)
-    )
-    attempts = db.scalars(
-        select(QuizAttempt)
-        .where(QuizAttempt.user_id == user.id)
-        .order_by(QuizAttempt.finished_at.desc())
-        .limit(5)
-    ).all()
-    return {
-        "current_hsk_level": user.profile.current_hsk_level,
-        "target_hsk_level": user.profile.target_hsk_level,
-        "daily_goal_minutes": user.profile.daily_goal_minutes,
-        "minutes_studied_today": int(minutes or 0),
-        "study_streak_days": user.profile.study_streak_days,
-        "lessons_completed": completed or 0,
-        "lessons_in_progress": in_progress or 0,
-        "recent_attempts": [
+
+    return ProgressDashboardOut(
+        current_hsk_level=user.profile.current_hsk_level,
+        target_hsk_level=user.profile.target_hsk_level,
+        daily_goal_minutes=user.profile.daily_goal_minutes,
+        minutes_studied_today=sum(progress.minutes_studied for progress in progress_rows if updated_today(progress)),
+        study_streak_days=user.profile.study_streak_days,
+        lessons_completed=completed,
+        lessons_in_progress=in_progress,
+        total_lessons=total_lessons,
+        current_level_total_lessons=len(current_level_lessons),
+        current_level_completed_lessons=current_level_completed,
+        current_level_progress_percent=percent(current_level_completed, len(current_level_lessons)),
+        exam_readiness_percent=percent(exam_completed, len(lessons)),
+        skill_breakdown=[
+            {
+                "lesson_type": str(bucket["lesson_type"]),
+                "completed": int(bucket["completed"]),
+                "total": int(bucket["total"]),
+                "average_score": round(sum(bucket["scores"]) / len(bucket["scores"]))
+                if isinstance(bucket["scores"], list) and bucket["scores"]
+                else None,
+            }
+            for bucket in skill_totals.values()
+        ],
+        recent_attempts=[
             {
                 "attempt_id": attempt.id,
                 "lesson_id": attempt.lesson_id,
+                "lesson_title": lesson_title,
                 "score": attempt.score,
                 "finished_at": attempt.finished_at,
             }
-            for attempt in attempts
+            for attempt, lesson_title in attempt_rows
         ],
-    }
+    )
 
 
 @app.get("/api/v1/learning/saved-words", response_model=list[SavedWordOut])
 def saved_words(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> list[SavedWordOut]:
     rows = db.scalars(select(SavedWord).where(SavedWord.user_id == user.id).order_by(SavedWord.saved_at.desc())).all()
     return [SavedWordOut(**row.__dict__) for row in rows]
+
+
+@app.get("/api/v1/learning/mistakes", response_model=list[MistakeOut])
+def mistakes(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> list[MistakeOut]:
+    attempts = db.scalars(
+        select(QuizAttempt)
+        .where(QuizAttempt.user_id == user.id)
+        .order_by(QuizAttempt.finished_at.desc())
+        .limit(20)
+    ).all()
+    if not attempts:
+        return []
+
+    question_ids: set[int] = set()
+    for attempt in attempts:
+        for question_id in attempt.answers:
+            if question_id.isdigit():
+                question_ids.add(int(question_id))
+
+    if not question_ids:
+        return []
+
+    question_rows = (
+        db.execute(
+            select(Question, Lesson.title)
+            .join(Lesson, Lesson.id == Question.lesson_id)
+            .where(Question.id.in_(question_ids))
+        )
+        .unique()
+        .all()
+    )
+    question_map = {question.id: (question, lesson_title) for question, lesson_title in question_rows}
+
+    review_items = []
+    for attempt in attempts:
+        for question_id, user_answer in attempt.answers.items():
+            if not question_id.isdigit():
+                continue
+            question_row = question_map.get(int(question_id))
+            if not question_row:
+                continue
+            question, lesson_title = question_row
+            if user_answer == question.correct_answer:
+                continue
+            review_items.append(
+                MistakeOut(
+                    attempt_id=attempt.id,
+                    lesson_id=question.lesson_id,
+                    lesson_title=lesson_title,
+                    question_id=question.id,
+                    prompt=question.prompt,
+                    user_answer=user_answer,
+                    correct_answer=question.correct_answer,
+                    explanation=question.explanation,
+                    finished_at=attempt.finished_at,
+                )
+            )
+    return review_items[:20]
 
 
 @app.post("/api/v1/learning/saved-words", response_model=SavedWordOut, status_code=status.HTTP_201_CREATED)
@@ -394,3 +549,51 @@ def achievements(user: User = Depends(get_current_user), db: Session = Depends(g
 def mock_tests(db: Session = Depends(get_db)) -> list[MockTestOut]:
     rows = db.scalars(select(MockTest).order_by(MockTest.hsk_level, MockTest.id)).all()
     return [MockTestOut(**row.__dict__) for row in rows]
+
+
+@app.get("/api/v1/learning/mock-tests/{mock_test_id}/questions", response_model=list[MockTestQuestionOut])
+def mock_test_questions(
+    mock_test_id: int,
+    _user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[MockTestQuestionOut]:
+    mock_test = db.get(MockTest, mock_test_id)
+    if not mock_test:
+        raise HTTPException(status_code=404, detail="Mock test not found")
+    rows = get_mock_test_questions(db, mock_test)
+    return [
+        MockTestQuestionOut(
+            id=row.id,
+            lesson_id=row.lesson_id,
+            lesson_title=row.lesson.title,
+            question_type=row.question_type,
+            prompt=row.prompt,
+            options=row.options,
+            sort_order=row.sort_order,
+        )
+        for row in rows
+    ]
+
+
+@app.post("/api/v1/learning/mock-tests/{mock_test_id}/submit", response_model=QuizSubmitOut)
+def submit_mock_test(
+    mock_test_id: int,
+    payload: QuizSubmitIn,
+    _user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> QuizSubmitOut:
+    mock_test = db.get(MockTest, mock_test_id)
+    if not mock_test:
+        raise HTTPException(status_code=404, detail="Mock test not found")
+    rows = get_mock_test_questions(db, mock_test)
+    if not rows:
+        raise HTTPException(status_code=400, detail="Mock test has no questions")
+
+    score, correct_count, results = score_questions(rows, payload.answers)
+    return QuizSubmitOut(
+        attempt_id=mock_test.id,
+        score=score,
+        total_questions=len(rows),
+        correct_count=correct_count,
+        results=results,
+    )
