@@ -1,0 +1,3014 @@
+{
+  "version": "1.0.0",
+  "completion_contract": {
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "required_lesson_types": [
+      "vocabulary",
+      "grammar",
+      "reading",
+      "listening",
+      "sentence_pattern",
+      "conversation",
+      "review",
+      "practice",
+      "quiz"
+    ],
+    "minimum_lessons_per_type_per_level": 1,
+    "duplicate_policy": "Vocabulary, titles, grammar points, dialogues, and reading passages must be unique across content files."
+  },
+  "levels": [
+    {
+      "hsk_level": 1,
+      "lessons": [
+        {
+          "id": "HSK1-VOC-001",
+          "hsk_level": 1,
+          "lesson_type": "vocabulary",
+          "title": "HSK1 Vocabulary: People and Pronouns",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 15,
+          "order": 1,
+          "prerequisite_ids": [],
+          "learning_objectives": [
+            "Recognize basic pronouns",
+            "Use simple person words in short sentences"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "我",
+              "pinyin": "wo3",
+              "meaning_en": "I; me",
+              "meaning_vi": "tôi"
+            },
+            {
+              "hanzi": "你",
+              "pinyin": "ni3",
+              "meaning_en": "you",
+              "meaning_vi": "bạn"
+            },
+            {
+              "hanzi": "他",
+              "pinyin": "ta1",
+              "meaning_en": "he; him",
+              "meaning_vi": "anh ấy"
+            },
+            {
+              "hanzi": "她",
+              "pinyin": "ta1",
+              "meaning_en": "she; her",
+              "meaning_vi": "cô ấy"
+            },
+            {
+              "hanzi": "我们",
+              "pinyin": "wo3 men5",
+              "meaning_en": "we; us",
+              "meaning_vi": "chúng tôi"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "Build first-person, second-person, and third-person recognition.",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-GRA-001",
+          "hsk_level": 1,
+          "lesson_type": "grammar",
+          "title": "HSK1 Grammar: Identity with Shi",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 15,
+          "order": 2,
+          "prerequisite_ids": [
+            "HSK1-VOC-001"
+          ],
+          "learning_objectives": [
+            "Form identity sentences",
+            "Negate identity sentences"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "是",
+              "pinyin": "shi4",
+              "meaning_en": "to be",
+              "meaning_vi": "là"
+            },
+            {
+              "hanzi": "不",
+              "pinyin": "bu4",
+              "meaning_en": "not",
+              "meaning_vi": "không"
+            },
+            {
+              "hanzi": "吗",
+              "pinyin": "ma5",
+              "meaning_en": "yes-no question particle",
+              "meaning_vi": "trợ từ nghi vấn có/không"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "是 for identity statements",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "不是 for negated identity",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "Statement + 吗",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "example",
+                "text": "我是学生。"
+              },
+              {
+                "type": "example",
+                "text": "他不是老师。"
+              },
+              {
+                "type": "example",
+                "text": "你是学生吗？"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-REA-001",
+          "hsk_level": 1,
+          "lesson_type": "reading",
+          "title": "HSK1 Reading: A New Classmate",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 18,
+          "order": 3,
+          "prerequisite_ids": [
+            "HSK1-GRA-001"
+          ],
+          "learning_objectives": [
+            "Read a short self-introduction",
+            "Identify person and role information"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "新",
+              "pinyin": "xin1",
+              "meaning_en": "new",
+              "meaning_vi": "mới"
+            },
+            {
+              "hanzi": "同学",
+              "pinyin": "tong2 xue2",
+              "meaning_en": "classmate",
+              "meaning_vi": "bạn học"
+            },
+            {
+              "hanzi": "叫",
+              "pinyin": "jiao4",
+              "meaning_en": "to be called",
+              "meaning_vi": "tên là"
+            },
+            {
+              "hanzi": "什么",
+              "pinyin": "shen2 me5",
+              "meaning_en": "what",
+              "meaning_vi": "cái gì"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "我是新同学。我叫安安。你叫什么名字？",
+            "pinyin": "",
+            "english": "I am a new classmate. My name is An An. What is your name?",
+            "vietnamese": "Tôi là bạn học mới. Tôi tên là An An. Bạn tên là gì?",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-LIS-001",
+          "hsk_level": 1,
+          "lesson_type": "listening",
+          "title": "HSK1 Listening: Morning Greeting",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 15,
+          "order": 4,
+          "prerequisite_ids": [
+            "HSK1-REA-001"
+          ],
+          "learning_objectives": [
+            "Understand greetings",
+            "Recognize simple question intonation"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "早上",
+              "pinyin": "zao3 shang5",
+              "meaning_en": "morning",
+              "meaning_vi": "buổi sáng"
+            },
+            {
+              "hanzi": "再见",
+              "pinyin": "zai4 jian4",
+              "meaning_en": "goodbye",
+              "meaning_vi": "tạm biệt"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "早上好。我是安安。我很好。再见。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-SEN-001",
+          "hsk_level": 1,
+          "lesson_type": "sentence_pattern",
+          "title": "HSK1 Sentence Pattern: Asking Names",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 12,
+          "order": 5,
+          "prerequisite_ids": [
+            "HSK1-LIS-001"
+          ],
+          "learning_objectives": [
+            "Ask a person's name",
+            "Answer with a name"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [
+            {
+              "point": "Subject + 叫 + Name",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "Subject + 叫 + 什么 + 名字",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "pattern",
+                "text": "我叫安安。"
+              },
+              {
+                "type": "pattern",
+                "text": "你叫什么名字？"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-CON-001",
+          "hsk_level": 1,
+          "lesson_type": "conversation",
+          "title": "HSK1 Conversation: Meeting a New Classmate",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 18,
+          "order": 6,
+          "prerequisite_ids": [
+            "HSK1-SEN-001"
+          ],
+          "learning_objectives": [
+            "Exchange names",
+            "Use polite beginner greetings"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "也",
+              "pinyin": "ye3",
+              "meaning_en": "also",
+              "meaning_vi": "cũng"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "甲：你好，我叫安安。乙：你好，我叫明明。甲：我是新同学。乙：我也是新同学。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-REV-001",
+          "hsk_level": 1,
+          "lesson_type": "review",
+          "title": "HSK1 Review: First Introductions",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 20,
+          "order": 7,
+          "prerequisite_ids": [
+            "HSK1-CON-001"
+          ],
+          "learning_objectives": [
+            "Review pronouns",
+            "Review identity and name patterns"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "review_scope",
+                "text": "pronouns"
+              },
+              {
+                "type": "review_scope",
+                "text": "是 sentences"
+              },
+              {
+                "type": "review_scope",
+                "text": "name questions"
+              },
+              {
+                "type": "review_scope",
+                "text": "greetings"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-PRA-001",
+          "hsk_level": 1,
+          "lesson_type": "practice",
+          "title": "HSK1 Practice: Introduction Builder",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 20,
+          "order": 8,
+          "prerequisite_ids": [
+            "HSK1-REV-001"
+          ],
+          "learning_objectives": [
+            "Build short introductions",
+            "Choose correct question particles"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "activity",
+                "text": "match pronouns"
+              },
+              {
+                "type": "activity",
+                "text": "complete name questions"
+              },
+              {
+                "type": "activity",
+                "text": "choose 是 or 不是"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK1-QUI-001",
+          "hsk_level": 1,
+          "lesson_type": "quiz",
+          "title": "HSK1 Quiz: Introduction Checkpoint",
+          "difficulty": "beginner",
+          "estimated_duration_minutes": 20,
+          "order": 9,
+          "prerequisite_ids": [
+            "HSK1-PRA-001"
+          ],
+          "learning_objectives": [
+            "Assess first HSK1 communication patterns"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "quiz_blueprint",
+                "text": "question_count"
+              },
+              {
+                "type": "quiz_blueprint",
+                "text": "skills"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "hsk_level": 2,
+      "lessons": [
+        {
+          "id": "HSK2-VOC-001",
+          "hsk_level": 2,
+          "lesson_type": "vocabulary",
+          "title": "HSK2 Vocabulary: Daily Actions",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 18,
+          "order": 1,
+          "prerequisite_ids": [
+            "HSK1-QUI-001"
+          ],
+          "learning_objectives": [
+            "Describe daily routines",
+            "Talk about simple activities"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "起床",
+              "pinyin": "qi3 chuang2",
+              "meaning_en": "to get up",
+              "meaning_vi": "thức dậy"
+            },
+            {
+              "hanzi": "洗",
+              "pinyin": "xi3",
+              "meaning_en": "to wash",
+              "meaning_vi": "rửa"
+            },
+            {
+              "hanzi": "跑步",
+              "pinyin": "pao3 bu4",
+              "meaning_en": "to run; jog",
+              "meaning_vi": "chạy bộ"
+            },
+            {
+              "hanzi": "运动",
+              "pinyin": "yun4 dong4",
+              "meaning_en": "exercise; sport",
+              "meaning_vi": "vận động; thể thao"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "Routine verbs and healthy daily habits.",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-GRA-001",
+          "hsk_level": 2,
+          "lesson_type": "grammar",
+          "title": "HSK2 Grammar: Completed Actions",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 18,
+          "order": 2,
+          "prerequisite_ids": [
+            "HSK2-VOC-001"
+          ],
+          "learning_objectives": [
+            "Use 了 after completed actions",
+            "Ask whether an action happened"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "了",
+              "pinyin": "le5",
+              "meaning_en": "completed-action particle",
+              "meaning_vi": "trợ từ hoàn thành"
+            },
+            {
+              "hanzi": "已经",
+              "pinyin": "yi3 jing1",
+              "meaning_en": "already",
+              "meaning_vi": "đã"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "Verb + 了 + Object",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "Subject + 已经 + Verb + 了",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "example",
+                "text": "我吃了早饭。"
+              },
+              {
+                "type": "example",
+                "text": "他已经起床了。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-REA-001",
+          "hsk_level": 2,
+          "lesson_type": "reading",
+          "title": "HSK2 Reading: Weekend Library Plan",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 20,
+          "order": 3,
+          "prerequisite_ids": [
+            "HSK2-GRA-001"
+          ],
+          "learning_objectives": [
+            "Read a simple weekend plan",
+            "Identify time and place"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "周末",
+              "pinyin": "zhou1 mo4",
+              "meaning_en": "weekend",
+              "meaning_vi": "cuối tuần"
+            },
+            {
+              "hanzi": "图书馆",
+              "pinyin": "tu2 shu1 guan3",
+              "meaning_en": "library",
+              "meaning_vi": "thư viện"
+            },
+            {
+              "hanzi": "本",
+              "pinyin": "ben3",
+              "meaning_en": "measure word for books",
+              "meaning_vi": "lượng từ cho sách"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "这个周末，我和同学去图书馆。我们已经写了作业，还想看一本中文书。",
+            "pinyin": "",
+            "english": "This weekend, my classmate and I go to the library. We have already written our homework and also want to read a Chinese book.",
+            "vietnamese": "Cuối tuần này, tôi và bạn học đi thư viện. Chúng tôi đã làm bài tập và còn muốn đọc một quyển sách tiếng Trung.",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-LIS-001",
+          "hsk_level": 2,
+          "lesson_type": "listening",
+          "title": "HSK2 Listening: Phone Plan",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 18,
+          "order": 4,
+          "prerequisite_ids": [
+            "HSK2-REA-001"
+          ],
+          "learning_objectives": [
+            "Understand a short phone plan",
+            "Recognize time changes"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "手机",
+              "pinyin": "shou3 ji1",
+              "meaning_en": "mobile phone",
+              "meaning_vi": "điện thoại di động"
+            },
+            {
+              "hanzi": "电话",
+              "pinyin": "dian4 hua4",
+              "meaning_en": "phone call; telephone",
+              "meaning_vi": "điện thoại; cuộc gọi"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "我给你打电话。我们下午两点去图书馆，可以吗？",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-SEN-001",
+          "hsk_level": 2,
+          "lesson_type": "sentence_pattern",
+          "title": "HSK2 Sentence Pattern: Simple Comparisons",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 15,
+          "order": 5,
+          "prerequisite_ids": [
+            "HSK2-LIS-001"
+          ],
+          "learning_objectives": [
+            "Compare two people or things",
+            "Use degree words naturally"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "比",
+              "pinyin": "bi3",
+              "meaning_en": "than; compare",
+              "meaning_vi": "so với"
+            },
+            {
+              "hanzi": "更",
+              "pinyin": "geng4",
+              "meaning_en": "even more",
+              "meaning_vi": "hơn nữa"
+            },
+            {
+              "hanzi": "最",
+              "pinyin": "zui4",
+              "meaning_en": "most",
+              "meaning_vi": "nhất"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "A 比 B + Adjective",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "Subject + 最 + Adjective",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "pattern",
+                "text": "今天比昨天冷。"
+              },
+              {
+                "type": "pattern",
+                "text": "这本书最好。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-CON-001",
+          "hsk_level": 2,
+          "lesson_type": "conversation",
+          "title": "HSK2 Conversation: Borrowing a Library Book",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 22,
+          "order": 6,
+          "prerequisite_ids": [
+            "HSK2-SEN-001"
+          ],
+          "learning_objectives": [
+            "Borrow and return books",
+            "Ask simple service questions"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "借",
+              "pinyin": "jie4",
+              "meaning_en": "to borrow",
+              "meaning_vi": "mượn"
+            },
+            {
+              "hanzi": "故事",
+              "pinyin": "gu4 shi5",
+              "meaning_en": "story",
+              "meaning_vi": "câu chuyện"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "甲：我想借这本书。乙：可以，请下个星期还。甲：我可以借两本吗？乙：可以。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-REV-001",
+          "hsk_level": 2,
+          "lesson_type": "review",
+          "title": "HSK2 Review: Daily Life and Plans",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 25,
+          "order": 7,
+          "prerequisite_ids": [
+            "HSK2-CON-001"
+          ],
+          "learning_objectives": [
+            "Review routine verbs",
+            "Review completed actions and comparisons"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "review_scope",
+                "text": "daily actions"
+              },
+              {
+                "type": "review_scope",
+                "text": "了"
+              },
+              {
+                "type": "review_scope",
+                "text": "time expressions"
+              },
+              {
+                "type": "review_scope",
+                "text": "比 comparisons"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-PRA-001",
+          "hsk_level": 2,
+          "lesson_type": "practice",
+          "title": "HSK2 Practice: Weekend Planner",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 25,
+          "order": 8,
+          "prerequisite_ids": [
+            "HSK2-REV-001"
+          ],
+          "learning_objectives": [
+            "Create a weekend schedule",
+            "Complete short service dialogues"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "activity",
+                "text": "order routine sentences"
+              },
+              {
+                "type": "activity",
+                "text": "fill 了 blanks"
+              },
+              {
+                "type": "activity",
+                "text": "choose comparison forms"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK2-QUI-001",
+          "hsk_level": 2,
+          "lesson_type": "quiz",
+          "title": "HSK2 Quiz: Daily Communication Checkpoint",
+          "difficulty": "elementary",
+          "estimated_duration_minutes": 25,
+          "order": 9,
+          "prerequisite_ids": [
+            "HSK2-PRA-001"
+          ],
+          "learning_objectives": [
+            "Assess HSK2 daily-life communication"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "quiz_blueprint",
+                "text": "question_count"
+              },
+              {
+                "type": "quiz_blueprint",
+                "text": "skills"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "hsk_level": 3,
+      "lessons": [
+        {
+          "id": "HSK3-VOC-001",
+          "hsk_level": 3,
+          "lesson_type": "vocabulary",
+          "title": "HSK3 Vocabulary: Problems and Solutions",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 22,
+          "order": 1,
+          "prerequisite_ids": [
+            "HSK2-QUI-001"
+          ],
+          "learning_objectives": [
+            "Explain common problems",
+            "Name possible solutions"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "迟到",
+              "pinyin": "chi2 dao4",
+              "meaning_en": "to be late",
+              "meaning_vi": "đến muộn"
+            },
+            {
+              "hanzi": "丢",
+              "pinyin": "diu1",
+              "meaning_en": "to lose",
+              "meaning_vi": "làm mất"
+            },
+            {
+              "hanzi": "解决",
+              "pinyin": "jie3 jue2",
+              "meaning_en": "to solve",
+              "meaning_vi": "giải quyết"
+            },
+            {
+              "hanzi": "办法",
+              "pinyin": "ban4 fa3",
+              "meaning_en": "method; way",
+              "meaning_vi": "cách; biện pháp"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "Problem statements and practical solution vocabulary.",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-GRA-001",
+          "hsk_level": 3,
+          "lesson_type": "grammar",
+          "title": "HSK3 Grammar: Handling Objects with Ba",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 25,
+          "order": 2,
+          "prerequisite_ids": [
+            "HSK3-VOC-001"
+          ],
+          "learning_objectives": [
+            "Use 把 for handled objects",
+            "Describe completed handling actions"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "把",
+              "pinyin": "ba3",
+              "meaning_en": "object-handling marker",
+              "meaning_vi": "dấu đưa tân ngữ lên trước"
+            },
+            {
+              "hanzi": "整理",
+              "pinyin": "zheng3 li3",
+              "meaning_en": "to tidy; organize",
+              "meaning_vi": "sắp xếp"
+            },
+            {
+              "hanzi": "完成",
+              "pinyin": "wan2 cheng2",
+              "meaning_en": "to complete",
+              "meaning_vi": "hoàn thành"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "Subject + 把 + Object + Verb + Result",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "example",
+                "text": "请把桌子整理好。"
+              },
+              {
+                "type": "example",
+                "text": "我把作业完成了。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-REA-001",
+          "hsk_level": 3,
+          "lesson_type": "reading",
+          "title": "HSK3 Reading: Online Delivery Problem",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 25,
+          "order": 3,
+          "prerequisite_ids": [
+            "HSK3-GRA-001"
+          ],
+          "learning_objectives": [
+            "Read a service problem",
+            "Identify address and payment details"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "地址",
+              "pinyin": "di4 zhi3",
+              "meaning_en": "address",
+              "meaning_vi": "địa chỉ"
+            },
+            {
+              "hanzi": "快递",
+              "pinyin": "kuai4 di4",
+              "meaning_en": "express delivery",
+              "meaning_vi": "chuyển phát nhanh"
+            },
+            {
+              "hanzi": "付款",
+              "pinyin": "fu4 kuan3",
+              "meaning_en": "to pay",
+              "meaning_vi": "thanh toán"
+            },
+            {
+              "hanzi": "改",
+              "pinyin": "gai3",
+              "meaning_en": "to change; correct",
+              "meaning_vi": "sửa; đổi"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "小林已经付款了，但是快递地址写错了。他给商店打电话，请工作人员帮他改地址。",
+            "pinyin": "",
+            "english": "Xiao Lin already paid, but the delivery address was written incorrectly. He calls the store and asks the staff to help him change the address.",
+            "vietnamese": "Tiểu Lâm đã thanh toán, nhưng địa chỉ giao hàng bị viết sai. Anh ấy gọi cho cửa hàng và nhờ nhân viên giúp đổi địa chỉ.",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-LIS-001",
+          "hsk_level": 3,
+          "lesson_type": "listening",
+          "title": "HSK3 Listening: Work Reminder",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 22,
+          "order": 4,
+          "prerequisite_ids": [
+            "HSK3-REA-001"
+          ],
+          "learning_objectives": [
+            "Understand a workplace reminder",
+            "Identify location and task"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "经理",
+              "pinyin": "jing1 li3",
+              "meaning_en": "manager",
+              "meaning_vi": "quản lý"
+            },
+            {
+              "hanzi": "会议室",
+              "pinyin": "hui4 yi4 shi4",
+              "meaning_en": "meeting room",
+              "meaning_vi": "phòng họp"
+            },
+            {
+              "hanzi": "通知",
+              "pinyin": "tong1 zhi1",
+              "meaning_en": "to notify; notice",
+              "meaning_vi": "thông báo"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "经理通知大家，三点在会议室开会。请把文件带来。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-SEN-001",
+          "hsk_level": 3,
+          "lesson_type": "sentence_pattern",
+          "title": "HSK3 Sentence Pattern: Reasons and Conditions",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 20,
+          "order": 5,
+          "prerequisite_ids": [
+            "HSK3-LIS-001"
+          ],
+          "learning_objectives": [
+            "Connect causes and results",
+            "Form conditional sentences"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "如果",
+              "pinyin": "ru2 guo3",
+              "meaning_en": "if",
+              "meaning_vi": "nếu"
+            },
+            {
+              "hanzi": "就",
+              "pinyin": "jiu4",
+              "meaning_en": "then; just",
+              "meaning_vi": "thì"
+            },
+            {
+              "hanzi": "因为",
+              "pinyin": "yin1 wei4",
+              "meaning_en": "because",
+              "meaning_vi": "bởi vì"
+            },
+            {
+              "hanzi": "所以",
+              "pinyin": "suo3 yi3",
+              "meaning_en": "so",
+              "meaning_vi": "vì vậy"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "如果...就...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "因为...所以...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "pattern",
+                "text": "如果下雨，我们就不去。"
+              },
+              {
+                "type": "pattern",
+                "text": "因为地址错了，所以快递没到。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-CON-001",
+          "hsk_level": 3,
+          "lesson_type": "conversation",
+          "title": "HSK3 Conversation: Changing a Delivery Address",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 25,
+          "order": 6,
+          "prerequisite_ids": [
+            "HSK3-SEN-001"
+          ],
+          "learning_objectives": [
+            "Request a correction",
+            "Confirm phone and address details"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "号码",
+              "pinyin": "hao4 ma3",
+              "meaning_en": "number",
+              "meaning_vi": "số"
+            },
+            {
+              "hanzi": "确认",
+              "pinyin": "que4 ren4",
+              "meaning_en": "to confirm",
+              "meaning_vi": "xác nhận"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "甲：我的快递地址写错了，可以改吗？乙：可以，请确认新地址和电话号码。甲：好的，我马上发给你。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-REV-001",
+          "hsk_level": 3,
+          "lesson_type": "review",
+          "title": "HSK3 Review: Problems, Results, and Requests",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 28,
+          "order": 7,
+          "prerequisite_ids": [
+            "HSK3-CON-001"
+          ],
+          "learning_objectives": [
+            "Review problem-solving vocabulary",
+            "Review 把, 如果, 因为"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "review_scope",
+                "text": "problem statements"
+              },
+              {
+                "type": "review_scope",
+                "text": "把 sentence"
+              },
+              {
+                "type": "review_scope",
+                "text": "conditions"
+              },
+              {
+                "type": "review_scope",
+                "text": "reasons"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-PRA-001",
+          "hsk_level": 3,
+          "lesson_type": "practice",
+          "title": "HSK3 Practice: Service Problem Solver",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 30,
+          "order": 8,
+          "prerequisite_ids": [
+            "HSK3-REV-001"
+          ],
+          "learning_objectives": [
+            "Complete service dialogues",
+            "Explain causes and solutions"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "activity",
+                "text": "rewrite with 把"
+              },
+              {
+                "type": "activity",
+                "text": "choose 如果 or 因为"
+              },
+              {
+                "type": "activity",
+                "text": "complete customer-service response"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK3-QUI-001",
+          "hsk_level": 3,
+          "lesson_type": "quiz",
+          "title": "HSK3 Quiz: Practical Problem Checkpoint",
+          "difficulty": "lower_intermediate",
+          "estimated_duration_minutes": 35,
+          "order": 9,
+          "prerequisite_ids": [
+            "HSK3-PRA-001"
+          ],
+          "learning_objectives": [
+            "Assess HSK3 practical communication"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "quiz_blueprint",
+                "text": "question_count"
+              },
+              {
+                "type": "quiz_blueprint",
+                "text": "skills"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "hsk_level": 4,
+      "lessons": [
+        {
+          "id": "HSK4-VOC-001",
+          "hsk_level": 4,
+          "lesson_type": "vocabulary",
+          "title": "HSK4 Vocabulary: City and Society",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 28,
+          "order": 1,
+          "prerequisite_ids": [
+            "HSK3-QUI-001"
+          ],
+          "learning_objectives": [
+            "Discuss city life",
+            "Name social and environmental issues"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "文化",
+              "pinyin": "wen2 hua4",
+              "meaning_en": "culture",
+              "meaning_vi": "văn hóa"
+            },
+            {
+              "hanzi": "习惯",
+              "pinyin": "xi2 guan4",
+              "meaning_en": "habit; custom",
+              "meaning_vi": "thói quen; phong tục"
+            },
+            {
+              "hanzi": "环境",
+              "pinyin": "huan2 jing4",
+              "meaning_en": "environment",
+              "meaning_vi": "môi trường"
+            },
+            {
+              "hanzi": "交通",
+              "pinyin": "jiao1 tong1",
+              "meaning_en": "traffic; transportation",
+              "meaning_vi": "giao thông"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "Intermediate social topics and city-life vocabulary.",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-GRA-001",
+          "hsk_level": 4,
+          "lesson_type": "grammar",
+          "title": "HSK4 Grammar: Contrast and Addition",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 28,
+          "order": 2,
+          "prerequisite_ids": [
+            "HSK4-VOC-001"
+          ],
+          "learning_objectives": [
+            "Build contrast sentences",
+            "Add supporting information"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "虽然",
+              "pinyin": "sui1 ran2",
+              "meaning_en": "although",
+              "meaning_vi": "mặc dù"
+            },
+            {
+              "hanzi": "却",
+              "pinyin": "que4",
+              "meaning_en": "yet; however",
+              "meaning_vi": "vậy mà; lại"
+            },
+            {
+              "hanzi": "不仅",
+              "pinyin": "bu4 jin3",
+              "meaning_en": "not only",
+              "meaning_vi": "không chỉ"
+            },
+            {
+              "hanzi": "而且",
+              "pinyin": "er2 qie3",
+              "meaning_en": "moreover; and also",
+              "meaning_vi": "hơn nữa"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "虽然...却...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "不仅...而且...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "example",
+                "text": "虽然交通很方便，环境却不太好。"
+              },
+              {
+                "type": "example",
+                "text": "运动不仅对身体好，而且让人高兴。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-REA-001",
+          "hsk_level": 4,
+          "lesson_type": "reading",
+          "title": "HSK4 Reading: A Neighborhood Noise Issue",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 30,
+          "order": 3,
+          "prerequisite_ids": [
+            "HSK4-GRA-001"
+          ],
+          "learning_objectives": [
+            "Read a problem-solution paragraph",
+            "Identify opinion and suggestion"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "污染",
+              "pinyin": "wu1 ran3",
+              "meaning_en": "pollution",
+              "meaning_vi": "ô nhiễm"
+            },
+            {
+              "hanzi": "噪音",
+              "pinyin": "zao4 yin1",
+              "meaning_en": "noise",
+              "meaning_vi": "tiếng ồn"
+            },
+            {
+              "hanzi": "社区",
+              "pinyin": "she4 qu1",
+              "meaning_en": "community",
+              "meaning_vi": "cộng đồng; khu dân cư"
+            },
+            {
+              "hanzi": "建议",
+              "pinyin": "jian4 yi4",
+              "meaning_en": "suggestion; to suggest",
+              "meaning_vi": "đề nghị; lời khuyên"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "这个社区交通方便，但是晚上噪音很大。很多人建议商店早点关门，这样可以让大家休息得更好。",
+            "pinyin": "",
+            "english": "This community has convenient transportation, but it is very noisy at night. Many people suggest that shops close earlier so everyone can rest better.",
+            "vietnamese": "Khu dân cư này giao thông thuận tiện, nhưng ban đêm rất ồn. Nhiều người đề nghị cửa hàng đóng sớm hơn để mọi người nghỉ ngơi tốt hơn.",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-LIS-001",
+          "hsk_level": 4,
+          "lesson_type": "listening",
+          "title": "HSK4 Listening: Health Advice at Work",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 28,
+          "order": 4,
+          "prerequisite_ids": [
+            "HSK4-REA-001"
+          ],
+          "learning_objectives": [
+            "Understand advice about stress",
+            "Identify cause and recommendation"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "压力",
+              "pinyin": "ya1 li4",
+              "meaning_en": "pressure; stress",
+              "meaning_vi": "áp lực"
+            },
+            {
+              "hanzi": "睡眠",
+              "pinyin": "shui4 mian2",
+              "meaning_en": "sleep",
+              "meaning_vi": "giấc ngủ"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "最近工作压力大，睡眠也不好。我建议你每天运动半个小时，晚上少看手机。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-SEN-001",
+          "hsk_level": 4,
+          "lesson_type": "sentence_pattern",
+          "title": "HSK4 Sentence Pattern: Change and Conditions",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 25,
+          "order": 5,
+          "prerequisite_ids": [
+            "HSK4-LIS-001"
+          ],
+          "learning_objectives": [
+            "Describe gradual change",
+            "Express sufficient and concessive conditions"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "越来越",
+              "pinyin": "yue4 lai2 yue4",
+              "meaning_en": "more and more",
+              "meaning_vi": "ngày càng"
+            },
+            {
+              "hanzi": "只要",
+              "pinyin": "zhi3 yao4",
+              "meaning_en": "as long as",
+              "meaning_vi": "chỉ cần"
+            },
+            {
+              "hanzi": "即使",
+              "pinyin": "ji2 shi3",
+              "meaning_en": "even if",
+              "meaning_vi": "ngay cả khi"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "越来越 + Adjective",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "只要...就...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "即使...也...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "pattern",
+                "text": "环境越来越好。"
+              },
+              {
+                "type": "pattern",
+                "text": "只要每天运动，身体就会更好。"
+              },
+              {
+                "type": "pattern",
+                "text": "即使很忙，也要休息。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-CON-001",
+          "hsk_level": 4,
+          "lesson_type": "conversation",
+          "title": "HSK4 Conversation: Discussing Exercise Habits",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 30,
+          "order": 6,
+          "prerequisite_ids": [
+            "HSK4-SEN-001"
+          ],
+          "learning_objectives": [
+            "Discuss habits and plans",
+            "Give practical advice"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "坚持",
+              "pinyin": "jian1 chi2",
+              "meaning_en": "to persist; keep doing",
+              "meaning_vi": "kiên trì"
+            },
+            {
+              "hanzi": "计划",
+              "pinyin": "ji4 hua4",
+              "meaning_en": "plan",
+              "meaning_vi": "kế hoạch"
+            },
+            {
+              "hanzi": "效果",
+              "pinyin": "xiao4 guo3",
+              "meaning_en": "effect; result",
+              "meaning_vi": "hiệu quả"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "甲：我想运动，但是总是坚持不了。乙：你可以先做一个小计划。甲：每天跑步十分钟可以吗？乙：可以，效果会慢慢出来。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-REV-001",
+          "hsk_level": 4,
+          "lesson_type": "review",
+          "title": "HSK4 Review: Society, Health, and Connectors",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 35,
+          "order": 7,
+          "prerequisite_ids": [
+            "HSK4-CON-001"
+          ],
+          "learning_objectives": [
+            "Review intermediate social topics",
+            "Review contrast and condition structures"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "review_scope",
+                "text": "city life"
+              },
+              {
+                "type": "review_scope",
+                "text": "health habits"
+              },
+              {
+                "type": "review_scope",
+                "text": "虽然"
+              },
+              {
+                "type": "review_scope",
+                "text": "不仅"
+              },
+              {
+                "type": "review_scope",
+                "text": "只要"
+              },
+              {
+                "type": "review_scope",
+                "text": "即使"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-PRA-001",
+          "hsk_level": 4,
+          "lesson_type": "practice",
+          "title": "HSK4 Practice: Opinion Paragraph Builder",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 35,
+          "order": 8,
+          "prerequisite_ids": [
+            "HSK4-REV-001"
+          ],
+          "learning_objectives": [
+            "Write structured opinions",
+            "Connect reasons and suggestions"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "activity",
+                "text": "combine contrast clauses"
+              },
+              {
+                "type": "activity",
+                "text": "summarize a community issue"
+              },
+              {
+                "type": "activity",
+                "text": "choose best advice response"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK4-QUI-001",
+          "hsk_level": 4,
+          "lesson_type": "quiz",
+          "title": "HSK4 Quiz: Intermediate Opinion Checkpoint",
+          "difficulty": "intermediate",
+          "estimated_duration_minutes": 45,
+          "order": 9,
+          "prerequisite_ids": [
+            "HSK4-PRA-001"
+          ],
+          "learning_objectives": [
+            "Assess HSK4 connector and inference skills"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "quiz_blueprint",
+                "text": "question_count"
+              },
+              {
+                "type": "quiz_blueprint",
+                "text": "skills"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "hsk_level": 5,
+      "lessons": [
+        {
+          "id": "HSK5-VOC-001",
+          "hsk_level": 5,
+          "lesson_type": "vocabulary",
+          "title": "HSK5 Vocabulary: Media and Viewpoints",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 35,
+          "order": 1,
+          "prerequisite_ids": [
+            "HSK4-QUI-001"
+          ],
+          "learning_objectives": [
+            "Discuss reports and viewpoints",
+            "Recognize abstract topic vocabulary"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "新闻",
+              "pinyin": "xin1 wen2",
+              "meaning_en": "news",
+              "meaning_vi": "tin tức"
+            },
+            {
+              "hanzi": "报道",
+              "pinyin": "bao4 dao4",
+              "meaning_en": "report; coverage",
+              "meaning_vi": "bản tin; đưa tin"
+            },
+            {
+              "hanzi": "观点",
+              "pinyin": "guan1 dian3",
+              "meaning_en": "viewpoint",
+              "meaning_vi": "quan điểm"
+            },
+            {
+              "hanzi": "影响",
+              "pinyin": "ying3 xiang3",
+              "meaning_en": "influence; impact",
+              "meaning_vi": "ảnh hưởng"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "Formal discussion vocabulary for media and public topics.",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-GRA-001",
+          "hsk_level": 5,
+          "lesson_type": "grammar",
+          "title": "HSK5 Grammar: Formal Reasoning Patterns",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 35,
+          "order": 2,
+          "prerequisite_ids": [
+            "HSK5-VOC-001"
+          ],
+          "learning_objectives": [
+            "Explain reasons formally",
+            "Compare alternatives"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "之所以",
+              "pinyin": "zhi1 suo3 yi3",
+              "meaning_en": "the reason why",
+              "meaning_vi": "lý do mà"
+            },
+            {
+              "hanzi": "与其",
+              "pinyin": "yu3 qi2",
+              "meaning_en": "rather than",
+              "meaning_vi": "thay vì"
+            },
+            {
+              "hanzi": "不如",
+              "pinyin": "bu4 ru2",
+              "meaning_en": "better to",
+              "meaning_vi": "chi bằng; tốt hơn là"
+            },
+            {
+              "hanzi": "无论",
+              "pinyin": "wu2 lun4",
+              "meaning_en": "no matter",
+              "meaning_vi": "bất kể"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "之所以...是因为...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "与其...不如...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "无论...都...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "example",
+                "text": "他之所以进步快，是因为每天练习。"
+              },
+              {
+                "type": "example",
+                "text": "与其担心结果，不如先开始做。"
+              },
+              {
+                "type": "example",
+                "text": "无论多忙，都要学习。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-REA-001",
+          "hsk_level": 5,
+          "lesson_type": "reading",
+          "title": "HSK5 Reading: Online Learning Efficiency",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 40,
+          "order": 3,
+          "prerequisite_ids": [
+            "HSK5-GRA-001"
+          ],
+          "learning_objectives": [
+            "Read an argumentative paragraph",
+            "Identify claim and supporting reason"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "效率",
+              "pinyin": "xiao4 lv4",
+              "meaning_en": "efficiency",
+              "meaning_vi": "hiệu suất"
+            },
+            {
+              "hanzi": "资源",
+              "pinyin": "zi1 yuan2",
+              "meaning_en": "resources",
+              "meaning_vi": "tài nguyên"
+            },
+            {
+              "hanzi": "自主",
+              "pinyin": "zi4 zhu3",
+              "meaning_en": "independent; autonomous",
+              "meaning_vi": "tự chủ"
+            },
+            {
+              "hanzi": "平台",
+              "pinyin": "ping2 tai2",
+              "meaning_en": "platform",
+              "meaning_vi": "nền tảng"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "在线学习平台提供了大量资源，但学习效率并不只取决于资源多少。真正重要的是学习者是否有自主计划和持续练习。",
+            "pinyin": "",
+            "english": "Online learning platforms provide many resources, but learning efficiency does not depend only on the amount of resources. What truly matters is whether learners have independent plans and continuous practice.",
+            "vietnamese": "Nền tảng học trực tuyến cung cấp nhiều tài nguyên, nhưng hiệu suất học không chỉ phụ thuộc vào số lượng tài nguyên. Điều thật sự quan trọng là người học có kế hoạch tự chủ và luyện tập liên tục hay không.",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-LIS-001",
+          "hsk_level": 5,
+          "lesson_type": "listening",
+          "title": "HSK5 Listening: Career Interview",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 38,
+          "order": 4,
+          "prerequisite_ids": [
+            "HSK5-REA-001"
+          ],
+          "learning_objectives": [
+            "Understand interview answers",
+            "Distinguish experience and opinion"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "经验",
+              "pinyin": "jing1 yan4",
+              "meaning_en": "experience",
+              "meaning_vi": "kinh nghiệm"
+            },
+            {
+              "hanzi": "挑战",
+              "pinyin": "tiao3 zhan4",
+              "meaning_en": "challenge",
+              "meaning_vi": "thử thách"
+            },
+            {
+              "hanzi": "机会",
+              "pinyin": "ji1 hui4",
+              "meaning_en": "opportunity",
+              "meaning_vi": "cơ hội"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "这份工作最大的挑战是时间管理，但它也给了我学习新技术的机会。我的经验是，先解决最重要的问题。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-SEN-001",
+          "hsk_level": 5,
+          "lesson_type": "sentence_pattern",
+          "title": "HSK5 Sentence Pattern: Correcting Misunderstandings",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 30,
+          "order": 5,
+          "prerequisite_ids": [
+            "HSK5-LIS-001"
+          ],
+          "learning_objectives": [
+            "Correct an assumption",
+            "State a reasoned alternative"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "并不是",
+              "pinyin": "bing4 bu2 shi4",
+              "meaning_en": "it is not that",
+              "meaning_vi": "không phải là"
+            },
+            {
+              "hanzi": "而是",
+              "pinyin": "er2 shi4",
+              "meaning_en": "but rather",
+              "meaning_vi": "mà là"
+            },
+            {
+              "hanzi": "既然",
+              "pinyin": "ji4 ran2",
+              "meaning_en": "since; given that",
+              "meaning_vi": "đã rằng; bởi vì đã"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "并不是...而是...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "既然...就...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "pattern",
+                "text": "问题并不是资源少，而是计划不清楚。"
+              },
+              {
+                "type": "pattern",
+                "text": "既然已经决定了，就应该坚持。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-CON-001",
+          "hsk_level": 5,
+          "lesson_type": "conversation",
+          "title": "HSK5 Conversation: Debating Online Learning",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 40,
+          "order": 6,
+          "prerequisite_ids": [
+            "HSK5-SEN-001"
+          ],
+          "learning_objectives": [
+            "Compare online and offline study",
+            "Support an opinion with reasons"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "线上",
+              "pinyin": "xian4 shang4",
+              "meaning_en": "online",
+              "meaning_vi": "trực tuyến"
+            },
+            {
+              "hanzi": "线下",
+              "pinyin": "xian4 xia4",
+              "meaning_en": "offline",
+              "meaning_vi": "trực tiếp; ngoại tuyến"
+            },
+            {
+              "hanzi": "讨论",
+              "pinyin": "tao3 lun4",
+              "meaning_en": "to discuss",
+              "meaning_vi": "thảo luận"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "甲：你觉得线上学习比线下学习好吗？乙：不一定。线上资源多，但线下讨论更直接。甲：我同意，关键还是学习计划。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-REV-001",
+          "hsk_level": 5,
+          "lesson_type": "review",
+          "title": "HSK5 Review: Media, Work, and Argument",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 45,
+          "order": 7,
+          "prerequisite_ids": [
+            "HSK5-CON-001"
+          ],
+          "learning_objectives": [
+            "Review formal reasoning",
+            "Review opinion and debate vocabulary"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "review_scope",
+                "text": "media topics"
+              },
+              {
+                "type": "review_scope",
+                "text": "career interview"
+              },
+              {
+                "type": "review_scope",
+                "text": "formal connectors"
+              },
+              {
+                "type": "review_scope",
+                "text": "argument structure"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-PRA-001",
+          "hsk_level": 5,
+          "lesson_type": "practice",
+          "title": "HSK5 Practice: Argument Response Workshop",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 45,
+          "order": 8,
+          "prerequisite_ids": [
+            "HSK5-REV-001"
+          ],
+          "learning_objectives": [
+            "Write supported opinions",
+            "Listen for stance and evidence"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "activity",
+                "text": "identify thesis"
+              },
+              {
+                "type": "activity",
+                "text": "rewrite with formal patterns"
+              },
+              {
+                "type": "activity",
+                "text": "respond to an interview prompt"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK5-QUI-001",
+          "hsk_level": 5,
+          "lesson_type": "quiz",
+          "title": "HSK5 Quiz: Formal Argument Checkpoint",
+          "difficulty": "upper_intermediate",
+          "estimated_duration_minutes": 60,
+          "order": 9,
+          "prerequisite_ids": [
+            "HSK5-PRA-001"
+          ],
+          "learning_objectives": [
+            "Assess HSK5 argument and inference skills"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "quiz_blueprint",
+                "text": "question_count"
+              },
+              {
+                "type": "quiz_blueprint",
+                "text": "skills"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "hsk_level": 6,
+      "lessons": [
+        {
+          "id": "HSK6-VOC-001",
+          "hsk_level": 6,
+          "lesson_type": "vocabulary",
+          "title": "HSK6 Vocabulary: Analysis and Trends",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 40,
+          "order": 1,
+          "prerequisite_ids": [
+            "HSK5-QUI-001"
+          ],
+          "learning_objectives": [
+            "Discuss abstract trends",
+            "Use analytical vocabulary"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "现象",
+              "pinyin": "xian4 xiang4",
+              "meaning_en": "phenomenon",
+              "meaning_vi": "hiện tượng"
+            },
+            {
+              "hanzi": "趋势",
+              "pinyin": "qu1 shi4",
+              "meaning_en": "trend",
+              "meaning_vi": "xu hướng"
+            },
+            {
+              "hanzi": "本质",
+              "pinyin": "ben3 zhi4",
+              "meaning_en": "essence; nature",
+              "meaning_vi": "bản chất"
+            },
+            {
+              "hanzi": "结构",
+              "pinyin": "jie2 gou4",
+              "meaning_en": "structure",
+              "meaning_vi": "cấu trúc"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "Advanced analytical words for social, academic, and essay contexts.",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-GRA-001",
+          "hsk_level": 6,
+          "lesson_type": "grammar",
+          "title": "HSK6 Grammar: Discourse Transitions",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 40,
+          "order": 2,
+          "prerequisite_ids": [
+            "HSK6-VOC-001"
+          ],
+          "learning_objectives": [
+            "Track argument flow",
+            "Use advanced transitions"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "然而",
+              "pinyin": "ran2 er2",
+              "meaning_en": "however",
+              "meaning_vi": "tuy nhiên"
+            },
+            {
+              "hanzi": "因此",
+              "pinyin": "yin1 ci3",
+              "meaning_en": "therefore",
+              "meaning_vi": "do đó"
+            },
+            {
+              "hanzi": "与此同时",
+              "pinyin": "yu3 ci3 tong2 shi2",
+              "meaning_en": "at the same time",
+              "meaning_vi": "đồng thời"
+            },
+            {
+              "hanzi": "换句话说",
+              "pinyin": "huan4 ju4 hua4 shuo1",
+              "meaning_en": "in other words",
+              "meaning_vi": "nói cách khác"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "然而 + contrasting clause",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "因此 + conclusion",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "与此同时 + parallel development",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "换句话说 + restatement",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "example",
+                "text": "这种现象提高了效率，然而也带来了新的压力。"
+              },
+              {
+                "type": "example",
+                "text": "问题不清楚，因此还需要讨论。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-REA-001",
+          "hsk_level": 6,
+          "lesson_type": "reading",
+          "title": "HSK6 Reading: Interpreting an Aging Society",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 50,
+          "order": 3,
+          "prerequisite_ids": [
+            "HSK6-GRA-001"
+          ],
+          "learning_objectives": [
+            "Read an abstract social-analysis passage",
+            "Identify thesis, evidence, and implication"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "老龄化",
+              "pinyin": "lao3 ling2 hua4",
+              "meaning_en": "population aging",
+              "meaning_vi": "già hóa dân số"
+            },
+            {
+              "hanzi": "城市化",
+              "pinyin": "cheng2 shi4 hua4",
+              "meaning_en": "urbanization",
+              "meaning_vi": "đô thị hóa"
+            },
+            {
+              "hanzi": "可持续",
+              "pinyin": "ke3 chi2 xu4",
+              "meaning_en": "sustainable",
+              "meaning_vi": "bền vững"
+            },
+            {
+              "hanzi": "价值观",
+              "pinyin": "jia4 zhi2 guan1",
+              "meaning_en": "values; value system",
+              "meaning_vi": "hệ giá trị; quan niệm giá trị"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "老龄化不仅是人口结构的变化，也是社会价值观和公共服务方式的变化。一个可持续的城市需要同时考虑效率、公平和人的长期需求。",
+            "pinyin": "",
+            "english": "Population aging is not only a change in demographic structure, but also a change in social values and public-service methods. A sustainable city must consider efficiency, fairness, and people's long-term needs at the same time.",
+            "vietnamese": "Già hóa dân số không chỉ là sự thay đổi về cấu trúc dân số, mà còn là thay đổi về hệ giá trị xã hội và cách cung cấp dịch vụ công. Một thành phố bền vững cần đồng thời cân nhắc hiệu quả, công bằng và nhu cầu dài hạn của con người.",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-LIS-001",
+          "hsk_level": 6,
+          "lesson_type": "listening",
+          "title": "HSK6 Listening: Research Claim and Evidence",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 45,
+          "order": 4,
+          "prerequisite_ids": [
+            "HSK6-REA-001"
+          ],
+          "learning_objectives": [
+            "Follow an academic explanation",
+            "Distinguish evidence from hypothesis"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "研究",
+              "pinyin": "yan2 jiu1",
+              "meaning_en": "research",
+              "meaning_vi": "nghiên cứu"
+            },
+            {
+              "hanzi": "证据",
+              "pinyin": "zheng4 ju4",
+              "meaning_en": "evidence",
+              "meaning_vi": "bằng chứng"
+            },
+            {
+              "hanzi": "假设",
+              "pinyin": "jia3 she4",
+              "meaning_en": "hypothesis",
+              "meaning_vi": "giả thuyết"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "这项研究提出了一个假设：学习效率与反馈速度有关。然而，目前的证据还不足以说明两者之间存在直接因果关系。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-SEN-001",
+          "hsk_level": 6,
+          "lesson_type": "sentence_pattern",
+          "title": "HSK6 Sentence Pattern: Academic Framing",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 35,
+          "order": 5,
+          "prerequisite_ids": [
+            "HSK6-LIS-001"
+          ],
+          "learning_objectives": [
+            "Frame analytical points",
+            "Qualify abstract claims"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "值得注意的是",
+              "pinyin": "zhi2 de5 zhu4 yi4 de5 shi4",
+              "meaning_en": "what is worth noting is",
+              "meaning_vi": "điều đáng chú ý là"
+            },
+            {
+              "hanzi": "从某种意义上说",
+              "pinyin": "cong2 mou3 zhong3 yi4 yi4 shang4 shuo1",
+              "meaning_en": "in a certain sense",
+              "meaning_vi": "ở một ý nghĩa nào đó"
+            },
+            {
+              "hanzi": "并非",
+              "pinyin": "bing4 fei1",
+              "meaning_en": "is by no means; not actually",
+              "meaning_vi": "không hề; không phải"
+            }
+          ],
+          "grammar_points": [
+            {
+              "point": "值得注意的是...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "从某种意义上说...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            },
+            {
+              "point": "并非...而是...",
+              "structure": "",
+              "usage_en": "",
+              "usage_vi": "",
+              "examples": []
+            }
+          ],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "pattern",
+                "text": "值得注意的是，趋势并非突然出现。"
+              },
+              {
+                "type": "pattern",
+                "text": "从某种意义上说，结构变化比数量变化更重要。"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-CON-001",
+          "hsk_level": 6,
+          "lesson_type": "conversation",
+          "title": "HSK6 Conversation: Interpreting a Social Trend",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 45,
+          "order": 6,
+          "prerequisite_ids": [
+            "HSK6-SEN-001"
+          ],
+          "learning_objectives": [
+            "Discuss abstract social trends",
+            "State nuanced conclusions"
+          ],
+          "vocabulary_list": [
+            {
+              "hanzi": "复杂",
+              "pinyin": "fu4 za2",
+              "meaning_en": "complex",
+              "meaning_vi": "phức tạp"
+            },
+            {
+              "hanzi": "角度",
+              "pinyin": "jiao3 du4",
+              "meaning_en": "angle; perspective",
+              "meaning_vi": "góc độ"
+            },
+            {
+              "hanzi": "结论",
+              "pinyin": "jie2 lun4",
+              "meaning_en": "conclusion",
+              "meaning_vi": "kết luận"
+            }
+          ],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "甲：你怎么看老龄化这个现象？乙：我觉得不能只从经济角度看。甲：为什么？乙：因为它还关系到家庭结构、公共服务和价值观，所以结论会比较复杂。",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-REV-001",
+          "hsk_level": 6,
+          "lesson_type": "review",
+          "title": "HSK6 Review: Advanced Discourse and Analysis",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 55,
+          "order": 7,
+          "prerequisite_ids": [
+            "HSK6-CON-001"
+          ],
+          "learning_objectives": [
+            "Review advanced transitions",
+            "Review abstract reading and listening strategies"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "review_scope",
+                "text": "social analysis"
+              },
+              {
+                "type": "review_scope",
+                "text": "research evidence"
+              },
+              {
+                "type": "review_scope",
+                "text": "discourse transitions"
+              },
+              {
+                "type": "review_scope",
+                "text": "academic framing"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-PRA-001",
+          "hsk_level": 6,
+          "lesson_type": "practice",
+          "title": "HSK6 Practice: Analytical Response Studio",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 60,
+          "order": 8,
+          "prerequisite_ids": [
+            "HSK6-REV-001"
+          ],
+          "learning_objectives": [
+            "Analyze long arguments",
+            "Produce structured advanced responses"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "activity",
+                "text": "map argument structure"
+              },
+              {
+                "type": "activity",
+                "text": "separate evidence from conclusion"
+              },
+              {
+                "type": "activity",
+                "text": "write a qualified analytical response"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        },
+        {
+          "id": "HSK6-QUI-001",
+          "hsk_level": 6,
+          "lesson_type": "quiz",
+          "title": "HSK6 Quiz: Advanced Mastery Checkpoint",
+          "difficulty": "advanced",
+          "estimated_duration_minutes": 90,
+          "order": 9,
+          "prerequisite_ids": [
+            "HSK6-PRA-001"
+          ],
+          "learning_objectives": [
+            "Assess advanced HSK6 reading, listening, and reasoning"
+          ],
+          "vocabulary_list": [],
+          "grammar_points": [],
+          "content": {
+            "focus": "",
+            "chinese": "",
+            "pinyin": "",
+            "english": "",
+            "vietnamese": "",
+            "items": [
+              {
+                "type": "quiz_blueprint",
+                "text": "question_count"
+              },
+              {
+                "type": "quiz_blueprint",
+                "text": "skills"
+              }
+            ],
+            "questions": [],
+            "cultural_note": {
+              "english": "",
+              "vietnamese": ""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

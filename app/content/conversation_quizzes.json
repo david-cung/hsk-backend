@@ -1,0 +1,3388 @@
+[
+  {
+    "id": "HSK1-QUI-002",
+    "hsk_level": 1,
+    "lesson_type": "quiz",
+    "title": "HSK1 Quiz: Introducing Family Members",
+    "difficulty": "beginner",
+    "estimated_duration_minutes": 20,
+    "order": 1,
+    "prerequisite_ids": [
+      "HSK1-CON-002"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK1-CON-002",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK1-QUI-002-Q001",
+          "type": "multiple_choice",
+          "prompt": "How many people are in the speaker's family?",
+          "options": [
+            "Four",
+            "Three",
+            "Five",
+            "Eight"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Four",
+          "explanation": "The speaker says: 我家有四个人."
+        },
+        {
+          "id": "HSK1-QUI-002-Q002",
+          "type": "multiple_choice",
+          "prompt": "What is the father's job?",
+          "options": [
+            "Doctor",
+            "Teacher",
+            "Student",
+            "Shop assistant"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Doctor",
+          "explanation": "The speaker says: 他是医生."
+        },
+        {
+          "id": "HSK1-QUI-002-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 我家有四___人。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "个",
+          "explanation": "个人 is the measure phrase for people."
+        },
+        {
+          "id": "HSK1-QUI-002-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 她八___。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "岁",
+          "explanation": "岁 marks age."
+        },
+        {
+          "id": "HSK1-QUI-002-Q005",
+          "type": "listening",
+          "prompt": "What is being asked?",
+          "options": [
+            "How many people are in your family",
+            "How old your sister is",
+            "What your dad eats",
+            "Where your mom works"
+          ],
+          "tokens": [],
+          "audio_text": "你家有几个人？",
+          "image_keyword": "",
+          "correct_answer": "How many people are in your family",
+          "explanation": "几个人 asks how many people."
+        },
+        {
+          "id": "HSK1-QUI-002-Q006",
+          "type": "listening",
+          "prompt": "What does the speaker ask?",
+          "options": [
+            "How old your younger sister is",
+            "Where your sister is",
+            "What your sister buys",
+            "What your sister drinks"
+          ],
+          "tokens": [],
+          "audio_text": "你妹妹多大？",
+          "image_keyword": "",
+          "correct_answer": "How old your younger sister is",
+          "explanation": "多大 asks age."
+        },
+        {
+          "id": "HSK1-QUI-002-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "我家",
+            "有",
+            "四个人"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我家有四个人。",
+          "explanation": "Place/family + 有 states existence/possession."
+        },
+        {
+          "id": "HSK1-QUI-002-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "你爸爸",
+            "做",
+            "什么",
+            "工作"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "你爸爸做什么工作？",
+          "explanation": "什么 stays where the answer would appear."
+        },
+        {
+          "id": "HSK1-QUI-002-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 妹妹.",
+          "options": [
+            "younger sister",
+            "older brother",
+            "mother",
+            "daughter"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "younger sister",
+          "explanation": "妹妹 means younger sister."
+        },
+        {
+          "id": "HSK1-QUI-002-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 医生.",
+          "options": [
+            "doctor",
+            "teacher",
+            "friend",
+            "waiter"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "doctor",
+          "explanation": "医生 means doctor."
+        },
+        {
+          "id": "HSK1-QUI-002-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'family/home'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "家",
+          "explanation": "家 means family or home."
+        },
+        {
+          "id": "HSK1-QUI-002-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'mom'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "妈妈",
+          "explanation": "妈妈 means mom."
+        },
+        {
+          "id": "HSK1-QUI-002-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 我家有四个人。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "There are four people in my family.",
+          "explanation": "我家有 literally means my family has."
+        },
+        {
+          "id": "HSK1-QUI-002-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: She is eight years old.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "她八岁。",
+          "explanation": "Chinese does not need 是 before age."
+        },
+        {
+          "id": "HSK1-QUI-002-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching phrase.",
+          "options": [
+            "四个人",
+            "八岁",
+            "医生",
+            "老师"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "family of four",
+          "correct_answer": "四个人",
+          "explanation": "The image shows four people."
+        },
+        {
+          "id": "HSK1-QUI-002-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "医生",
+            "老师",
+            "学生",
+            "朋友"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "doctor",
+          "correct_answer": "医生",
+          "explanation": "The image shows a doctor."
+        },
+        {
+          "id": "HSK1-QUI-002-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which structure asks age?",
+          "options": [
+            "你多大？",
+            "你在哪儿？",
+            "多少钱？",
+            "你叫什么？"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "你多大？",
+          "explanation": "多大 asks how old someone is."
+        },
+        {
+          "id": "HSK1-QUI-002-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 妈妈___老师。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "是",
+          "explanation": "是 links a person to a role."
+        },
+        {
+          "id": "HSK1-QUI-002-Q019",
+          "type": "listening",
+          "prompt": "What is his job?",
+          "options": [
+            "Doctor",
+            "Teacher",
+            "Student",
+            "Server"
+          ],
+          "tokens": [],
+          "audio_text": "他是医生。",
+          "image_keyword": "",
+          "correct_answer": "Doctor",
+          "explanation": "医生 means doctor."
+        },
+        {
+          "id": "HSK1-QUI-002-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 你家有几个人？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Nhà bạn có mấy người?",
+          "explanation": "几个人 asks how many people."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK2-QUI-002",
+    "hsk_level": 2,
+    "lesson_type": "quiz",
+    "title": "HSK2 Quiz: Ordering Noodles at a Restaurant",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 25,
+    "order": 2,
+    "prerequisite_ids": [
+      "HSK2-CON-002"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK2-CON-002",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK2-QUI-002-Q001",
+          "type": "multiple_choice",
+          "prompt": "What does the customer order to eat?",
+          "options": [
+            "A bowl of beef noodles",
+            "A bowl of rice",
+            "A cup of tea",
+            "A plate of fruit"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "A bowl of beef noodles",
+          "explanation": "The customer says: 我要一碗牛肉面."
+        },
+        {
+          "id": "HSK2-QUI-002-Q002",
+          "type": "multiple_choice",
+          "prompt": "How much are the noodles?",
+          "options": [
+            "25 yuan",
+            "15 yuan",
+            "20 yuan",
+            "50 yuan"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "25 yuan",
+          "explanation": "The server says: 二十五块."
+        },
+        {
+          "id": "HSK2-QUI-002-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete the sentence: 我要一___水。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "杯",
+          "explanation": "一杯水 means one glass/cup of water."
+        },
+        {
+          "id": "HSK2-QUI-002-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete the question: 这个面___钱？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "多少",
+          "explanation": "多少钱 is used to ask the price."
+        },
+        {
+          "id": "HSK2-QUI-002-Q005",
+          "type": "listening",
+          "prompt": "What is the speaker asking?",
+          "options": [
+            "What you want to eat",
+            "Where you live",
+            "What time it is",
+            "Who your teacher is"
+          ],
+          "tokens": [],
+          "audio_text": "请问你要吃什么？",
+          "image_keyword": "",
+          "correct_answer": "What you want to eat",
+          "explanation": "要吃什么 asks what someone wants to eat."
+        },
+        {
+          "id": "HSK2-QUI-002-Q006",
+          "type": "listening",
+          "prompt": "Choose the best meaning.",
+          "options": [
+            "Please wait a moment",
+            "Please sit down",
+            "Please drink water",
+            "Please pay now"
+          ],
+          "tokens": [],
+          "audio_text": "请稍等。",
+          "image_keyword": "",
+          "correct_answer": "Please wait a moment",
+          "explanation": "稍等 means wait briefly."
+        },
+        {
+          "id": "HSK2-QUI-002-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "我",
+            "要",
+            "一碗",
+            "牛肉面"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我要一碗牛肉面。",
+          "explanation": "The order is subject + 要 + item."
+        },
+        {
+          "id": "HSK2-QUI-002-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a price question.",
+          "options": [],
+          "tokens": [
+            "这个面",
+            "多少",
+            "钱"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "这个面多少钱？",
+          "explanation": "Item + 多少钱 asks how much it costs."
+        },
+        {
+          "id": "HSK2-QUI-002-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 服务员.",
+          "options": [
+            "server",
+            "student",
+            "doctor",
+            "traveler"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "server",
+          "explanation": "服务员 means waiter/server."
+        },
+        {
+          "id": "HSK2-QUI-002-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 一碗.",
+          "options": [
+            "one bowl",
+            "one cup",
+            "one room",
+            "one ticket"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "one bowl",
+          "explanation": "碗 is a bowl measure word."
+        },
+        {
+          "id": "HSK2-QUI-002-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'thank you'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "谢谢",
+          "explanation": "谢谢 means thank you."
+        },
+        {
+          "id": "HSK2-QUI-002-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'water'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "水",
+          "explanation": "水 means water."
+        },
+        {
+          "id": "HSK2-QUI-002-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 我要一杯水。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "I would like a glass of water.",
+          "explanation": "我要 expresses a polite order/request in context."
+        },
+        {
+          "id": "HSK2-QUI-002-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: How much are these noodles?",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "这个面多少钱？",
+          "explanation": "多少钱 asks price."
+        },
+        {
+          "id": "HSK2-QUI-002-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching Chinese word.",
+          "options": [
+            "牛肉面",
+            "水",
+            "茶",
+            "书"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "bowl of beef noodles",
+          "correct_answer": "牛肉面",
+          "explanation": "The image shows beef noodles."
+        },
+        {
+          "id": "HSK2-QUI-002-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching phrase.",
+          "options": [
+            "一杯水",
+            "一碗面",
+            "二十五块",
+            "服务员"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "glass of water",
+          "correct_answer": "一杯水",
+          "explanation": "一杯水 means a glass of water."
+        },
+        {
+          "id": "HSK2-QUI-002-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which phrase is most polite for asking a question?",
+          "options": [
+            "请问",
+            "不要",
+            "不是",
+            "没有"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "请问",
+          "explanation": "请问 politely introduces a question."
+        },
+        {
+          "id": "HSK2-QUI-002-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: ___吃什么？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "你要",
+          "explanation": "你要吃什么 asks what you want to eat."
+        },
+        {
+          "id": "HSK2-QUI-002-Q019",
+          "type": "listening",
+          "prompt": "What price do you hear?",
+          "options": [
+            "25 yuan",
+            "20 yuan",
+            "15 yuan",
+            "50 yuan"
+          ],
+          "tokens": [],
+          "audio_text": "二十五块。",
+          "image_keyword": "",
+          "correct_answer": "25 yuan",
+          "explanation": "二十五 means twenty-five."
+        },
+        {
+          "id": "HSK2-QUI-002-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 请稍等。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Xin chờ một chút.",
+          "explanation": "请 adds politeness; 稍等 means wait a moment."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK2-QUI-003",
+    "hsk_level": 2,
+    "lesson_type": "quiz",
+    "title": "HSK2 Quiz: Asking About Class",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 25,
+    "order": 3,
+    "prerequisite_ids": [
+      "HSK2-CON-003"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK2-CON-003",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK2-QUI-003-Q001",
+          "type": "multiple_choice",
+          "prompt": "What are the students studying today?",
+          "options": [
+            "Chinese grammar",
+            "Math",
+            "English writing",
+            "Weather"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Chinese grammar",
+          "explanation": "The teacher says: 今天我们学汉语语法."
+        },
+        {
+          "id": "HSK2-QUI-003-Q002",
+          "type": "multiple_choice",
+          "prompt": "When should the homework be handed in?",
+          "options": [
+            "Tomorrow morning",
+            "Today afternoon",
+            "Next week",
+            "Tonight"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Tomorrow morning",
+          "explanation": "The teacher says: 明天上午交."
+        },
+        {
+          "id": "HSK2-QUI-003-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 今天我们学___语法。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "汉语",
+          "explanation": "汉语语法 means Chinese grammar."
+        },
+        {
+          "id": "HSK2-QUI-003-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 有作业___？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "吗",
+          "explanation": "吗 makes a yes-no question."
+        },
+        {
+          "id": "HSK2-QUI-003-Q005",
+          "type": "listening",
+          "prompt": "What is being asked?",
+          "options": [
+            "What we study today",
+            "Where we go today",
+            "Who the teacher is",
+            "How much the book is"
+          ],
+          "tokens": [],
+          "audio_text": "今天我们学什么？",
+          "image_keyword": "",
+          "correct_answer": "What we study today",
+          "explanation": "学什么 means study what."
+        },
+        {
+          "id": "HSK2-QUI-003-Q006",
+          "type": "listening",
+          "prompt": "What should the student write?",
+          "options": [
+            "Ten sentences",
+            "Ten names",
+            "Ten books",
+            "Ten questions"
+          ],
+          "tokens": [],
+          "audio_text": "请写十个句子。",
+          "image_keyword": "",
+          "correct_answer": "Ten sentences",
+          "explanation": "十个句子 means ten sentences."
+        },
+        {
+          "id": "HSK2-QUI-003-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "今天",
+            "我们",
+            "学",
+            "什么"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "今天我们学什么？",
+          "explanation": "The time word 今天 comes before the subject/action."
+        },
+        {
+          "id": "HSK2-QUI-003-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "明天上午",
+            "交",
+            "作业"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "明天上午交作业。",
+          "explanation": "Time comes before the verb phrase."
+        },
+        {
+          "id": "HSK2-QUI-003-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 作业.",
+          "options": [
+            "homework",
+            "teacher",
+            "classroom",
+            "breakfast"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "homework",
+          "explanation": "作业 means homework."
+        },
+        {
+          "id": "HSK2-QUI-003-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 句子.",
+          "options": [
+            "sentence",
+            "student",
+            "grammar",
+            "office"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "sentence",
+          "explanation": "句子 means sentence."
+        },
+        {
+          "id": "HSK2-QUI-003-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'teacher'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "老师",
+          "explanation": "老师 means teacher."
+        },
+        {
+          "id": "HSK2-QUI-003-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'Chinese language'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "汉语",
+          "explanation": "汉语 means Chinese."
+        },
+        {
+          "id": "HSK2-QUI-003-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 有作业吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Is there homework?",
+          "explanation": "有...吗 asks whether something exists."
+        },
+        {
+          "id": "HSK2-QUI-003-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: Please write ten sentences.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "请写十个句子。",
+          "explanation": "请 makes the instruction polite."
+        },
+        {
+          "id": "HSK2-QUI-003-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "老师",
+            "医生",
+            "客人",
+            "旅客"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "teacher in classroom",
+          "correct_answer": "老师",
+          "explanation": "The image shows a teacher."
+        },
+        {
+          "id": "HSK2-QUI-003-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "作业",
+            "机票",
+            "药",
+            "行李"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "homework notebook",
+          "correct_answer": "作业",
+          "explanation": "The image shows homework."
+        },
+        {
+          "id": "HSK2-QUI-003-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which word asks 'what'?",
+          "options": [
+            "什么",
+            "哪儿",
+            "几",
+            "吗"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "什么",
+          "explanation": "什么 means what."
+        },
+        {
+          "id": "HSK2-QUI-003-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 老师___，今天我们学什么？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "好",
+          "explanation": "老师好 is a respectful greeting to a teacher."
+        },
+        {
+          "id": "HSK2-QUI-003-Q019",
+          "type": "listening",
+          "prompt": "When should it be handed in?",
+          "options": [
+            "Tomorrow morning",
+            "Today morning",
+            "Tomorrow afternoon",
+            "Tonight"
+          ],
+          "tokens": [],
+          "audio_text": "明天上午交。",
+          "image_keyword": "",
+          "correct_answer": "Tomorrow morning",
+          "explanation": "明天上午 means tomorrow morning."
+        },
+        {
+          "id": "HSK2-QUI-003-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 今天我们学汉语语法。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Hôm nay chúng ta học ngữ pháp tiếng Trung.",
+          "explanation": "今天 is today; 汉语语法 is Chinese grammar."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK2-QUI-004",
+    "hsk_level": 2,
+    "lesson_type": "quiz",
+    "title": "HSK2 Quiz: Making Weekend Plans",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 25,
+    "order": 4,
+    "prerequisite_ids": [
+      "HSK2-CON-004"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK2-CON-004",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK2-QUI-004-Q001",
+          "type": "multiple_choice",
+          "prompt": "What do the friends plan to do?",
+          "options": [
+            "Watch a movie",
+            "See a doctor",
+            "Buy clothes",
+            "Have a meeting"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Watch a movie",
+          "explanation": "One friend says: 我想去看电影."
+        },
+        {
+          "id": "HSK2-QUI-004-Q002",
+          "type": "multiple_choice",
+          "prompt": "Where will they meet?",
+          "options": [
+            "At the school gate",
+            "At the hospital",
+            "At the airport",
+            "At the hotel front desk"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "At the school gate",
+          "explanation": "They will meet 在学校门口."
+        },
+        {
+          "id": "HSK2-QUI-004-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 这个星期六你有___吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "时间",
+          "explanation": "有时间 means have time."
+        },
+        {
+          "id": "HSK2-QUI-004-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 我想去看___。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "电影",
+          "explanation": "看电影 means watch a movie."
+        },
+        {
+          "id": "HSK2-QUI-004-Q005",
+          "type": "listening",
+          "prompt": "What day is mentioned?",
+          "options": [
+            "This Saturday",
+            "This Sunday",
+            "Tomorrow morning",
+            "Today afternoon"
+          ],
+          "tokens": [],
+          "audio_text": "这个星期六你有时间吗？",
+          "image_keyword": "",
+          "correct_answer": "This Saturday",
+          "explanation": "星期六 means Saturday."
+        },
+        {
+          "id": "HSK2-QUI-004-Q006",
+          "type": "listening",
+          "prompt": "What is being asked?",
+          "options": [
+            "Where to meet",
+            "What to eat",
+            "How much it costs",
+            "Who is a teacher"
+          ],
+          "tokens": [],
+          "audio_text": "我们在哪儿见？",
+          "image_keyword": "",
+          "correct_answer": "Where to meet",
+          "explanation": "在哪儿见 asks where to meet."
+        },
+        {
+          "id": "HSK2-QUI-004-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "我",
+            "想",
+            "去",
+            "看电影"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我想去看电影。",
+          "explanation": "想 + verb phrase expresses desire."
+        },
+        {
+          "id": "HSK2-QUI-004-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "我们",
+            "在哪儿",
+            "见"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我们在哪儿见？",
+          "explanation": "在哪儿 asks where."
+        },
+        {
+          "id": "HSK2-QUI-004-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 星期六.",
+          "options": [
+            "Saturday",
+            "Sunday",
+            "Monday",
+            "Friday"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Saturday",
+          "explanation": "星期六 means Saturday."
+        },
+        {
+          "id": "HSK2-QUI-004-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 门口.",
+          "options": [
+            "entrance/gate",
+            "office",
+            "ticket",
+            "medicine"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "entrance/gate",
+          "explanation": "门口 means entrance or gate."
+        },
+        {
+          "id": "HSK2-QUI-004-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'friend'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "朋友",
+          "explanation": "朋友 means friend."
+        },
+        {
+          "id": "HSK2-QUI-004-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'movie'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "电影",
+          "explanation": "电影 means movie."
+        },
+        {
+          "id": "HSK2-QUI-004-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 下午三点可以吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Is three in the afternoon okay?",
+          "explanation": "可以吗 asks whether something is okay."
+        },
+        {
+          "id": "HSK2-QUI-004-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: Where shall we meet?",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我们在哪儿见？",
+          "explanation": "见 means meet/see."
+        },
+        {
+          "id": "HSK2-QUI-004-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching phrase.",
+          "options": [
+            "看电影",
+            "吃药",
+            "开会",
+            "写句子"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "movie theater screen",
+          "correct_answer": "看电影",
+          "explanation": "The image shows a movie setting."
+        },
+        {
+          "id": "HSK2-QUI-004-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching phrase.",
+          "options": [
+            "学校门口",
+            "医院旁边",
+            "八号登机口",
+            "试衣间"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "school gate",
+          "correct_answer": "学校门口",
+          "explanation": "The image shows a school gate."
+        },
+        {
+          "id": "HSK2-QUI-004-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which phrase means 'I want to go'?",
+          "options": [
+            "我想去",
+            "我可以吗",
+            "我有时间",
+            "我在哪儿"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我想去",
+          "explanation": "想去 means want to go."
+        },
+        {
+          "id": "HSK2-QUI-004-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: ___三点可以吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "下午",
+          "explanation": "下午三点 means three in the afternoon."
+        },
+        {
+          "id": "HSK2-QUI-004-Q019",
+          "type": "listening",
+          "prompt": "Where will they meet?",
+          "options": [
+            "At the school gate",
+            "At the office",
+            "At the hotel",
+            "At the train station"
+          ],
+          "tokens": [],
+          "audio_text": "在学校门口见。",
+          "image_keyword": "",
+          "correct_answer": "At the school gate",
+          "explanation": "学校门口 means school gate."
+        },
+        {
+          "id": "HSK2-QUI-004-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 我想去看电影。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Tôi muốn đi xem phim.",
+          "explanation": "想去看电影 means want to go watch a movie."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK2-QUI-005",
+    "hsk_level": 2,
+    "lesson_type": "quiz",
+    "title": "HSK2 Quiz: Talking About the Weather",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 25,
+    "order": 5,
+    "prerequisite_ids": [
+      "HSK2-CON-005"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK2-CON-005",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK2-QUI-005-Q001",
+          "type": "multiple_choice",
+          "prompt": "How is the weather today?",
+          "options": [
+            "Cold and rainy",
+            "Hot and sunny",
+            "Warm and windy",
+            "Snowy"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Cold and rainy",
+          "explanation": "The friend says: 今天很冷，还下雨."
+        },
+        {
+          "id": "HSK2-QUI-005-Q002",
+          "type": "multiple_choice",
+          "prompt": "What will the friends do tomorrow?",
+          "options": [
+            "Go to the park",
+            "Go to the airport",
+            "Go to a meeting",
+            "Go shopping"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Go to the park",
+          "explanation": "They discuss going to the park tomorrow."
+        },
+        {
+          "id": "HSK2-QUI-005-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 今天天气___？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "怎么样",
+          "explanation": "怎么样 asks how something is."
+        },
+        {
+          "id": "HSK2-QUI-005-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 明天不___雨。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "下",
+          "explanation": "下雨 means to rain."
+        },
+        {
+          "id": "HSK2-QUI-005-Q005",
+          "type": "listening",
+          "prompt": "What does the speaker say about today?",
+          "options": [
+            "It is cold and raining",
+            "It is hot and sunny",
+            "It is not cold",
+            "It is only windy"
+          ],
+          "tokens": [],
+          "audio_text": "今天很冷，还下雨。",
+          "image_keyword": "",
+          "correct_answer": "It is cold and raining",
+          "explanation": "冷 means cold; 下雨 means raining."
+        },
+        {
+          "id": "HSK2-QUI-005-Q006",
+          "type": "listening",
+          "prompt": "What is the advice?",
+          "options": [
+            "Wear a little more clothing",
+            "Drink more water",
+            "Write more sentences",
+            "Bring documents"
+          ],
+          "tokens": [],
+          "audio_text": "多穿一点儿衣服。",
+          "image_keyword": "",
+          "correct_answer": "Wear a little more clothing",
+          "explanation": "穿衣服 means wear clothes."
+        },
+        {
+          "id": "HSK2-QUI-005-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "今天天气",
+            "怎么样"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "今天天气怎么样？",
+          "explanation": "Topic + 怎么样 asks how something is."
+        },
+        {
+          "id": "HSK2-QUI-005-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "明天",
+            "不",
+            "下雨"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "明天不下雨。",
+          "explanation": "不 negates 下雨."
+        },
+        {
+          "id": "HSK2-QUI-005-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 天气.",
+          "options": [
+            "weather",
+            "clothes",
+            "park",
+            "meeting"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "weather",
+          "explanation": "天气 means weather."
+        },
+        {
+          "id": "HSK2-QUI-005-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 公园.",
+          "options": [
+            "park",
+            "office",
+            "hospital",
+            "restaurant"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "park",
+          "explanation": "公园 means park."
+        },
+        {
+          "id": "HSK2-QUI-005-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'cold'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "冷",
+          "explanation": "冷 means cold."
+        },
+        {
+          "id": "HSK2-QUI-005-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'clothes'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "衣服",
+          "explanation": "衣服 means clothes."
+        },
+        {
+          "id": "HSK2-QUI-005-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 明天不下雨。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "It will not rain tomorrow.",
+          "explanation": "明天 gives future time; no extra tense marker is needed."
+        },
+        {
+          "id": "HSK2-QUI-005-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: How is the weather today?",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "今天天气怎么样？",
+          "explanation": "怎么样 asks how it is."
+        },
+        {
+          "id": "HSK2-QUI-005-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "下雨",
+            "开会",
+            "预订",
+            "试衣间"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "rainy weather",
+          "correct_answer": "下雨",
+          "explanation": "The image shows rain."
+        },
+        {
+          "id": "HSK2-QUI-005-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "公园",
+            "医院",
+            "机场",
+            "办公室"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "park",
+          "correct_answer": "公园",
+          "explanation": "The image shows a park."
+        },
+        {
+          "id": "HSK2-QUI-005-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which word connects a contrast?",
+          "options": [
+            "但是",
+            "还",
+            "哪儿",
+            "几"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "但是",
+          "explanation": "但是 means but."
+        },
+        {
+          "id": "HSK2-QUI-005-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 但是有点儿___。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "冷",
+          "explanation": "有点儿冷 means a little cold."
+        },
+        {
+          "id": "HSK2-QUI-005-Q019",
+          "type": "listening",
+          "prompt": "What is being asked?",
+          "options": [
+            "Whether tomorrow's weather is good",
+            "Where the park is",
+            "How much clothes cost",
+            "When the meeting starts"
+          ],
+          "tokens": [],
+          "audio_text": "明天天气好吗？",
+          "image_keyword": "",
+          "correct_answer": "Whether tomorrow's weather is good",
+          "explanation": "天气好吗 asks if the weather is good."
+        },
+        {
+          "id": "HSK2-QUI-005-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 多穿一点儿衣服。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Mặc thêm một chút quần áo.",
+          "explanation": "多穿 means wear more; 一点儿 means a little."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK3-QUI-002",
+    "hsk_level": 3,
+    "lesson_type": "quiz",
+    "title": "HSK3 Quiz: Buying a Shirt",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 35,
+    "order": 6,
+    "prerequisite_ids": [
+      "HSK3-CON-002"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK3-CON-002",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK3-QUI-002-Q001",
+          "type": "multiple_choice",
+          "prompt": "How much is the clothing item?",
+          "options": [
+            "120 yuan",
+            "20 yuan",
+            "100 yuan",
+            "80 yuan"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "120 yuan",
+          "explanation": "The clerk says: 一百二十块."
+        },
+        {
+          "id": "HSK3-QUI-002-Q002",
+          "type": "multiple_choice",
+          "prompt": "Where is the fitting room?",
+          "options": [
+            "Over there",
+            "At the school gate",
+            "On the sixth floor",
+            "Next to the station"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Over there",
+          "explanation": "The clerk says: 试衣间在那边."
+        },
+        {
+          "id": "HSK3-QUI-002-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 这___衣服多少钱？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "件",
+          "explanation": "件 is a measure word for clothing."
+        },
+        {
+          "id": "HSK3-QUI-002-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 我可以试___吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "一下",
+          "explanation": "试一下 means try it briefly."
+        },
+        {
+          "id": "HSK3-QUI-002-Q005",
+          "type": "listening",
+          "prompt": "What does the customer want?",
+          "options": [
+            "Something a little smaller",
+            "Something more expensive",
+            "Something red",
+            "Something longer"
+          ],
+          "tokens": [],
+          "audio_text": "有小一点的吗？",
+          "image_keyword": "",
+          "correct_answer": "Something a little smaller",
+          "explanation": "小一点 means a little smaller."
+        },
+        {
+          "id": "HSK3-QUI-002-Q006",
+          "type": "listening",
+          "prompt": "What will the customer do?",
+          "options": [
+            "Buy this one",
+            "Return this one",
+            "Try another one",
+            "Ask for water"
+          ],
+          "tokens": [],
+          "audio_text": "我买这件。",
+          "image_keyword": "",
+          "correct_answer": "Buy this one",
+          "explanation": "买 means buy."
+        },
+        {
+          "id": "HSK3-QUI-002-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "这件衣服",
+            "多少",
+            "钱"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "这件衣服多少钱？",
+          "explanation": "Item + 多少钱 asks price."
+        },
+        {
+          "id": "HSK3-QUI-002-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a permission question.",
+          "options": [],
+          "tokens": [
+            "我",
+            "可以",
+            "试一下",
+            "吗"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我可以试一下吗？",
+          "explanation": "可以...吗 asks permission."
+        },
+        {
+          "id": "HSK3-QUI-002-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 店员.",
+          "options": [
+            "shop assistant",
+            "doctor",
+            "tourist",
+            "teacher"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "shop assistant",
+          "explanation": "店员 works in a shop."
+        },
+        {
+          "id": "HSK3-QUI-002-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 小号.",
+          "options": [
+            "small size",
+            "big size",
+            "room card",
+            "boarding gate"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "small size",
+          "explanation": "小号 means small size."
+        },
+        {
+          "id": "HSK3-QUI-002-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'clothes'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "衣服",
+          "explanation": "衣服 means clothes."
+        },
+        {
+          "id": "HSK3-QUI-002-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'to buy'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "买",
+          "explanation": "买 means to buy."
+        },
+        {
+          "id": "HSK3-QUI-002-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 我可以买这件。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "I can buy this one.",
+          "explanation": "可以买 means can buy."
+        },
+        {
+          "id": "HSK3-QUI-002-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: Can I try it on?",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我可以试一下吗？",
+          "explanation": "可以...吗 asks permission."
+        },
+        {
+          "id": "HSK3-QUI-002-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "衣服",
+            "机票",
+            "药",
+            "作业"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "shirt on hanger",
+          "correct_answer": "衣服",
+          "explanation": "The image shows clothing."
+        },
+        {
+          "id": "HSK3-QUI-002-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "试衣间",
+            "办公室",
+            "火车站",
+            "登机口"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "fitting room",
+          "correct_answer": "试衣间",
+          "explanation": "试衣间 is a fitting room."
+        },
+        {
+          "id": "HSK3-QUI-002-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which phrase means 'a little smaller'?",
+          "options": [
+            "小一点",
+            "大很多",
+            "多少钱",
+            "在那边"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "小一点",
+          "explanation": "小一点 means a little smaller."
+        },
+        {
+          "id": "HSK3-QUI-002-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 试衣间在___边。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "那",
+          "explanation": "那边 means over there."
+        },
+        {
+          "id": "HSK3-QUI-002-Q019",
+          "type": "listening",
+          "prompt": "What price do you hear?",
+          "options": [
+            "120 yuan",
+            "112 yuan",
+            "20 yuan",
+            "200 yuan"
+          ],
+          "tokens": [],
+          "audio_text": "一百二十块。",
+          "image_keyword": "",
+          "correct_answer": "120 yuan",
+          "explanation": "一百二十 is one hundred twenty."
+        },
+        {
+          "id": "HSK3-QUI-002-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 这件衣服多少钱？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Cái áo/quần áo này bao nhiêu tiền?",
+          "explanation": "这件衣服 means this clothing item."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK3-QUI-003",
+    "hsk_level": 3,
+    "lesson_type": "quiz",
+    "title": "HSK3 Quiz: Checking in at the Airport",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 35,
+    "order": 7,
+    "prerequisite_ids": [
+      "HSK3-CON-003"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK3-CON-003",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK3-QUI-003-Q001",
+          "type": "multiple_choice",
+          "prompt": "What does the staff ask to see?",
+          "options": [
+            "Passport and ticket",
+            "Room card and medicine",
+            "Homework and book",
+            "Clothes and receipt"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Passport and ticket",
+          "explanation": "The staff says: 护照和机票."
+        },
+        {
+          "id": "HSK3-QUI-003-Q002",
+          "type": "multiple_choice",
+          "prompt": "Which boarding gate does the traveler need?",
+          "options": [
+            "Gate 8",
+            "Gate 6",
+            "Gate 3",
+            "Gate 10"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Gate 8",
+          "explanation": "The staff says: 你的登机口是八号."
+        },
+        {
+          "id": "HSK3-QUI-003-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 请给我看一下___和机票。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "护照",
+          "explanation": "护照 means passport."
+        },
+        {
+          "id": "HSK3-QUI-003-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 请把箱子放在___。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "这里",
+          "explanation": "这里 means here."
+        },
+        {
+          "id": "HSK3-QUI-003-Q005",
+          "type": "listening",
+          "prompt": "What is being asked?",
+          "options": [
+            "Do you have luggage?",
+            "Do you have homework?",
+            "Do you have medicine?",
+            "Do you have breakfast?"
+          ],
+          "tokens": [],
+          "audio_text": "你有行李吗？",
+          "image_keyword": "",
+          "correct_answer": "Do you have luggage?",
+          "explanation": "行李 means luggage."
+        },
+        {
+          "id": "HSK3-QUI-003-Q006",
+          "type": "listening",
+          "prompt": "What direction is given?",
+          "options": [
+            "Walk to the right",
+            "Walk to the left",
+            "Go upstairs",
+            "Go back home"
+          ],
+          "tokens": [],
+          "audio_text": "往右走。",
+          "image_keyword": "",
+          "correct_answer": "Walk to the right",
+          "explanation": "右 means right."
+        },
+        {
+          "id": "HSK3-QUI-003-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "这是",
+            "我的",
+            "护照",
+            "和",
+            "机票"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "这是我的护照和机票。",
+          "explanation": "这是 introduces the objects."
+        },
+        {
+          "id": "HSK3-QUI-003-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a location question.",
+          "options": [],
+          "tokens": [
+            "八号登机口",
+            "在",
+            "哪儿"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "八号登机口在哪儿？",
+          "explanation": "在哪儿 asks where something is."
+        },
+        {
+          "id": "HSK3-QUI-003-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 护照.",
+          "options": [
+            "passport",
+            "ticket",
+            "luggage",
+            "gate"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "passport",
+          "explanation": "护照 means passport."
+        },
+        {
+          "id": "HSK3-QUI-003-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 登机口.",
+          "options": [
+            "boarding gate",
+            "hotel room",
+            "office",
+            "restaurant"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "boarding gate",
+          "explanation": "登机口 is the airport boarding gate."
+        },
+        {
+          "id": "HSK3-QUI-003-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'luggage'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "行李",
+          "explanation": "行李 means luggage."
+        },
+        {
+          "id": "HSK3-QUI-003-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'ticket'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "机票",
+          "explanation": "机票 means plane ticket."
+        },
+        {
+          "id": "HSK3-QUI-003-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 你有行李吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Do you have luggage?",
+          "explanation": "有...吗 asks whether someone has something."
+        },
+        {
+          "id": "HSK3-QUI-003-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: Please put the suitcase here.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "请把箱子放在这里。",
+          "explanation": "把 is used to handle/move the object."
+        },
+        {
+          "id": "HSK3-QUI-003-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "护照",
+            "机票",
+            "房卡",
+            "作业"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "passport",
+          "correct_answer": "护照",
+          "explanation": "The image shows a passport."
+        },
+        {
+          "id": "HSK3-QUI-003-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "箱子",
+            "杯子",
+            "句子",
+            "衣服"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "suitcase",
+          "correct_answer": "箱子",
+          "explanation": "The image shows a suitcase."
+        },
+        {
+          "id": "HSK3-QUI-003-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which structure gives direction?",
+          "options": [
+            "往右走",
+            "多少钱",
+            "多大",
+            "有作业吗"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "往右走",
+          "explanation": "往右走 means walk to the right."
+        },
+        {
+          "id": "HSK3-QUI-003-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 登机口是八___。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "号",
+          "explanation": "号 is used for numbered gates/rooms/dates."
+        },
+        {
+          "id": "HSK3-QUI-003-Q019",
+          "type": "listening",
+          "prompt": "Which two items are requested?",
+          "options": [
+            "Passport and ticket",
+            "Passport and luggage",
+            "Ticket and suitcase",
+            "Room card and passport"
+          ],
+          "tokens": [],
+          "audio_text": "请给我看一下护照和机票。",
+          "image_keyword": "",
+          "correct_answer": "Passport and ticket",
+          "explanation": "护照和机票 means passport and ticket."
+        },
+        {
+          "id": "HSK3-QUI-003-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 八号登机口在哪儿？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Cửa lên máy bay số 8 ở đâu?",
+          "explanation": "登机口 means boarding gate."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK3-QUI-004",
+    "hsk_level": 3,
+    "lesson_type": "quiz",
+    "title": "HSK3 Quiz: Checking in at a Hotel",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 35,
+    "order": 8,
+    "prerequisite_ids": [
+      "HSK3-CON-004"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK3-CON-004",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK3-QUI-004-Q001",
+          "type": "multiple_choice",
+          "prompt": "What surname does the guest give?",
+          "options": [
+            "Li",
+            "Wang",
+            "Zhang",
+            "Chen"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Li",
+          "explanation": "The guest says: 我姓李."
+        },
+        {
+          "id": "HSK3-QUI-004-Q002",
+          "type": "multiple_choice",
+          "prompt": "What floor is the room on?",
+          "options": [
+            "Sixth floor",
+            "Eighth floor",
+            "Third floor",
+            "First floor"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Sixth floor",
+          "explanation": "The front desk says: 在六楼."
+        },
+        {
+          "id": "HSK3-QUI-004-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 请问您有___吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "预订",
+          "explanation": "预订 means reservation."
+        },
+        {
+          "id": "HSK3-QUI-004-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 早饭几点___？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "开始",
+          "explanation": "几点开始 asks what time something starts."
+        },
+        {
+          "id": "HSK3-QUI-004-Q005",
+          "type": "listening",
+          "prompt": "What is the guest's surname?",
+          "options": [
+            "Li",
+            "Wang",
+            "Ma",
+            "Zhao"
+          ],
+          "tokens": [],
+          "audio_text": "我姓李。",
+          "image_keyword": "",
+          "correct_answer": "Li",
+          "explanation": "姓李 means surnamed Li."
+        },
+        {
+          "id": "HSK3-QUI-004-Q006",
+          "type": "listening",
+          "prompt": "What is this?",
+          "options": [
+            "Room card",
+            "Passport",
+            "Ticket",
+            "Medicine"
+          ],
+          "tokens": [],
+          "audio_text": "这是房卡。",
+          "image_keyword": "",
+          "correct_answer": "Room card",
+          "explanation": "房卡 means room card."
+        },
+        {
+          "id": "HSK3-QUI-004-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "您",
+            "有",
+            "预订",
+            "吗"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "您有预订吗？",
+          "explanation": "您 is the polite form of 你."
+        },
+        {
+          "id": "HSK3-QUI-004-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "房间",
+            "在",
+            "几楼"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "房间在几楼？",
+          "explanation": "几楼 asks which floor."
+        },
+        {
+          "id": "HSK3-QUI-004-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 前台.",
+          "options": [
+            "front desk",
+            "airport gate",
+            "hospital",
+            "classroom"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "front desk",
+          "explanation": "前台 means front desk."
+        },
+        {
+          "id": "HSK3-QUI-004-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 早饭.",
+          "options": [
+            "breakfast",
+            "lunch",
+            "dinner",
+            "homework"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "breakfast",
+          "explanation": "早饭 means breakfast."
+        },
+        {
+          "id": "HSK3-QUI-004-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'room'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "房间",
+          "explanation": "房间 means room."
+        },
+        {
+          "id": "HSK3-QUI-004-Q012",
+          "type": "typing",
+          "prompt": "Type the polite Chinese pronoun for 'you'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "您",
+          "explanation": "您 is polite you."
+        },
+        {
+          "id": "HSK3-QUI-004-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 房间在几楼？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "What floor is the room on?",
+          "explanation": "几楼 asks which floor."
+        },
+        {
+          "id": "HSK3-QUI-004-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: Breakfast starts at seven.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "早饭七点开始。",
+          "explanation": "七点开始 means starts at seven."
+        },
+        {
+          "id": "HSK3-QUI-004-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "前台",
+            "登机口",
+            "办公室",
+            "火车站"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "hotel front desk",
+          "correct_answer": "前台",
+          "explanation": "The image shows a hotel front desk."
+        },
+        {
+          "id": "HSK3-QUI-004-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "房卡",
+            "护照",
+            "机票",
+            "药"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "hotel room key card",
+          "correct_answer": "房卡",
+          "explanation": "The image shows a room card."
+        },
+        {
+          "id": "HSK3-QUI-004-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which word is more polite than 你?",
+          "options": [
+            "您",
+            "我",
+            "他",
+            "她"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "您",
+          "explanation": "您 is the polite form."
+        },
+        {
+          "id": "HSK3-QUI-004-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 我___李。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "姓",
+          "explanation": "姓 introduces a surname."
+        },
+        {
+          "id": "HSK3-QUI-004-Q019",
+          "type": "listening",
+          "prompt": "When does it start?",
+          "options": [
+            "7 a.m.",
+            "6 a.m.",
+            "7 p.m.",
+            "8 a.m."
+          ],
+          "tokens": [],
+          "audio_text": "早上七点开始。",
+          "image_keyword": "",
+          "correct_answer": "7 a.m.",
+          "explanation": "早上七点 means seven in the morning."
+        },
+        {
+          "id": "HSK3-QUI-004-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 请给我看一下您的护照。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Vui lòng cho tôi xem hộ chiếu của quý khách.",
+          "explanation": "您的护照 is polite: your passport."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK3-QUI-005",
+    "hsk_level": 3,
+    "lesson_type": "quiz",
+    "title": "HSK3 Quiz: Planning a Meeting",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 35,
+    "order": 9,
+    "prerequisite_ids": [
+      "HSK3-CON-005"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK3-CON-005",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK3-QUI-005-Q001",
+          "type": "multiple_choice",
+          "prompt": "When is colleague B available?",
+          "options": [
+            "After 10 a.m.",
+            "Before 8 a.m.",
+            "After 3 p.m.",
+            "Tonight"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "After 10 a.m.",
+          "explanation": "Colleague B says: 上午十点以后有时间."
+        },
+        {
+          "id": "HSK3-QUI-005-Q002",
+          "type": "multiple_choice",
+          "prompt": "Where is the meeting?",
+          "options": [
+            "Office 3",
+            "Gate 8",
+            "Sixth floor room",
+            "School gate"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Office 3",
+          "explanation": "The meeting is 在三号办公室."
+        },
+        {
+          "id": "HSK3-QUI-005-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 明天上午你有___吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "时间",
+          "explanation": "有时间 means to have time."
+        },
+        {
+          "id": "HSK3-QUI-005-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 我会带电脑和___。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "文件",
+          "explanation": "文件 means documents."
+        },
+        {
+          "id": "HSK3-QUI-005-Q005",
+          "type": "listening",
+          "prompt": "What is suggested?",
+          "options": [
+            "Have a meeting",
+            "Buy clothes",
+            "Go to the hospital",
+            "Watch a movie"
+          ],
+          "tokens": [],
+          "audio_text": "我们开个会，可以吗？",
+          "image_keyword": "",
+          "correct_answer": "Have a meeting",
+          "explanation": "开会 means have a meeting."
+        },
+        {
+          "id": "HSK3-QUI-005-Q006",
+          "type": "listening",
+          "prompt": "What will the speaker bring?",
+          "options": [
+            "Computer and documents",
+            "Passport and ticket",
+            "Medicine and water",
+            "Clothes and shoes"
+          ],
+          "tokens": [],
+          "audio_text": "我会带电脑和文件。",
+          "image_keyword": "",
+          "correct_answer": "Computer and documents",
+          "explanation": "电脑和文件 means computer and documents."
+        },
+        {
+          "id": "HSK3-QUI-005-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "你",
+            "有",
+            "时间",
+            "吗"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "你有时间吗？",
+          "explanation": "有...吗 asks whether someone has something."
+        },
+        {
+          "id": "HSK3-QUI-005-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "会议",
+            "在",
+            "办公室"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "会议在办公室。",
+          "explanation": "在 shows location."
+        },
+        {
+          "id": "HSK3-QUI-005-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 同事.",
+          "options": [
+            "colleague",
+            "customer",
+            "patient",
+            "tourist"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "colleague",
+          "explanation": "同事 means colleague."
+        },
+        {
+          "id": "HSK3-QUI-005-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 文件.",
+          "options": [
+            "document",
+            "medicine",
+            "ticket",
+            "clothes"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "document",
+          "explanation": "文件 means document."
+        },
+        {
+          "id": "HSK3-QUI-005-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'office'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "办公室",
+          "explanation": "办公室 means office."
+        },
+        {
+          "id": "HSK3-QUI-005-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'computer'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "电脑",
+          "explanation": "电脑 means computer."
+        },
+        {
+          "id": "HSK3-QUI-005-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 明天上午你有时间吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Do you have time tomorrow morning?",
+          "explanation": "明天上午 means tomorrow morning."
+        },
+        {
+          "id": "HSK3-QUI-005-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: The meeting is in the office.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "会议在办公室。",
+          "explanation": "在办公室 means in the office."
+        },
+        {
+          "id": "HSK3-QUI-005-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "办公室",
+            "饭店",
+            "医院",
+            "商店"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "office meeting room",
+          "correct_answer": "办公室",
+          "explanation": "The image shows an office."
+        },
+        {
+          "id": "HSK3-QUI-005-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "文件",
+            "药",
+            "机票",
+            "水果"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "documents on desk",
+          "correct_answer": "文件",
+          "explanation": "The image shows documents."
+        },
+        {
+          "id": "HSK3-QUI-005-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which phrase means 'after ten o'clock'?",
+          "options": [
+            "十点以后",
+            "十点以前",
+            "三号办公室",
+            "明天上午"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "十点以后",
+          "explanation": "以后 means after."
+        },
+        {
+          "id": "HSK3-QUI-005-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 我们开个___，可以吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "会",
+          "explanation": "开会 means have a meeting."
+        },
+        {
+          "id": "HSK3-QUI-005-Q019",
+          "type": "listening",
+          "prompt": "When is the person free?",
+          "options": [
+            "After 10 a.m.",
+            "Before 10 a.m.",
+            "At 7 a.m.",
+            "After 3 p.m."
+          ],
+          "tokens": [],
+          "audio_text": "上午十点以后有时间。",
+          "image_keyword": "",
+          "correct_answer": "After 10 a.m.",
+          "explanation": "以后 means after."
+        },
+        {
+          "id": "HSK3-QUI-005-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 我会带电脑和文件。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Tôi sẽ mang máy tính và tài liệu.",
+          "explanation": "会 can express a future action here."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK3-QUI-006",
+    "hsk_level": 3,
+    "lesson_type": "quiz",
+    "title": "HSK3 Quiz: Seeing a Doctor",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 35,
+    "order": 10,
+    "prerequisite_ids": [
+      "HSK3-CON-006"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK3-CON-006",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK3-QUI-006-Q001",
+          "type": "multiple_choice",
+          "prompt": "What symptoms does the patient have?",
+          "options": [
+            "Headache and fever",
+            "Stomachache only",
+            "Cold hands",
+            "No symptoms"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Headache and fever",
+          "explanation": "The patient says: 我头疼，也有点儿发烧."
+        },
+        {
+          "id": "HSK3-QUI-006-Q002",
+          "type": "multiple_choice",
+          "prompt": "What does the doctor advise?",
+          "options": [
+            "Drink more water and rest",
+            "Buy clothes",
+            "Go to school",
+            "Write sentences"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Drink more water and rest",
+          "explanation": "The doctor says: 多喝水，好好休息."
+        },
+        {
+          "id": "HSK3-QUI-006-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 你哪儿不___？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "舒服",
+          "explanation": "不舒服 means unwell/uncomfortable."
+        },
+        {
+          "id": "HSK3-QUI-006-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 我需要吃___吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "药",
+          "explanation": "吃药 means take medicine."
+        },
+        {
+          "id": "HSK3-QUI-006-Q005",
+          "type": "listening",
+          "prompt": "What is wrong?",
+          "options": [
+            "Headache and slight fever",
+            "Only hungry",
+            "Only tired",
+            "No problem"
+          ],
+          "tokens": [],
+          "audio_text": "我头疼，也有点儿发烧。",
+          "image_keyword": "",
+          "correct_answer": "Headache and slight fever",
+          "explanation": "头疼 is headache; 发烧 is fever."
+        },
+        {
+          "id": "HSK3-QUI-006-Q006",
+          "type": "listening",
+          "prompt": "What should the patient do?",
+          "options": [
+            "Drink more water",
+            "Eat more rice",
+            "Buy a ticket",
+            "Write homework"
+          ],
+          "tokens": [],
+          "audio_text": "请多喝水。",
+          "image_keyword": "",
+          "correct_answer": "Drink more water",
+          "explanation": "多喝水 means drink more water."
+        },
+        {
+          "id": "HSK3-QUI-006-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "你",
+            "哪儿",
+            "不舒服"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "你哪儿不舒服？",
+          "explanation": "哪儿 asks where."
+        },
+        {
+          "id": "HSK3-QUI-006-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "我",
+            "需要",
+            "吃药"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "我需要吃药。",
+          "explanation": "需要 + verb phrase means need to do something."
+        },
+        {
+          "id": "HSK3-QUI-006-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 病人.",
+          "options": [
+            "patient",
+            "doctor",
+            "teacher",
+            "guest"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "patient",
+          "explanation": "病人 means patient."
+        },
+        {
+          "id": "HSK3-QUI-006-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 发烧.",
+          "options": [
+            "to have a fever",
+            "to have a meeting",
+            "to check in",
+            "to try clothes"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "to have a fever",
+          "explanation": "发烧 means have a fever."
+        },
+        {
+          "id": "HSK3-QUI-006-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'medicine'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "药",
+          "explanation": "药 means medicine."
+        },
+        {
+          "id": "HSK3-QUI-006-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'doctor'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "医生",
+          "explanation": "医生 means doctor."
+        },
+        {
+          "id": "HSK3-QUI-006-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 我需要吃药吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Do I need to take medicine?",
+          "explanation": "需要 means need; 吗 marks a question."
+        },
+        {
+          "id": "HSK3-QUI-006-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: Please rest well.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "请好好休息。",
+          "explanation": "好好休息 means rest well."
+        },
+        {
+          "id": "HSK3-QUI-006-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "医生",
+            "店员",
+            "旅客",
+            "同事"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "doctor",
+          "correct_answer": "医生",
+          "explanation": "The image shows a doctor."
+        },
+        {
+          "id": "HSK3-QUI-006-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "药",
+            "水",
+            "文件",
+            "房卡"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "medicine pills",
+          "correct_answer": "药",
+          "explanation": "The image shows medicine."
+        },
+        {
+          "id": "HSK3-QUI-006-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which phrase means 'a little'?",
+          "options": [
+            "有点儿",
+            "很多",
+            "一点不",
+            "然后"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "有点儿",
+          "explanation": "有点儿 expresses a small degree, often for negative states."
+        },
+        {
+          "id": "HSK3-QUI-006-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 今天吃饭___吗？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "了",
+          "explanation": "Verb + 了 + 吗 asks whether an action was completed."
+        },
+        {
+          "id": "HSK3-QUI-006-Q019",
+          "type": "listening",
+          "prompt": "What is this?",
+          "options": [
+            "Your medicine",
+            "Your ticket",
+            "Your homework",
+            "Your room card"
+          ],
+          "tokens": [],
+          "audio_text": "这是你的药。",
+          "image_keyword": "",
+          "correct_answer": "Your medicine",
+          "explanation": "你的药 means your medicine."
+        },
+        {
+          "id": "HSK3-QUI-006-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 请多喝水，好好休息。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Hãy uống nhiều nước và nghỉ ngơi cho tốt.",
+          "explanation": "多喝水 and 好好休息 are common doctor advice phrases."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  },
+  {
+    "id": "HSK3-QUI-007",
+    "hsk_level": 3,
+    "lesson_type": "quiz",
+    "title": "HSK3 Quiz: Asking for Directions While Traveling",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 35,
+    "order": 11,
+    "prerequisite_ids": [
+      "HSK3-CON-007"
+    ],
+    "learning_objectives": [],
+    "vocabulary_list": [],
+    "grammar_points": [],
+    "content": {
+      "focus": "HSK3-CON-007",
+      "chinese": "",
+      "pinyin": "",
+      "english": "",
+      "vietnamese": "",
+      "items": [],
+      "questions": [
+        {
+          "id": "HSK3-QUI-007-Q001",
+          "type": "multiple_choice",
+          "prompt": "Where does the tourist want to go?",
+          "options": [
+            "Train station",
+            "Hospital",
+            "Hotel",
+            "Office"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Train station",
+          "explanation": "The tourist asks: 火车站怎么走？"
+        },
+        {
+          "id": "HSK3-QUI-007-Q002",
+          "type": "multiple_choice",
+          "prompt": "How long does it take on foot?",
+          "options": [
+            "Ten minutes",
+            "Three minutes",
+            "Twenty minutes",
+            "One hour"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Ten minutes",
+          "explanation": "The passerby says: 走路十分钟."
+        },
+        {
+          "id": "HSK3-QUI-007-Q003",
+          "type": "fill_blank",
+          "prompt": "Complete: 火车站___走？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "怎么",
+          "explanation": "怎么走 asks how to get somewhere."
+        },
+        {
+          "id": "HSK3-QUI-007-Q004",
+          "type": "fill_blank",
+          "prompt": "Complete: 地铁站在火车站___边。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "旁",
+          "explanation": "旁边 means beside/next to."
+        },
+        {
+          "id": "HSK3-QUI-007-Q005",
+          "type": "listening",
+          "prompt": "What direction is given?",
+          "options": [
+            "Walk straight ahead from here",
+            "Turn right immediately",
+            "Go upstairs",
+            "Go back home"
+          ],
+          "tokens": [],
+          "audio_text": "从这里一直往前走。",
+          "image_keyword": "",
+          "correct_answer": "Walk straight ahead from here",
+          "explanation": "一直往前走 means keep walking forward."
+        },
+        {
+          "id": "HSK3-QUI-007-Q006",
+          "type": "listening",
+          "prompt": "Is it far?",
+          "options": [
+            "No, ten minutes on foot",
+            "Yes, one hour",
+            "No, one minute",
+            "Yes, by plane"
+          ],
+          "tokens": [],
+          "audio_text": "不远，走路十分钟。",
+          "image_keyword": "",
+          "correct_answer": "No, ten minutes on foot",
+          "explanation": "不远 means not far."
+        },
+        {
+          "id": "HSK3-QUI-007-Q007",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a question.",
+          "options": [],
+          "tokens": [
+            "火车站",
+            "怎么",
+            "走"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "火车站怎么走？",
+          "explanation": "Place + 怎么走 asks for directions."
+        },
+        {
+          "id": "HSK3-QUI-007-Q008",
+          "type": "arrange_sentence",
+          "prompt": "Arrange the words into a sentence.",
+          "options": [],
+          "tokens": [
+            "地铁站",
+            "在",
+            "火车站",
+            "旁边"
+          ],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "地铁站在火车站旁边。",
+          "explanation": "在...旁边 states next-to location."
+        },
+        {
+          "id": "HSK3-QUI-007-Q009",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 游客.",
+          "options": [
+            "tourist",
+            "doctor",
+            "server",
+            "teacher"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "tourist",
+          "explanation": "游客 means tourist."
+        },
+        {
+          "id": "HSK3-QUI-007-Q010",
+          "type": "choose_meaning",
+          "prompt": "Choose the meaning of 火车站.",
+          "options": [
+            "train station",
+            "subway station",
+            "airport",
+            "hotel"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "train station",
+          "explanation": "火车站 means train station."
+        },
+        {
+          "id": "HSK3-QUI-007-Q011",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'subway station'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "地铁站",
+          "explanation": "地铁站 means subway station."
+        },
+        {
+          "id": "HSK3-QUI-007-Q012",
+          "type": "typing",
+          "prompt": "Type the Hanzi for 'far'.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "远",
+          "explanation": "远 means far."
+        },
+        {
+          "id": "HSK3-QUI-007-Q013",
+          "type": "translation",
+          "prompt": "Translate to English: 火车站怎么走？",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "How do I get to the train station?",
+          "explanation": "怎么走 asks how to go/walk there."
+        },
+        {
+          "id": "HSK3-QUI-007-Q014",
+          "type": "translation",
+          "prompt": "Translate to Chinese: It is next to the train station.",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "在火车站旁边。",
+          "explanation": "旁边 means next to."
+        },
+        {
+          "id": "HSK3-QUI-007-Q015",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "火车站",
+            "医院",
+            "办公室",
+            "饭店"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "train station",
+          "correct_answer": "火车站",
+          "explanation": "The image shows a train station."
+        },
+        {
+          "id": "HSK3-QUI-007-Q016",
+          "type": "image_matching",
+          "prompt": "Choose the matching word.",
+          "options": [
+            "地铁站",
+            "登机口",
+            "房间",
+            "商店"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "subway station sign",
+          "correct_answer": "地铁站",
+          "explanation": "The image shows a subway station sign."
+        },
+        {
+          "id": "HSK3-QUI-007-Q017",
+          "type": "multiple_choice",
+          "prompt": "Which word means 'then'?",
+          "options": [
+            "然后",
+            "旁边",
+            "远",
+            "游客"
+          ],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "然后",
+          "explanation": "然后 means then/after that."
+        },
+        {
+          "id": "HSK3-QUI-007-Q018",
+          "type": "fill_blank",
+          "prompt": "Complete: 然后往___走。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "左",
+          "explanation": "往左走 means walk/turn left."
+        },
+        {
+          "id": "HSK3-QUI-007-Q019",
+          "type": "listening",
+          "prompt": "What is being asked?",
+          "options": [
+            "Is there a subway station nearby?",
+            "Is there a hotel nearby?",
+            "Is it far?",
+            "Where is the office?"
+          ],
+          "tokens": [],
+          "audio_text": "附近有地铁站吗？",
+          "image_keyword": "",
+          "correct_answer": "Is there a subway station nearby?",
+          "explanation": "附近 means nearby."
+        },
+        {
+          "id": "HSK3-QUI-007-Q020",
+          "type": "translation",
+          "prompt": "Translate to Vietnamese: 从这里一直往前走。",
+          "options": [],
+          "tokens": [],
+          "audio_text": "",
+          "image_keyword": "",
+          "correct_answer": "Từ đây cứ đi thẳng về phía trước.",
+          "explanation": "一直往前走 means keep walking forward."
+        }
+      ],
+      "cultural_note": {
+        "english": "",
+        "vietnamese": ""
+      }
+    }
+  }
+]
