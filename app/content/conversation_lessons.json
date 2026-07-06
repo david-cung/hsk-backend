@@ -1,0 +1,1128 @@
+[
+  {
+    "id": "HSK1-CON-002",
+    "hsk_level": 1,
+    "lesson_type": "conversation",
+    "title": "HSK1 Conversation: Introducing Family Members",
+    "difficulty": "beginner",
+    "estimated_duration_minutes": 18,
+    "order": 1,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "家",
+        "pinyin": "jiā",
+        "meaning_en": "family; home",
+        "meaning_vi": "gia đình; nhà"
+      },
+      {
+        "hanzi": "几个人",
+        "pinyin": "jǐ ge rén",
+        "meaning_en": "how many people",
+        "meaning_vi": "mấy người"
+      },
+      {
+        "hanzi": "爸爸",
+        "pinyin": "bàba",
+        "meaning_en": "dad",
+        "meaning_vi": "bố"
+      },
+      {
+        "hanzi": "妈妈",
+        "pinyin": "māma",
+        "meaning_en": "mom",
+        "meaning_vi": "mẹ"
+      },
+      {
+        "hanzi": "妹妹",
+        "pinyin": "mèimei",
+        "meaning_en": "younger sister",
+        "meaning_vi": "em gái"
+      },
+      {
+        "hanzi": "工作",
+        "pinyin": "gōngzuò",
+        "meaning_en": "work; job",
+        "meaning_vi": "công việc"
+      },
+      {
+        "hanzi": "病",
+        "pinyin": "bìng",
+        "meaning_en": "illness; disease",
+        "meaning_vi": "bệnh"
+      },
+      {
+        "hanzi": "多大",
+        "pinyin": "duō dà",
+        "meaning_en": "how old",
+        "meaning_vi": "bao nhiêu tuổi"
+      },
+      {
+        "hanzi": "岁",
+        "pinyin": "suì",
+        "meaning_en": "years old",
+        "meaning_vi": "tuổi"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "几 + measure word + noun",
+        "structure": "几 + 个 + 人",
+        "usage_en": "Ask about a small number of people.",
+        "usage_vi": "Hỏi số lượng nhỏ, ví dụ số người.",
+        "examples": []
+      },
+      {
+        "point": "A 是 B",
+        "structure": "Subject + 是 + noun",
+        "usage_en": "Identify a person or role.",
+        "usage_vi": "Giới thiệu thân phận hoặc nghề nghiệp.",
+        "examples": []
+      },
+      {
+        "point": "Age with 岁",
+        "structure": "Subject + number + 岁",
+        "usage_en": "Say someone's age.",
+        "usage_vi": "Nói tuổi của ai đó.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Family",
+      "chinese": "朋友：你家有几个人？\n我：我家有四个人，爸爸、妈妈、妹妹和我。\n朋友：你爸爸做什么工作？\n我：他是医生。妈妈是老师。\n朋友：你妹妹多大？\n我：她八岁。",
+      "pinyin": "Péngyou: Nǐ jiā yǒu jǐ ge rén?\nWǒ: Wǒ jiā yǒu sì ge rén, bàba, māma, mèimei hé wǒ.\nPéngyou: Nǐ bàba zuò shénme gōngzuò?\nWǒ: Tā shì yīshēng. Māma shì lǎoshī.\nPéngyou: Nǐ mèimei duō dà?\nWǒ: Tā bā suì.",
+      "english": "Friend: How many people are in your family?\nMe: There are four people in my family: dad, mom, younger sister, and me.\nFriend: What work does your dad do?\nMe: He is a doctor. Mom is a teacher.\nFriend: How old is your younger sister?\nMe: She is eight years old.",
+      "vietnamese": "Bạn: Nhà bạn có mấy người?\nTôi: Nhà tôi có bốn người: bố, mẹ, em gái và tôi.\nBạn: Bố bạn làm nghề gì?\nTôi: Ông ấy là bác sĩ. Mẹ là giáo viên.\nBạn: Em gái bạn bao nhiêu tuổi?\nTôi: Em ấy tám tuổi.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "Asking about family is common in friendly conversation, especially after people have introduced themselves.",
+        "vietnamese": "Hỏi về gia đình là chủ đề phổ biến trong hội thoại thân mật, đặc biệt sau khi đã giới thiệu bản thân."
+      }
+    }
+  },
+  {
+    "id": "HSK2-CON-002",
+    "hsk_level": 2,
+    "lesson_type": "conversation",
+    "title": "HSK2 Conversation: Ordering Noodles at a Restaurant",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 22,
+    "order": 2,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "服务员",
+        "pinyin": "fúwùyuán",
+        "meaning_en": "waiter; server",
+        "meaning_vi": "nhân viên phục vụ"
+      },
+      {
+        "hanzi": "客人",
+        "pinyin": "kèrén",
+        "meaning_en": "customer; guest",
+        "meaning_vi": "khách"
+      },
+      {
+        "hanzi": "要",
+        "pinyin": "yào",
+        "meaning_en": "to want; would like",
+        "meaning_vi": "muốn"
+      },
+      {
+        "hanzi": "一碗",
+        "pinyin": "yì wǎn",
+        "meaning_en": "one bowl",
+        "meaning_vi": "một bát"
+      },
+      {
+        "hanzi": "牛肉面",
+        "pinyin": "niúròu miàn",
+        "meaning_en": "beef noodles",
+        "meaning_vi": "mì bò"
+      },
+      {
+        "hanzi": "一杯",
+        "pinyin": "yì bēi",
+        "meaning_en": "one cup; one glass",
+        "meaning_vi": "một cốc"
+      },
+      {
+        "hanzi": "多少钱",
+        "pinyin": "duōshao qián",
+        "meaning_en": "how much money",
+        "meaning_vi": "bao nhiêu tiền"
+      },
+      {
+        "hanzi": "块",
+        "pinyin": "kuài",
+        "meaning_en": "yuan; colloquial money unit",
+        "meaning_vi": "tệ"
+      },
+      {
+        "hanzi": "稍等",
+        "pinyin": "shāo děng",
+        "meaning_en": "wait a moment",
+        "meaning_vi": "chờ một chút"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "请问...",
+        "structure": "请问 + question",
+        "usage_en": "A polite way to ask a question.",
+        "usage_vi": "Cách lịch sự để hỏi.",
+        "examples": []
+      },
+      {
+        "point": "我要...",
+        "structure": "Subject + 要 + noun/verb phrase",
+        "usage_en": "Used to order or say what you want.",
+        "usage_vi": "Dùng để gọi món hoặc nói điều mình muốn.",
+        "examples": []
+      },
+      {
+        "point": "多少钱",
+        "structure": "Item + 多少钱？",
+        "usage_en": "Used to ask the price.",
+        "usage_vi": "Dùng để hỏi giá.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Restaurant",
+      "chinese": "服务员：你好，请问你要吃什么？\n客人：你好，我要一碗牛肉面。\n服务员：你要喝什么？\n客人：我要一杯水。这个面多少钱？\n服务员：二十五块。请稍等。\n客人：谢谢。",
+      "pinyin": "Fúwùyuán: Nǐ hǎo, qǐngwèn nǐ yào chī shénme?\nKèrén: Nǐ hǎo, wǒ yào yì wǎn niúròu miàn.\nFúwùyuán: Nǐ yào hē shénme?\nKèrén: Wǒ yào yì bēi shuǐ. Zhè ge miàn duōshao qián?\nFúwùyuán: Èrshíwǔ kuài. Qǐng shāo děng.\nKèrén: Xièxie.",
+      "english": "Waiter: Hello, may I ask what you would like to eat?\nCustomer: Hello, I would like a bowl of beef noodles.\nWaiter: What would you like to drink?\nCustomer: I would like a glass of water. How much are these noodles?\nWaiter: Twenty-five yuan. Please wait a moment.\nCustomer: Thank you.",
+      "vietnamese": "Phục vụ: Xin chào, xin hỏi bạn muốn ăn gì?\nKhách: Xin chào, tôi muốn một bát mì bò.\nPhục vụ: Bạn muốn uống gì?\nKhách: Tôi muốn một cốc nước. Món mì này bao nhiêu tiền?\nPhục vụ: Hai mươi lăm tệ. Xin chờ một chút.\nKhách: Cảm ơn.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "In casual restaurants in China, saying 我要... is acceptable for ordering, but adding 请 or 请问 makes the tone more polite.",
+        "vietnamese": "Ở các quán ăn bình dân tại Trung Quốc, dùng 我要... để gọi món là tự nhiên, nhưng thêm 请 hoặc 请问 sẽ lịch sự hơn."
+      }
+    }
+  },
+  {
+    "id": "HSK2-CON-003",
+    "hsk_level": 2,
+    "lesson_type": "conversation",
+    "title": "HSK2 Conversation: Asking About Class",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 22,
+    "order": 3,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "学生",
+        "pinyin": "xuésheng",
+        "meaning_en": "student",
+        "meaning_vi": "học sinh"
+      },
+      {
+        "hanzi": "老师",
+        "pinyin": "lǎoshī",
+        "meaning_en": "teacher",
+        "meaning_vi": "giáo viên"
+      },
+      {
+        "hanzi": "学",
+        "pinyin": "xué",
+        "meaning_en": "to study",
+        "meaning_vi": "học"
+      },
+      {
+        "hanzi": "汉语",
+        "pinyin": "Hànyǔ",
+        "meaning_en": "Chinese language",
+        "meaning_vi": "tiếng Trung"
+      },
+      {
+        "hanzi": "语法",
+        "pinyin": "yǔfǎ",
+        "meaning_en": "grammar",
+        "meaning_vi": "ngữ pháp"
+      },
+      {
+        "hanzi": "作业",
+        "pinyin": "zuòyè",
+        "meaning_en": "homework",
+        "meaning_vi": "bài tập"
+      },
+      {
+        "hanzi": "写",
+        "pinyin": "xiě",
+        "meaning_en": "to write",
+        "meaning_vi": "viết"
+      },
+      {
+        "hanzi": "句子",
+        "pinyin": "jùzi",
+        "meaning_en": "sentence",
+        "meaning_vi": "câu"
+      },
+      {
+        "hanzi": "交",
+        "pinyin": "jiāo",
+        "meaning_en": "to hand in",
+        "meaning_vi": "nộp"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "什么 question",
+        "structure": "Subject + Verb + 什么？",
+        "usage_en": "Ask what someone studies, eats, or does.",
+        "usage_vi": "Hỏi ai đó học, ăn hoặc làm gì.",
+        "examples": []
+      },
+      {
+        "point": "有...吗",
+        "structure": "有 + noun + 吗？",
+        "usage_en": "Ask whether something exists.",
+        "usage_vi": "Hỏi có thứ gì đó hay không.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "School",
+      "chinese": "学生：老师好，今天我们学什么？\n老师：今天我们学汉语语法。\n学生：有作业吗？\n老师：有，请写十个句子。\n学生：明天交吗？\n老师：对，明天上午交。",
+      "pinyin": "Xuésheng: Lǎoshī hǎo, jīntiān wǒmen xué shénme?\nLǎoshī: Jīntiān wǒmen xué Hànyǔ yǔfǎ.\nXuésheng: Yǒu zuòyè ma?\nLǎoshī: Yǒu, qǐng xiě shí ge jùzi.\nXuésheng: Míngtiān jiāo ma?\nLǎoshī: Duì, míngtiān shàngwǔ jiāo.",
+      "english": "Student: Hello, teacher. What are we studying today?\nTeacher: Today we are studying Chinese grammar.\nStudent: Is there homework?\nTeacher: Yes, please write ten sentences.\nStudent: Do we hand it in tomorrow?\nTeacher: Correct, hand it in tomorrow morning.",
+      "vietnamese": "Học sinh: Em chào thầy/cô. Hôm nay chúng ta học gì ạ?\nGiáo viên: Hôm nay chúng ta học ngữ pháp tiếng Trung.\nHọc sinh: Có bài tập không ạ?\nGiáo viên: Có, hãy viết mười câu.\nHọc sinh: Ngày mai nộp ạ?\nGiáo viên: Đúng, sáng mai nộp.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "Students commonly greet teachers with 老师好. It is more respectful than only saying 你好.",
+        "vietnamese": "Học sinh thường chào giáo viên bằng 老师好. Cách này kính trọng hơn chỉ nói 你好."
+      }
+    }
+  },
+  {
+    "id": "HSK2-CON-004",
+    "hsk_level": 2,
+    "lesson_type": "conversation",
+    "title": "HSK2 Conversation: Making Weekend Plans",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 22,
+    "order": 4,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "朋友",
+        "pinyin": "péngyou",
+        "meaning_en": "friend",
+        "meaning_vi": "bạn"
+      },
+      {
+        "hanzi": "星期六",
+        "pinyin": "xīngqīliù",
+        "meaning_en": "Saturday",
+        "meaning_vi": "thứ Bảy"
+      },
+      {
+        "hanzi": "有时间",
+        "pinyin": "yǒu shíjiān",
+        "meaning_en": "to have time",
+        "meaning_vi": "có thời gian"
+      },
+      {
+        "hanzi": "想",
+        "pinyin": "xiǎng",
+        "meaning_en": "to want to",
+        "meaning_vi": "muốn"
+      },
+      {
+        "hanzi": "看电影",
+        "pinyin": "kàn diànyǐng",
+        "meaning_en": "to watch a movie",
+        "meaning_vi": "xem phim"
+      },
+      {
+        "hanzi": "下午",
+        "pinyin": "xiàwǔ",
+        "meaning_en": "afternoon",
+        "meaning_vi": "buổi chiều"
+      },
+      {
+        "hanzi": "可以",
+        "pinyin": "kěyǐ",
+        "meaning_en": "can; okay",
+        "meaning_vi": "có thể; được"
+      },
+      {
+        "hanzi": "见",
+        "pinyin": "jiàn",
+        "meaning_en": "to meet; to see",
+        "meaning_vi": "gặp"
+      },
+      {
+        "hanzi": "门口",
+        "pinyin": "ménkǒu",
+        "meaning_en": "entrance; gate",
+        "meaning_vi": "cổng; cửa ra vào"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "想 + verb",
+        "structure": "Subject + 想 + verb phrase",
+        "usage_en": "Express what someone wants to do.",
+        "usage_vi": "Diễn tả điều ai đó muốn làm.",
+        "examples": []
+      },
+      {
+        "point": "几点",
+        "structure": "几点 + verb？",
+        "usage_en": "Ask what time an action happens.",
+        "usage_vi": "Hỏi hành động xảy ra lúc mấy giờ.",
+        "examples": []
+      },
+      {
+        "point": "在哪儿见",
+        "structure": "Subject + 在哪儿 + 见？",
+        "usage_en": "Ask where to meet.",
+        "usage_vi": "Hỏi gặp nhau ở đâu.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Friends",
+      "chinese": "朋友甲：这个星期六你有时间吗？\n朋友乙：有，你想做什么？\n朋友甲：我想去看电影。\n朋友乙：好啊，几点去？\n朋友甲：下午三点可以吗？\n朋友乙：可以。我们在哪儿见？\n朋友甲：在学校门口见。",
+      "pinyin": "Péngyou Jiǎ: Zhè ge xīngqīliù nǐ yǒu shíjiān ma?\nPéngyou Yǐ: Yǒu, nǐ xiǎng zuò shénme?\nPéngyou Jiǎ: Wǒ xiǎng qù kàn diànyǐng.\nPéngyou Yǐ: Hǎo a, jǐ diǎn qù?\nPéngyou Jiǎ: Xiàwǔ sān diǎn kěyǐ ma?\nPéngyou Yǐ: Kěyǐ. Wǒmen zài nǎr jiàn?\nPéngyou Jiǎ: Zài xuéxiào ménkǒu jiàn.",
+      "english": "Friend A: Do you have time this Saturday?\nFriend B: Yes. What do you want to do?\nFriend A: I want to go watch a movie.\nFriend B: Great. What time shall we go?\nFriend A: Is three in the afternoon okay?\nFriend B: Yes. Where shall we meet?\nFriend A: Let's meet at the school gate.",
+      "vietnamese": "Bạn A: Thứ Bảy này bạn có thời gian không?\nBạn B: Có, bạn muốn làm gì?\nBạn A: Tôi muốn đi xem phim.\nBạn B: Được đó, mấy giờ đi?\nBạn A: Ba giờ chiều được không?\nBạn B: Được. Chúng ta gặp ở đâu?\nBạn A: Gặp ở cổng trường.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "For casual plans with friends, 好啊 sounds warm and natural. It is friendlier than only saying 好.",
+        "vietnamese": "Khi hẹn bạn bè, 好啊 nghe thân thiện và tự nhiên hơn chỉ nói 好."
+      }
+    }
+  },
+  {
+    "id": "HSK2-CON-005",
+    "hsk_level": 2,
+    "lesson_type": "conversation",
+    "title": "HSK2 Conversation: Talking About the Weather",
+    "difficulty": "elementary",
+    "estimated_duration_minutes": 22,
+    "order": 5,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "天气",
+        "pinyin": "tiānqì",
+        "meaning_en": "weather",
+        "meaning_vi": "thời tiết"
+      },
+      {
+        "hanzi": "怎么样",
+        "pinyin": "zěnmeyàng",
+        "meaning_en": "how; how is it",
+        "meaning_vi": "thế nào"
+      },
+      {
+        "hanzi": "冷",
+        "pinyin": "lěng",
+        "meaning_en": "cold",
+        "meaning_vi": "lạnh"
+      },
+      {
+        "hanzi": "还",
+        "pinyin": "hái",
+        "meaning_en": "also; still",
+        "meaning_vi": "còn; vẫn"
+      },
+      {
+        "hanzi": "下雨",
+        "pinyin": "xià yǔ",
+        "meaning_en": "to rain",
+        "meaning_vi": "mưa"
+      },
+      {
+        "hanzi": "但是",
+        "pinyin": "dànshì",
+        "meaning_en": "but",
+        "meaning_vi": "nhưng"
+      },
+      {
+        "hanzi": "公园",
+        "pinyin": "gōngyuán",
+        "meaning_en": "park",
+        "meaning_vi": "công viên"
+      },
+      {
+        "hanzi": "穿",
+        "pinyin": "chuān",
+        "meaning_en": "to wear",
+        "meaning_vi": "mặc"
+      },
+      {
+        "hanzi": "多穿",
+        "pinyin": "duō chuān",
+        "meaning_en": "to wear more",
+        "meaning_vi": "mặc thêm"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "怎么样",
+        "structure": "Topic + 怎么样？",
+        "usage_en": "Ask how something is.",
+        "usage_vi": "Hỏi một việc/thứ như thế nào.",
+        "examples": []
+      },
+      {
+        "point": "还",
+        "structure": "Subject + 还 + verb/adjective",
+        "usage_en": "Add another condition or action.",
+        "usage_vi": "Bổ sung thêm một trạng thái hoặc hành động.",
+        "examples": []
+      },
+      {
+        "point": "但是",
+        "structure": "Clause A + 但是 + Clause B",
+        "usage_en": "Connect contrasting ideas.",
+        "usage_vi": "Nối hai ý tương phản.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Weather",
+      "chinese": "朋友甲：今天天气怎么样？\n朋友乙：今天很冷，还下雨。\n朋友甲：明天天气好吗？\n朋友乙：明天不下雨，但是有点儿冷。\n朋友甲：那我们明天去公园吗？\n朋友乙：可以，多穿一点儿衣服。",
+      "pinyin": "Péngyou Jiǎ: Jīntiān tiānqì zěnmeyàng?\nPéngyou Yǐ: Jīntiān hěn lěng, hái xià yǔ.\nPéngyou Jiǎ: Míngtiān tiānqì hǎo ma?\nPéngyou Yǐ: Míngtiān bù xià yǔ, dànshì yǒudiǎnr lěng.\nPéngyou Jiǎ: Nà wǒmen míngtiān qù gōngyuán ma?\nPéngyou Yǐ: Kěyǐ, duō chuān yìdiǎnr yīfu.",
+      "english": "Friend A: How is the weather today?\nFriend B: It is cold today, and it is also raining.\nFriend A: Will the weather be good tomorrow?\nFriend B: It will not rain tomorrow, but it will be a little cold.\nFriend A: Then shall we go to the park tomorrow?\nFriend B: Yes, wear a little more clothing.",
+      "vietnamese": "Bạn A: Hôm nay thời tiết thế nào?\nBạn B: Hôm nay rất lạnh, còn mưa nữa.\nBạn A: Ngày mai thời tiết tốt không?\nBạn B: Ngày mai không mưa, nhưng hơi lạnh.\nBạn A: Vậy ngày mai chúng ta đi công viên không?\nBạn B: Được, mặc thêm một chút quần áo.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "Weather is a safe and common small-talk topic in Chinese, especially before making plans.",
+        "vietnamese": "Thời tiết là chủ đề xã giao an toàn và phổ biến trong tiếng Trung, đặc biệt trước khi lên kế hoạch."
+      }
+    }
+  },
+  {
+    "id": "HSK3-CON-002",
+    "hsk_level": 3,
+    "lesson_type": "conversation",
+    "title": "HSK3 Conversation: Buying a Shirt",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 25,
+    "order": 6,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "顾客",
+        "pinyin": "gùkè",
+        "meaning_en": "customer",
+        "meaning_vi": "khách hàng"
+      },
+      {
+        "hanzi": "店员",
+        "pinyin": "diànyuán",
+        "meaning_en": "shop assistant",
+        "meaning_vi": "nhân viên cửa hàng"
+      },
+      {
+        "hanzi": "衣服",
+        "pinyin": "yīfu",
+        "meaning_en": "clothes",
+        "meaning_vi": "quần áo"
+      },
+      {
+        "hanzi": "件",
+        "pinyin": "jiàn",
+        "meaning_en": "measure word for clothes/items",
+        "meaning_vi": "lượng từ cho quần áo/đồ vật"
+      },
+      {
+        "hanzi": "小一点",
+        "pinyin": "xiǎo yìdiǎn",
+        "meaning_en": "a little smaller",
+        "meaning_vi": "nhỏ hơn một chút"
+      },
+      {
+        "hanzi": "小号",
+        "pinyin": "xiǎo hào",
+        "meaning_en": "small size",
+        "meaning_vi": "cỡ nhỏ"
+      },
+      {
+        "hanzi": "试",
+        "pinyin": "shì",
+        "meaning_en": "to try",
+        "meaning_vi": "thử"
+      },
+      {
+        "hanzi": "试衣间",
+        "pinyin": "shìyījiān",
+        "meaning_en": "fitting room",
+        "meaning_vi": "phòng thử đồ"
+      },
+      {
+        "hanzi": "那边",
+        "pinyin": "nà biān",
+        "meaning_en": "over there",
+        "meaning_vi": "bên kia"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "这件...",
+        "structure": "这 + measure word + noun",
+        "usage_en": "Refer to a specific clothing item.",
+        "usage_vi": "Chỉ một món quần áo cụ thể.",
+        "examples": []
+      },
+      {
+        "point": "一点",
+        "structure": "Adjective + 一点",
+        "usage_en": "Means a little more/less in degree.",
+        "usage_vi": "Diễn tả mức độ hơn/kém một chút.",
+        "examples": []
+      },
+      {
+        "point": "可以...吗",
+        "structure": "Subject + 可以 + verb + 吗？",
+        "usage_en": "Ask for permission.",
+        "usage_vi": "Xin phép làm gì đó.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Shopping",
+      "chinese": "顾客：你好，这件衣服多少钱？\n店员：一百二十块。\n顾客：有小一点的吗？\n店员：有，这件是小号。\n顾客：我可以试一下吗？\n店员：可以，试衣间在那边。\n顾客：很好，我买这件。",
+      "pinyin": "Gùkè: Nǐ hǎo, zhè jiàn yīfu duōshao qián?\nDiànyuán: Yìbǎi èrshí kuài.\nGùkè: Yǒu xiǎo yìdiǎn de ma?\nDiànyuán: Yǒu, zhè jiàn shì xiǎo hào.\nGùkè: Wǒ kěyǐ shì yíxià ma?\nDiànyuán: Kěyǐ, shìyījiān zài nà biān.\nGùkè: Hěn hǎo, wǒ mǎi zhè jiàn.",
+      "english": "Customer: Hello, how much is this piece of clothing?\nClerk: One hundred twenty yuan.\nCustomer: Do you have one a little smaller?\nClerk: Yes, this one is size small.\nCustomer: Can I try it on?\nClerk: Yes, the fitting room is over there.\nCustomer: Good, I will buy this one.",
+      "vietnamese": "Khách: Xin chào, cái áo này bao nhiêu tiền?\nNhân viên: Một trăm hai mươi tệ.\nKhách: Có cái nhỏ hơn một chút không?\nNhân viên: Có, cái này là cỡ nhỏ.\nKhách: Tôi có thể thử một chút không?\nNhân viên: Có thể, phòng thử đồ ở bên kia.\nKhách: Tốt, tôi mua cái này.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "In many clothing shops, it is normal to ask 可以试一下吗 before trying something on.",
+        "vietnamese": "Ở nhiều cửa hàng quần áo, nên hỏi 可以试一下吗 trước khi thử đồ."
+      }
+    }
+  },
+  {
+    "id": "HSK3-CON-003",
+    "hsk_level": 3,
+    "lesson_type": "conversation",
+    "title": "HSK3 Conversation: Checking in at the Airport",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 25,
+    "order": 7,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "工作人员",
+        "pinyin": "gōngzuò rényuán",
+        "meaning_en": "staff member",
+        "meaning_vi": "nhân viên"
+      },
+      {
+        "hanzi": "旅客",
+        "pinyin": "lǚkè",
+        "meaning_en": "traveler; passenger",
+        "meaning_vi": "hành khách"
+      },
+      {
+        "hanzi": "护照",
+        "pinyin": "hùzhào",
+        "meaning_en": "passport",
+        "meaning_vi": "hộ chiếu"
+      },
+      {
+        "hanzi": "机票",
+        "pinyin": "jīpiào",
+        "meaning_en": "plane ticket",
+        "meaning_vi": "vé máy bay"
+      },
+      {
+        "hanzi": "行李",
+        "pinyin": "xíngli",
+        "meaning_en": "luggage",
+        "meaning_vi": "hành lý"
+      },
+      {
+        "hanzi": "箱子",
+        "pinyin": "xiāngzi",
+        "meaning_en": "suitcase; box",
+        "meaning_vi": "vali; cái hộp"
+      },
+      {
+        "hanzi": "登机口",
+        "pinyin": "dēngjīkǒu",
+        "meaning_en": "boarding gate",
+        "meaning_vi": "cửa lên máy bay"
+      },
+      {
+        "hanzi": "往右走",
+        "pinyin": "wǎng yòu zǒu",
+        "meaning_en": "walk to the right",
+        "meaning_vi": "đi sang phải"
+      },
+      {
+        "hanzi": "前面",
+        "pinyin": "qiánmiàn",
+        "meaning_en": "in front; ahead",
+        "meaning_vi": "phía trước"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "请给我看一下...",
+        "structure": "请 + 给 + person + 看一下 + object",
+        "usage_en": "Politely ask someone to show something.",
+        "usage_vi": "Lịch sự yêu cầu ai đó cho xem thứ gì.",
+        "examples": []
+      },
+      {
+        "point": "把 sentence",
+        "structure": "把 + object + verb + place",
+        "usage_en": "Used when handling or moving an object.",
+        "usage_vi": "Dùng khi xử lý hoặc di chuyển một vật.",
+        "examples": []
+      },
+      {
+        "point": "往 + direction + 走",
+        "structure": "往 + direction + 走",
+        "usage_en": "Give walking directions.",
+        "usage_vi": "Chỉ đường đi bộ.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Airport",
+      "chinese": "工作人员：你好，请给我看一下护照和机票。\n旅客：好的，这是我的护照和机票。\n工作人员：你有行李吗？\n旅客：有，一个箱子。\n工作人员：请把箱子放在这里。你的登机口是八号。\n旅客：谢谢，请问八号登机口在哪儿？\n工作人员：在前面，往右走。",
+      "pinyin": "Gōngzuò rényuán: Nǐ hǎo, qǐng gěi wǒ kàn yíxià hùzhào hé jīpiào.\nLǚkè: Hǎo de, zhè shì wǒ de hùzhào hé jīpiào.\nGōngzuò rényuán: Nǐ yǒu xíngli ma?\nLǚkè: Yǒu, yí ge xiāngzi.\nGōngzuò rényuán: Qǐng bǎ xiāngzi fàng zài zhèlǐ. Nǐ de dēngjīkǒu shì bā hào.\nLǚkè: Xièxie, qǐngwèn bā hào dēngjīkǒu zài nǎr?\nGōngzuò rényuán: Zài qiánmiàn, wǎng yòu zǒu.",
+      "english": "Staff: Hello, please show me your passport and ticket.\nTraveler: Okay, this is my passport and ticket.\nStaff: Do you have luggage?\nTraveler: Yes, one suitcase.\nStaff: Please put the suitcase here. Your boarding gate is Gate 8.\nTraveler: Thank you. May I ask where Gate 8 is?\nStaff: It is ahead; walk to the right.",
+      "vietnamese": "Nhân viên: Xin chào, vui lòng cho tôi xem hộ chiếu và vé máy bay.\nHành khách: Được, đây là hộ chiếu và vé máy bay của tôi.\nNhân viên: Bạn có hành lý không?\nHành khách: Có, một vali.\nNhân viên: Vui lòng đặt vali ở đây. Cửa lên máy bay của bạn là số 8.\nHành khách: Cảm ơn, xin hỏi cửa số 8 ở đâu?\nNhân viên: Ở phía trước, đi sang bên phải.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "At airports, 请给我看一下... is a polite service phrase. Travelers should keep passports and tickets ready at check-in.",
+        "vietnamese": "Ở sân bay, 请给我看一下... là cách nói lịch sự của nhân viên. Hành khách nên chuẩn bị sẵn hộ chiếu và vé khi làm thủ tục."
+      }
+    }
+  },
+  {
+    "id": "HSK3-CON-004",
+    "hsk_level": 3,
+    "lesson_type": "conversation",
+    "title": "HSK3 Conversation: Checking in at a Hotel",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 25,
+    "order": 8,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "前台",
+        "pinyin": "qiántái",
+        "meaning_en": "front desk",
+        "meaning_vi": "lễ tân"
+      },
+      {
+        "hanzi": "您",
+        "pinyin": "nín",
+        "meaning_en": "you; polite",
+        "meaning_vi": "ngài; bạn dạng lịch sự"
+      },
+      {
+        "hanzi": "预订",
+        "pinyin": "yùdìng",
+        "meaning_en": "reservation; to reserve",
+        "meaning_vi": "đặt trước"
+      },
+      {
+        "hanzi": "姓",
+        "pinyin": "xìng",
+        "meaning_en": "to be surnamed",
+        "meaning_vi": "họ"
+      },
+      {
+        "hanzi": "一间房",
+        "pinyin": "yì jiān fáng",
+        "meaning_en": "one room",
+        "meaning_vi": "một phòng"
+      },
+      {
+        "hanzi": "房间",
+        "pinyin": "fángjiān",
+        "meaning_en": "room",
+        "meaning_vi": "phòng"
+      },
+      {
+        "hanzi": "楼",
+        "pinyin": "lóu",
+        "meaning_en": "floor; building",
+        "meaning_vi": "tầng; tòa nhà"
+      },
+      {
+        "hanzi": "房卡",
+        "pinyin": "fángkǎ",
+        "meaning_en": "room card",
+        "meaning_vi": "thẻ phòng"
+      },
+      {
+        "hanzi": "早饭",
+        "pinyin": "zǎofàn",
+        "meaning_en": "breakfast",
+        "meaning_vi": "bữa sáng"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "Polite 您",
+        "structure": "您 + verb/question",
+        "usage_en": "A respectful form of 你.",
+        "usage_vi": "Dạng lịch sự của 你.",
+        "examples": []
+      },
+      {
+        "point": "了 for completed action",
+        "structure": "Verb + 了 + object",
+        "usage_en": "Shows an action has been completed.",
+        "usage_vi": "Cho biết hành động đã hoàn thành.",
+        "examples": []
+      },
+      {
+        "point": "几点开始",
+        "structure": "Event + 几点 + 开始？",
+        "usage_en": "Ask what time something starts.",
+        "usage_vi": "Hỏi mấy giờ một việc bắt đầu.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Hotel",
+      "chinese": "前台：您好，请问您有预订吗？\n客人：有，我姓李，预订了一间房。\n前台：请给我看一下您的护照。\n客人：好的。房间在几楼？\n前台：在六楼，这是房卡。\n客人：谢谢。早饭几点开始？\n前台：早上七点开始。",
+      "pinyin": "Qiántái: Nín hǎo, qǐngwèn nín yǒu yùdìng ma?\nKèrén: Yǒu, wǒ xìng Lǐ, yùdìng le yì jiān fáng.\nQiántái: Qǐng gěi wǒ kàn yíxià nín de hùzhào.\nKèrén: Hǎo de. Fángjiān zài jǐ lóu?\nQiántái: Zài liù lóu, zhè shì fángkǎ.\nKèrén: Xièxie. Zǎofàn jǐ diǎn kāishǐ?\nQiántái: Zǎoshang qī diǎn kāishǐ.",
+      "english": "Front desk: Hello, do you have a reservation?\nGuest: Yes, my surname is Li. I reserved one room.\nFront desk: Please show me your passport.\nGuest: Okay. What floor is the room on?\nFront desk: It is on the sixth floor. This is the room card.\nGuest: Thank you. What time does breakfast start?\nFront desk: It starts at seven in the morning.",
+      "vietnamese": "Lễ tân: Xin chào, xin hỏi quý khách có đặt phòng không?\nKhách: Có, tôi họ Lý, đã đặt một phòng.\nLễ tân: Vui lòng cho tôi xem hộ chiếu của quý khách.\nKhách: Được. Phòng ở tầng mấy?\nLễ tân: Ở tầng sáu, đây là thẻ phòng.\nKhách: Cảm ơn. Bữa sáng bắt đầu lúc mấy giờ?\nLễ tân: Bắt đầu lúc bảy giờ sáng.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "Hotels often use 您 with guests. Learners should notice this polite register in service situations.",
+        "vietnamese": "Khách sạn thường dùng 您 với khách. Người học nên chú ý sắc thái lịch sự này trong ngữ cảnh dịch vụ."
+      }
+    }
+  },
+  {
+    "id": "HSK3-CON-005",
+    "hsk_level": 3,
+    "lesson_type": "conversation",
+    "title": "HSK3 Conversation: Planning a Meeting",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 25,
+    "order": 9,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "同事",
+        "pinyin": "tóngshì",
+        "meaning_en": "colleague",
+        "meaning_vi": "đồng nghiệp"
+      },
+      {
+        "hanzi": "时间",
+        "pinyin": "shíjiān",
+        "meaning_en": "time",
+        "meaning_vi": "thời gian"
+      },
+      {
+        "hanzi": "以后",
+        "pinyin": "yǐhòu",
+        "meaning_en": "after; later",
+        "meaning_vi": "sau; sau này"
+      },
+      {
+        "hanzi": "开会",
+        "pinyin": "kāihuì",
+        "meaning_en": "to have a meeting",
+        "meaning_vi": "họp"
+      },
+      {
+        "hanzi": "会议",
+        "pinyin": "huìyì",
+        "meaning_en": "meeting",
+        "meaning_vi": "cuộc họp"
+      },
+      {
+        "hanzi": "办公室",
+        "pinyin": "bàngōngshì",
+        "meaning_en": "office",
+        "meaning_vi": "văn phòng"
+      },
+      {
+        "hanzi": "带",
+        "pinyin": "dài",
+        "meaning_en": "to bring",
+        "meaning_vi": "mang theo"
+      },
+      {
+        "hanzi": "电脑",
+        "pinyin": "diànnǎo",
+        "meaning_en": "computer",
+        "meaning_vi": "máy tính"
+      },
+      {
+        "hanzi": "文件",
+        "pinyin": "wénjiàn",
+        "meaning_en": "document",
+        "meaning_vi": "tài liệu"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "有时间",
+        "structure": "Subject + 有 + 时间",
+        "usage_en": "Say someone has time or is available.",
+        "usage_vi": "Nói ai đó có thời gian/rảnh.",
+        "examples": []
+      },
+      {
+        "point": "Time + 以后",
+        "structure": "Time + 以后",
+        "usage_en": "Means after a time point.",
+        "usage_vi": "Nghĩa là sau một mốc thời gian.",
+        "examples": []
+      },
+      {
+        "point": "会 for future/intention",
+        "structure": "Subject + 会 + verb",
+        "usage_en": "Can express a future action or intention.",
+        "usage_vi": "Có thể diễn tả hành động tương lai hoặc dự định.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Office",
+      "chinese": "同事甲：明天上午你有时间吗？\n同事乙：上午十点以后有时间。\n同事甲：我们开个会，可以吗？\n同事乙：可以，会议在办公室吗？\n同事甲：对，在三号办公室。\n同事乙：好的，我会带电脑和文件。",
+      "pinyin": "Tóngshì Jiǎ: Míngtiān shàngwǔ nǐ yǒu shíjiān ma?\nTóngshì Yǐ: Shàngwǔ shí diǎn yǐhòu yǒu shíjiān.\nTóngshì Jiǎ: Wǒmen kāi ge huì, kěyǐ ma?\nTóngshì Yǐ: Kěyǐ, huìyì zài bàngōngshì ma?\nTóngshì Jiǎ: Duì, zài sān hào bàngōngshì.\nTóngshì Yǐ: Hǎo de, wǒ huì dài diànnǎo hé wénjiàn.",
+      "english": "Colleague A: Do you have time tomorrow morning?\nColleague B: I have time after ten in the morning.\nColleague A: Can we have a meeting?\nColleague B: Yes. Is the meeting in the office?\nColleague A: Correct, in Office 3.\nColleague B: Okay, I will bring my computer and documents.",
+      "vietnamese": "Đồng nghiệp A: Sáng mai bạn có thời gian không?\nĐồng nghiệp B: Sau mười giờ sáng tôi có thời gian.\nĐồng nghiệp A: Chúng ta họp một chút được không?\nĐồng nghiệp B: Được, cuộc họp ở văn phòng à?\nĐồng nghiệp A: Đúng, ở văn phòng số 3.\nĐồng nghiệp B: Được, tôi sẽ mang máy tính và tài liệu.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "Office conversations in Chinese often use direct scheduling language, but adding 可以吗 keeps the request collaborative.",
+        "vietnamese": "Hội thoại công sở bằng tiếng Trung thường hỏi lịch khá trực tiếp, nhưng thêm 可以吗 giúp lời đề nghị mang tính hợp tác hơn."
+      }
+    }
+  },
+  {
+    "id": "HSK3-CON-006",
+    "hsk_level": 3,
+    "lesson_type": "conversation",
+    "title": "HSK3 Conversation: Seeing a Doctor",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 25,
+    "order": 10,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "医生",
+        "pinyin": "yīshēng",
+        "meaning_en": "doctor",
+        "meaning_vi": "bác sĩ"
+      },
+      {
+        "hanzi": "病人",
+        "pinyin": "bìngrén",
+        "meaning_en": "patient",
+        "meaning_vi": "bệnh nhân"
+      },
+      {
+        "hanzi": "不舒服",
+        "pinyin": "bù shūfu",
+        "meaning_en": "uncomfortable; unwell",
+        "meaning_vi": "khó chịu; không khỏe"
+      },
+      {
+        "hanzi": "头疼",
+        "pinyin": "tóu téng",
+        "meaning_en": "headache",
+        "meaning_vi": "đau đầu"
+      },
+      {
+        "hanzi": "发烧",
+        "pinyin": "fāshāo",
+        "meaning_en": "to have a fever",
+        "meaning_vi": "bị sốt"
+      },
+      {
+        "hanzi": "有点儿",
+        "pinyin": "yǒudiǎnr",
+        "meaning_en": "a little",
+        "meaning_vi": "hơi; một chút"
+      },
+      {
+        "hanzi": "休息",
+        "pinyin": "xiūxi",
+        "meaning_en": "to rest",
+        "meaning_vi": "nghỉ ngơi"
+      },
+      {
+        "hanzi": "需要",
+        "pinyin": "xūyào",
+        "meaning_en": "to need",
+        "meaning_vi": "cần"
+      },
+      {
+        "hanzi": "药",
+        "pinyin": "yào",
+        "meaning_en": "medicine",
+        "meaning_vi": "thuốc"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "哪儿不舒服",
+        "structure": "Body/place + 不舒服",
+        "usage_en": "Ask what part feels unwell.",
+        "usage_vi": "Hỏi chỗ nào không khỏe/khó chịu.",
+        "examples": []
+      },
+      {
+        "point": "Verb + 了 + 吗",
+        "structure": "Verb + 了 + 吗？",
+        "usage_en": "Ask whether an action has been completed.",
+        "usage_vi": "Hỏi hành động đã hoàn thành chưa.",
+        "examples": []
+      },
+      {
+        "point": "有点儿 + adjective/verb phrase",
+        "structure": "有点儿 + symptom/adjective",
+        "usage_en": "Express a slight negative condition.",
+        "usage_vi": "Diễn tả tình trạng hơi tiêu cực.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Hospital",
+      "chinese": "医生：你好，你哪儿不舒服？\n病人：我头疼，也有点儿发烧。\n医生：你今天吃饭了吗？\n病人：吃了，但是吃得不多。\n医生：请多喝水，好好休息。\n病人：我需要吃药吗？\n医生：需要，这是你的药。",
+      "pinyin": "Yīshēng: Nǐ hǎo, nǐ nǎr bù shūfu?\nBìngrén: Wǒ tóu téng, yě yǒudiǎnr fāshāo.\nYīshēng: Nǐ jīntiān chīfàn le ma?\nBìngrén: Chī le, dànshì chī de bù duō.\nYīshēng: Qǐng duō hē shuǐ, hǎohāo xiūxi.\nBìngrén: Wǒ xūyào chī yào ma?\nYīshēng: Xūyào, zhè shì nǐ de yào.",
+      "english": "Doctor: Hello, where do you feel uncomfortable?\nPatient: I have a headache and also a slight fever.\nDoctor: Did you eat today?\nPatient: I ate, but not much.\nDoctor: Please drink more water and rest well.\nPatient: Do I need to take medicine?\nDoctor: Yes, this is your medicine.",
+      "vietnamese": "Bác sĩ: Xin chào, bạn khó chịu ở đâu?\nBệnh nhân: Tôi đau đầu và cũng hơi sốt.\nBác sĩ: Hôm nay bạn ăn chưa?\nBệnh nhân: Ăn rồi, nhưng ăn không nhiều.\nBác sĩ: Hãy uống nhiều nước và nghỉ ngơi cho tốt.\nBệnh nhân: Tôi cần uống thuốc không?\nBác sĩ: Cần, đây là thuốc của bạn.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "Doctors may give direct advice such as 多喝水 and 好好休息. These concise phrases are common and natural.",
+        "vietnamese": "Bác sĩ thường đưa lời khuyên ngắn gọn như 多喝水 và 好好休息. Đây là cách nói tự nhiên và phổ biến."
+      }
+    }
+  },
+  {
+    "id": "HSK3-CON-007",
+    "hsk_level": 3,
+    "lesson_type": "conversation",
+    "title": "HSK3 Conversation: Asking for Directions While Traveling",
+    "difficulty": "lower_intermediate",
+    "estimated_duration_minutes": 25,
+    "order": 11,
+    "prerequisite_ids": [],
+    "learning_objectives": [],
+    "vocabulary_list": [
+      {
+        "hanzi": "游客",
+        "pinyin": "yóukè",
+        "meaning_en": "tourist",
+        "meaning_vi": "du khách"
+      },
+      {
+        "hanzi": "路人",
+        "pinyin": "lùrén",
+        "meaning_en": "passerby",
+        "meaning_vi": "người qua đường"
+      },
+      {
+        "hanzi": "火车站",
+        "pinyin": "huǒchēzhàn",
+        "meaning_en": "train station",
+        "meaning_vi": "ga tàu hỏa"
+      },
+      {
+        "hanzi": "怎么走",
+        "pinyin": "zěnme zǒu",
+        "meaning_en": "how to get there",
+        "meaning_vi": "đi như thế nào"
+      },
+      {
+        "hanzi": "一直",
+        "pinyin": "yìzhí",
+        "meaning_en": "straight; continuously",
+        "meaning_vi": "cứ; thẳng"
+      },
+      {
+        "hanzi": "然后",
+        "pinyin": "ránhòu",
+        "meaning_en": "then",
+        "meaning_vi": "sau đó"
+      },
+      {
+        "hanzi": "远",
+        "pinyin": "yuǎn",
+        "meaning_en": "far",
+        "meaning_vi": "xa"
+      },
+      {
+        "hanzi": "地铁站",
+        "pinyin": "dìtiězhàn",
+        "meaning_en": "subway station",
+        "meaning_vi": "ga tàu điện ngầm"
+      },
+      {
+        "hanzi": "旁边",
+        "pinyin": "pángbiān",
+        "meaning_en": "beside; next to",
+        "meaning_vi": "bên cạnh"
+      }
+    ],
+    "grammar_points": [
+      {
+        "point": "怎么走",
+        "structure": "Place + 怎么走？",
+        "usage_en": "Ask how to get to a place.",
+        "usage_vi": "Hỏi cách đi đến một nơi.",
+        "examples": []
+      },
+      {
+        "point": "从...往...",
+        "structure": "从 + starting point + 往 + direction + 走",
+        "usage_en": "Give route directions from a starting point.",
+        "usage_vi": "Chỉ đường từ một điểm bắt đầu.",
+        "examples": []
+      },
+      {
+        "point": "在...旁边",
+        "structure": "Place A + 在 + Place B + 旁边",
+        "usage_en": "Say one place is next to another.",
+        "usage_vi": "Nói một nơi nằm cạnh nơi khác.",
+        "examples": []
+      }
+    ],
+    "content": {
+      "focus": "Travel",
+      "chinese": "游客：你好，请问火车站怎么走？\n路人：从这里一直往前走，然后往左走。\n游客：远吗？\n路人：不远，走路十分钟。\n游客：附近有地铁站吗？\n路人：有，在火车站旁边。\n游客：谢谢你。",
+      "pinyin": "Yóukè: Nǐ hǎo, qǐngwèn huǒchēzhàn zěnme zǒu?\nLùrén: Cóng zhèlǐ yìzhí wǎng qián zǒu, ránhòu wǎng zuǒ zǒu.\nYóukè: Yuǎn ma?\nLùrén: Bù yuǎn, zǒulù shí fēnzhōng.\nYóukè: Fùjìn yǒu dìtiězhàn ma?\nLùrén: Yǒu, zài huǒchēzhàn pángbiān.\nYóukè: Xièxie nǐ.",
+      "english": "Tourist: Hello, may I ask how to get to the train station?\nPasserby: From here, walk straight ahead, then turn left.\nTourist: Is it far?\nPasserby: Not far, ten minutes on foot.\nTourist: Is there a subway station nearby?\nPasserby: Yes, it is next to the train station.\nTourist: Thank you.",
+      "vietnamese": "Du khách: Xin chào, xin hỏi đi đến ga tàu hỏa như thế nào?\nNgười qua đường: Từ đây cứ đi thẳng về phía trước, sau đó rẽ trái.\nDu khách: Xa không?\nNgười qua đường: Không xa, đi bộ mười phút.\nDu khách: Gần đây có ga tàu điện ngầm không?\nNgười qua đường: Có, ở bên cạnh ga tàu hỏa.\nDu khách: Cảm ơn bạn.",
+      "items": [],
+      "questions": [],
+      "cultural_note": {
+        "english": "When asking directions, starting with 请问 is polite and common. People may answer with landmarks rather than street names.",
+        "vietnamese": "Khi hỏi đường, bắt đầu bằng 请问 là lịch sự và phổ biến. Người bản xứ có thể chỉ đường bằng mốc địa điểm thay vì tên đường."
+      }
+    }
+  }
+]
