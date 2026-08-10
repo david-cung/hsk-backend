@@ -386,6 +386,10 @@ def _meaning(english: str | None, vietnamese: str | None) -> str:
     return " / ".join(part for part in (english, vietnamese) if part)
 
 
+def _translations(en: str | None = None, vi: str | None = None) -> dict[str, str]:
+    return {key: value for key, value in {"en": en, "vi": vi}.items() if value}
+
+
 def _chinese_entry(hanzi: str, pinyin: str = "", meaning: str = "") -> dict[str, str]:
     entry = {"hanzi": hanzi}
     if pinyin:
@@ -419,11 +423,15 @@ def _external_vocabulary_entries(lesson: dict[str, Any]) -> list[dict[str, Any]]
             "hanzi": hanzi,
             "pinyin": item.get("pinyin", ""),
             "meaning": item.get("meaning_vi") or item.get("meaning_en", ""),
+            "meaning_vi": item.get("meaning_vi", ""),
             "meaning_en": item.get("meaning_en", ""),
+            "translations": _translations(item.get("meaning_en"), item.get("meaning_vi")),
             "word_type": _word_type(hanzi),
             "category": category,
             "hsk_level": level,
         }
+        if item.get("example_en") or item.get("example_vi"):
+            entry["example_translations"] = _translations(item.get("example_en"), item.get("example_vi"))
         for key in ("example_cn", "example_pinyin", "example_vi", "example_en", "usage_note"):
             if item.get(key):
                 entry[key] = item[key]
@@ -438,19 +446,31 @@ def _external_grammar_points(lesson: dict[str, Any]) -> list[dict[str, Any]]:
         if not title:
             continue
         usage = item.get("usage_vi") or item.get("usage_en") or item.get("explanation", "")
+        usage_en = item.get("usage_en") or item.get("explanation_en")
+        usage_vi = item.get("usage_vi") or item.get("explanation_vi") or usage
         structure = item.get("structure") or ""
         points.append(
             {
                 "title": title,
+                "title_translations": _translations(title, title),
                 "structure": structure,
                 "explanation": usage or structure or title,
+                "explanation_translations": _translations(usage_en or usage, usage_vi),
                 "examples": [
-                    _chinese_entry(
-                        example.get("hanzi", example.get("Chinese", "")),
-                        example.get("pinyin", example.get("Pinyin", "")),
-                        example.get("meaning_vi", example.get("Vietnamese", ""))
-                        or example.get("meaning_en", example.get("English", "")),
-                    )
+                    {
+                        **_chinese_entry(
+                            example.get("hanzi", example.get("Chinese", "")),
+                            example.get("pinyin", example.get("Pinyin", "")),
+                            example.get("meaning_vi", example.get("Vietnamese", ""))
+                            or example.get("meaning_en", example.get("English", "")),
+                        ),
+                        "meaning_vi": example.get("meaning_vi", example.get("Vietnamese", "")),
+                        "meaning_en": example.get("meaning_en", example.get("English", "")),
+                        "translations": _translations(
+                            example.get("meaning_en", example.get("English", "")),
+                            example.get("meaning_vi", example.get("Vietnamese", "")),
+                        ),
+                    }
                     for example in item.get("examples", [])
                     if isinstance(example, dict)
                     and (example.get("hanzi") or example.get("Chinese"))
@@ -460,11 +480,16 @@ def _external_grammar_points(lesson: dict[str, Any]) -> list[dict[str, Any]]:
     return points
 
 
-def _external_text_entry(raw: dict[str, Any]) -> dict[str, str] | None:
+def _external_text_entry(raw: dict[str, Any]) -> dict[str, Any] | None:
     chinese = raw.get("chinese", "")
     if not chinese:
         return None
-    return _chinese_entry(chinese, raw.get("pinyin", ""), raw.get("vietnamese") or raw.get("english", ""))
+    return {
+        **_chinese_entry(chinese, raw.get("pinyin", ""), raw.get("vietnamese") or raw.get("english", "")),
+        "meaning_vi": raw.get("vietnamese", ""),
+        "meaning_en": raw.get("english", ""),
+        "translations": _translations(raw.get("english"), raw.get("vietnamese")),
+    }
 
 
 def _external_question_prompt(question: dict[str, Any]) -> str:
@@ -493,6 +518,7 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
     focus = raw.get("focus")
     if focus:
         content["overview"] = focus
+        content["overview_translations"] = _translations(focus, raw.get("focus_vi") or focus)
 
     vocabulary = _external_vocabulary_entries(lesson)
     grammar_points = _external_grammar_points(lesson)
@@ -510,33 +536,42 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
     if text_entry and lesson_type == "reading":
         content["reading"] = {
             "title": title,
+            "title_translations": _translations(title, title),
             "chinese": text_entry["hanzi"],
             "pinyin": text_entry.get("pinyin", ""),
             "vietnamese": text_entry.get("meaning", ""),
             "english": raw.get("english", ""),
+            "translations": _translations(raw.get("english", ""), raw.get("vietnamese", text_entry.get("meaning", ""))),
         }
     elif text_entry and lesson_type == "listening":
         content["listening"] = {
             "script": text_entry["hanzi"],
             "pinyin": text_entry.get("pinyin", ""),
             "vietnamese": text_entry.get("meaning", ""),
+            "english": raw.get("english", ""),
+            "translations": _translations(raw.get("english", ""), raw.get("vietnamese", text_entry.get("meaning", ""))),
             "task": focus or "Listen and answer the checkpoint.",
+            "task_translations": _translations(focus or "Listen and answer the checkpoint.", focus or "Nghe và trả lời câu kiểm tra."),
         }
         content["transcript"] = [text_entry]
     elif text_entry and lesson_type == "conversation":
         content["dialogue"] = {
             "title": title,
+            "title_translations": _translations(title, title),
             "lines": [
                 {
                     "speaker": "A",
                     "chinese": text_entry["hanzi"],
                     "pinyin": text_entry.get("pinyin", ""),
                     "vietnamese": text_entry.get("meaning", ""),
+                    "english": raw.get("english", ""),
+                    "translations": _translations(raw.get("english", ""), text_entry.get("meaning", "")),
                 }
             ],
         }
     elif text_entry:
         content["passage_title"] = title
+        content["passage_title_translations"] = _translations(title, title)
         content["passage"] = [text_entry]
 
     items = raw.get("items", [])
@@ -544,15 +579,23 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
     item_types = {item.get("type") for item in items if isinstance(item, dict)}
     if "pattern" in item_types:
         content["sentence_patterns"] = content.get("sentence_patterns", []) + [
-            {"pattern": text, "meaning_vi": focus or ""}
+            {
+                "pattern": text,
+                "meaning_vi": focus or "",
+                "meaning_en": focus or "",
+                "translations": _translations(focus or "", focus or ""),
+            }
             for text in item_texts
         ]
     elif "activity" in item_types:
         content["speaking_tasks"] = item_texts
+        content["speaking_task_translations"] = {"en": item_texts, "vi": item_texts}
     elif "review_scope" in item_types:
         content["reading_tasks"] = item_texts
+        content["reading_task_translations"] = {"en": item_texts, "vi": item_texts}
     elif item_texts:
         content["reading_tasks"] = item_texts
+        content["reading_task_translations"] = {"en": item_texts, "vi": item_texts}
 
     cultural_note = raw.get("cultural_note", {})
     if isinstance(cultural_note, dict) and (cultural_note.get("english") or cultural_note.get("vietnamese")):
@@ -719,7 +762,9 @@ def _word_entry(word: tuple[str, str, str, str], level: int, topic: dict[str, st
         "hanzi": hanzi,
         "pinyin": pinyin,
         "meaning": meaning_vi,
+        "meaning_vi": meaning_vi,
         "meaning_en": meaning_en,
+        "translations": _translations(meaning_en, meaning_vi),
         "word_type": _word_type(hanzi),
         "category": topic["title"],
         "hsk_level": level,
@@ -727,7 +772,15 @@ def _word_entry(word: tuple[str, str, str, str], level: int, topic: dict[str, st
         "example_pinyin": f"Jin1tian1 wo3 lian4xi2 {pinyin}.",
         "example_vi": f"Hôm nay tôi luyện từ/cụm \"{meaning_vi}\".",
         "example_en": f"Today I practice \"{meaning_en}\".",
+        "example_translations": _translations(
+            f"Today I practice \"{meaning_en}\".",
+            f"Hôm nay tôi luyện từ/cụm \"{meaning_vi}\".",
+        ),
         "usage_note": f"Từ trọng tâm HSK {level} cho chủ đề {topic['vi']}.",
+        "usage_note_translations": _translations(
+            f"Core HSK {level} word for the topic {topic['title'].lower()}.",
+            f"Từ trọng tâm HSK {level} cho chủ đề {topic['vi']}.",
+        ),
     }
 
 
@@ -767,17 +820,41 @@ def _grammar_point(level: int, lesson_number: int) -> dict[str, Any]:
     title, structure, explanation, example_cn, example_pinyin, example_vi = GRAMMAR_PATTERNS[level][
         lesson_number - 1
     ]
+    explanation_en = (
+        f"Use the pattern {structure} to build accurate HSK {level} sentences. "
+        "Read the example aloud, then replace one key word."
+    )
     return {
         "title": title,
+        "title_translations": _translations(title, title),
         "structure": structure,
         "explanation": explanation,
+        "explanation_translations": _translations(explanation_en, explanation),
         "examples": [
-            _chinese_entry(example_cn, example_pinyin, example_vi),
+            {
+                **_chinese_entry(example_cn, example_pinyin, example_vi),
+                "meaning_vi": example_vi,
+                "meaning_en": "Study the grammar example and reuse the pattern.",
+                "translations": _translations(
+                    "Study the grammar example and reuse the pattern.",
+                    example_vi,
+                ),
+            },
         ],
         "common_mistakes": [
             "Không dịch từng từ theo tiếng Việt; hãy giữ đúng trật tự của mẫu.",
             "Đọc to ví dụ rồi thay một từ vựng mới trước khi làm quiz.",
         ],
+        "common_mistakes_translations": {
+            "en": [
+                "Do not translate word for word; keep the pattern order.",
+                "Read the example aloud, then replace one vocabulary item before the quiz.",
+            ],
+            "vi": [
+                "Không dịch từng từ theo tiếng Việt; hãy giữ đúng trật tự của mẫu.",
+                "Đọc to ví dụ rồi thay một từ vựng mới trước khi làm quiz.",
+            ],
+        },
     }
 
 
@@ -787,31 +864,55 @@ def _sentence_pattern_from_grammar(point: dict[str, Any]) -> dict[str, Any]:
     return {
         "pattern": point["structure"],
         "meaning_vi": point["explanation"],
+        "meaning_en": point.get("explanation_translations", {}).get("en", point["explanation"]),
+        "translations": _translations(
+            point.get("explanation_translations", {}).get("en", point["explanation"]),
+            point["explanation"],
+        ),
         "examples": [example_text] if example_text else [],
     }
 
 
 def _dialogue_content(topic: dict[str, str], vocabulary: list[dict[str, Any]]) -> dict[str, Any]:
     w0, w1, w2 = vocabulary[0], vocabulary[1], vocabulary[2]
+    first_vi = f"Hôm nay chúng ta luyện {w0['meaning']}, được không?"
+    first_en = f"Today we practice {w0.get('meaning_en', w0['meaning'])}. Is that okay?"
+    second_vi = f"Được. Tôi muốn dùng {w1['meaning']} và {w2['meaning']} để nói một câu."
+    second_en = (
+        f"Yes. I want to use {w1.get('meaning_en', w1['meaning'])} "
+        f"and {w2.get('meaning_en', w2['meaning'])} to say one sentence."
+    )
     return {
         "title": f"{topic['title']} Dialogue",
+        "title_translations": _translations(
+            f"{topic['title']} Dialogue",
+            f"Hội thoại: {topic['vi']}",
+        ),
         "lines": [
             {
                 "speaker": "A",
                 "chinese": f"今天我们练习{w0['hanzi']}，可以吗？",
                 "pinyin": f"Jin1tian1 wo3men5 lian4xi2 {w0.get('pinyin', '')}, ke3yi3 ma5?",
-                "vietnamese": f"Hôm nay chúng ta luyện {w0['meaning']}, được không?",
+                "vietnamese": first_vi,
+                "english": first_en,
+                "translations": _translations(first_en, first_vi),
             },
             {
                 "speaker": "B",
                 "chinese": f"可以。我想用{w1['hanzi']}和{w2['hanzi']}说一句话。",
                 "pinyin": f"Ke3yi3. Wo3 xiang3 yong4 {w1.get('pinyin', '')} he2 {w2.get('pinyin', '')} shuo1 yi2 ju4 hua4.",
-                "vietnamese": f"Được. Tôi muốn dùng {w1['meaning']} và {w2['meaning']} để nói một câu.",
+                "vietnamese": second_vi,
+                "english": second_en,
+                "translations": _translations(second_en, second_vi),
             },
         ],
         "vocabulary_list": [word["hanzi"] for word in vocabulary[:5]],
         "grammar_list": [],
         "cultural_note": "Trong luyện nói HSK, câu ngắn nhưng đúng trật tự quan trọng hơn câu dài.",
+        "cultural_note_translations": _translations(
+            "In HSK speaking practice, a short sentence with correct order matters more than a long sentence.",
+            "Trong luyện nói HSK, câu ngắn nhưng đúng trật tự quan trọng hơn câu dài.",
+        ),
     }
 
 
@@ -849,25 +950,52 @@ def _reading_content(level: int, topic: dict[str, str], vocabulary: list[dict[st
             f"Người học cần quan sát quan hệ giữa {w1['meaning']} và {w2['meaning']}, "
             f"sau đó dùng {w3['meaning']} để trình bày phán đoán. Vì vậy đọc nâng cao nhấn mạnh tổng hợp thông tin và bày tỏ quan điểm."
         )
+    english = (
+        f"Today's theme is {topic['title'].lower()}. Learners listen first, read next, "
+        "and then answer with the key vocabulary."
+    )
     return {
         "title": f"Short Reading: {topic['title']}",
+        "title_translations": _translations(
+            f"Short Reading: {topic['title']}",
+            f"Bài đọc ngắn: {topic['vi']}",
+        ),
         "chinese": chinese,
         "pinyin": "",
         "vietnamese": vietnamese,
-        "english": (
-            f"Today's theme is {topic['title'].lower()}. Learners listen first, read next, "
-            "and then answer with the key vocabulary."
-        ),
+        "english": english,
+        "translations": _translations(english, vietnamese),
         "questions": [
             {
                 "question": "Người học làm gì trước?",
+                "question_translations": _translations(
+                    "What does the learner do first?",
+                    "Người học làm gì trước?",
+                ),
                 "answer": "先听老师说",
+                "answer_translations": _translations("Listen to the teacher first.", "先听老师说"),
                 "explanation": "Bài đọc nói 学生先听老师说.",
+                "explanation_translations": _translations(
+                    "The passage says 学生先听老师说.",
+                    "Bài đọc nói 学生先听老师说.",
+                ),
             },
             {
                 "question": "Mục tiêu của cách học này là gì?",
+                "question_translations": _translations(
+                    "What is the goal of this study method?",
+                    "Mục tiêu của cách học này là gì?",
+                ),
                 "answer": "内容更清楚，也更容易记住",
+                "answer_translations": _translations(
+                    "The content becomes clearer and easier to remember.",
+                    "内容更清楚，也更容易记住",
+                ),
                 "explanation": "Câu cuối nêu rõ lợi ích của quy trình nghe, đọc, trả lời.",
+                "explanation_translations": _translations(
+                    "The final sentence explains the benefit of listening, reading, and answering.",
+                    "Câu cuối nêu rõ lợi ích của quy trình nghe, đọc, trả lời.",
+                ),
             },
         ],
     }
@@ -891,35 +1019,68 @@ def _practice_exercises(
         {
             "id": f"{exercise_prefix}-VOCAB",
             "title": "Vocabulary recall",
+            "title_translations": _translations("Vocabulary recall", "Nhớ nghĩa từ vựng"),
             "exercise_type": "multiple_choice",
             "skill": "vocabulary",
             "prompt": f"{w0['hanzi']} nghĩa là gì?",
+            "prompt_translations": _translations(
+                f"What does {w0['hanzi']} mean?",
+                f"{w0['hanzi']} nghĩa là gì?",
+            ),
             "options": _with_correct_option(str(w0["meaning"]), meanings),
             "correct_answer": str(w0["meaning"]),
             "hint": f"Pinyin: {w0.get('pinyin', '')}",
+            "hint_translations": _translations(
+                f"Pinyin: {w0.get('pinyin', '')}",
+                f"Pinyin: {w0.get('pinyin', '')}",
+            ),
             "explanation": f"{w0['hanzi']} là từ HSK {level}, nghĩa là {w0['meaning']}.",
+            "explanation_translations": _translations(
+                f"{w0['hanzi']} is an HSK {level} word meaning {w0.get('meaning_en', w0['meaning'])}.",
+                f"{w0['hanzi']} là từ HSK {level}, nghĩa là {w0['meaning']}.",
+            ),
         },
         {
             "id": f"{exercise_prefix}-GRAMMAR",
             "title": "Grammar pattern",
+            "title_translations": _translations("Grammar pattern", "Mẫu ngữ pháp"),
             "exercise_type": "text_input",
             "skill": "grammar",
             "prompt": f"Gõ lại câu mẫu cho mẫu ngữ pháp: {grammar_point['structure']}",
+            "prompt_translations": _translations(
+                f"Type the example sentence for this grammar pattern: {grammar_point['structure']}",
+                f"Gõ lại câu mẫu cho mẫu ngữ pháp: {grammar_point['structure']}",
+            ),
             "correct_answer": str(grammar_example.get("hanzi", "")),
             "expected_answer": str(grammar_example.get("hanzi", "")),
             "hint": str(grammar_example.get("pinyin", "")),
+            "hint_translations": _translations(str(grammar_example.get("pinyin", "")), str(grammar_example.get("pinyin", ""))),
             "explanation": str(grammar_point["explanation"]),
+            "explanation_translations": grammar_point.get("explanation_translations", _translations(None, str(grammar_point["explanation"]))),
         },
         {
             "id": f"{exercise_prefix}-KEYWORD",
             "title": "Key word in context",
+            "title_translations": _translations("Key word in context", "Từ khóa trong ngữ cảnh"),
             "exercise_type": "fill_blank",
             "skill": lesson_type if lesson_type != "mixed" else "core",
             "prompt": f"Điền từ còn thiếu: 今天我们学习____。",
+            "prompt_translations": _translations(
+                "Fill in the missing word: 今天我们学习____。",
+                "Điền từ còn thiếu: 今天我们学习____。",
+            ),
             "correct_answer": str(w1["hanzi"]),
             "expected_answer": str(w1["hanzi"]),
             "hint": f"Nghĩa: {w1['meaning']} ({w1.get('pinyin', '')})",
+            "hint_translations": _translations(
+                f"Meaning: {w1.get('meaning_en', w1['meaning'])} ({w1.get('pinyin', '')})",
+                f"Nghĩa: {w1['meaning']} ({w1.get('pinyin', '')})",
+            ),
             "explanation": f"Câu đầy đủ: 今天我们学习{w1['hanzi']}。",
+            "explanation_translations": _translations(
+                f"Full sentence: 今天我们学习{w1['hanzi']}。",
+                f"Câu đầy đủ: 今天我们学习{w1['hanzi']}。",
+            ),
         },
     ]
 
@@ -928,13 +1089,23 @@ def _practice_exercises(
             {
                 "id": f"{exercise_prefix}-LISTENING",
                 "title": "Listening checkpoint",
+                "title_translations": _translations("Listening checkpoint", "Kiểm tra nghe"),
                 "exercise_type": "text_input",
                 "skill": "listening",
                 "prompt": "Nghe đoạn đọc và nhập từ khóa thứ hai bạn nghe được.",
+                "prompt_translations": _translations(
+                    "Listen to the script and type the second key word you hear.",
+                    "Nghe đoạn đọc và nhập từ khóa thứ hai bạn nghe được.",
+                ),
                 "correct_answer": str(w1["hanzi"]),
                 "expected_answer": str(w1["hanzi"]),
                 "hint": listening.get("answer", ""),
+                "hint_translations": _translations(listening.get("answer", ""), listening.get("answer", "")),
                 "explanation": f"Trong script có cụm: {listening['script']}",
+                "explanation_translations": _translations(
+                    f"The script includes: {listening['script']}",
+                    f"Trong script có cụm: {listening['script']}",
+                ),
             }
         )
 
@@ -944,13 +1115,26 @@ def _practice_exercises(
             {
                 "id": f"{exercise_prefix}-READING",
                 "title": "Reading checkpoint",
+                "title_translations": _translations("Reading checkpoint", "Kiểm tra đọc"),
                 "exercise_type": "text_input",
                 "skill": "reading",
                 "prompt": "Theo bài đọc, người học làm gì trước?",
+                "prompt_translations": _translations(
+                    "According to the reading, what does the learner do first?",
+                    "Theo bài đọc, người học làm gì trước?",
+                ),
                 "correct_answer": reading_answer,
                 "expected_answer": reading_answer,
                 "hint": "Tìm câu có chữ 先 hoặc cụm trình tự đầu tiên.",
+                "hint_translations": _translations(
+                    "Find the sentence with 先 or the first sequence phrase.",
+                    "Tìm câu có chữ 先 hoặc cụm trình tự đầu tiên.",
+                ),
                 "explanation": "Bài đọc luôn nêu bước đầu tiên trước khi chuyển sang đọc hoặc giải thích.",
+                "explanation_translations": _translations(
+                    "The reading states the first step before moving to reading or explaining.",
+                    "Bài đọc luôn nêu bước đầu tiên trước khi chuyển sang đọc hoặc giải thích.",
+                ),
             }
         )
 
@@ -970,47 +1154,90 @@ def _writing_exercises(
         {
             "id": f"{exercise_prefix}-WRITE-CHAR",
             "title": "Character recall",
+            "title_translations": _translations("Character recall", "Nhớ chữ Hán"),
             "exercise_type": "text_input",
             "skill": "writing",
             "prompt": f"Nhập chữ Hán cho nghĩa: {w0['meaning']}",
+            "prompt_translations": _translations(
+                f"Type the Chinese character for: {w0.get('meaning_en', w0['meaning'])}",
+                f"Nhập chữ Hán cho nghĩa: {w0['meaning']}",
+            ),
             "correct_answer": str(w0["hanzi"]),
             "expected_answer": str(w0["hanzi"]),
             "hint": f"Pinyin: {w0.get('pinyin', '')}",
+            "hint_translations": _translations(f"Pinyin: {w0.get('pinyin', '')}", f"Pinyin: {w0.get('pinyin', '')}"),
             "explanation": f"Chữ cần viết là {w0['hanzi']}.",
+            "explanation_translations": _translations(
+                f"The character to write is {w0['hanzi']}.",
+                f"Chữ cần viết là {w0['hanzi']}.",
+            ),
         },
         {
             "id": f"{exercise_prefix}-WRITE-BLANK",
             "title": "Sentence completion",
+            "title_translations": _translations("Sentence completion", "Hoàn thành câu"),
             "exercise_type": "fill_blank",
             "skill": "writing",
             "prompt": "Hoàn thành câu: 我想学习____。",
+            "prompt_translations": _translations(
+                "Complete the sentence: 我想学习____。",
+                "Hoàn thành câu: 我想学习____。",
+            ),
             "correct_answer": str(w1["hanzi"]),
             "expected_answer": str(w1["hanzi"]),
             "hint": f"Nghĩa cần điền: {w1['meaning']}",
+            "hint_translations": _translations(
+                f"Meaning to fill in: {w1.get('meaning_en', w1['meaning'])}",
+                f"Nghĩa cần điền: {w1['meaning']}",
+            ),
             "explanation": f"Câu đầy đủ: 我想学习{w1['hanzi']}。",
+            "explanation_translations": _translations(
+                f"Full sentence: 我想学习{w1['hanzi']}。",
+                f"Câu đầy đủ: 我想学习{w1['hanzi']}。",
+            ),
         },
         {
             "id": f"{exercise_prefix}-WRITE-ORDER",
             "title": "Sentence order",
+            "title_translations": _translations("Sentence order", "Sắp xếp câu"),
             "exercise_type": "rearrange",
             "skill": "writing",
             "prompt": "Sắp xếp thành câu đúng rồi nhập lại.",
+            "prompt_translations": _translations(
+                "Put the words in the correct order and type the sentence.",
+                "Sắp xếp thành câu đúng rồi nhập lại.",
+            ),
             "word_bank": ["我", "想", "学习", str(w1["hanzi"])],
             "correct_answer": sentence,
             "expected_answer": sentence,
             "hint": "Trật tự cơ bản: chủ ngữ + muốn + động từ + tân ngữ.",
+            "hint_translations": _translations(
+                "Basic order: subject + want + verb + object.",
+                "Trật tự cơ bản: chủ ngữ + muốn + động từ + tân ngữ.",
+            ),
             "explanation": f"Câu đúng là: {sentence}。",
+            "explanation_translations": _translations(
+                f"The correct sentence is: {sentence}。",
+                f"Câu đúng là: {sentence}。",
+            ),
         },
     ]
 
 
 def _listening_content(topic: dict[str, str], vocabulary: list[dict[str, Any]]) -> dict[str, Any]:
     w0, w1, w2 = vocabulary[:3]
+    vietnamese = f"Hãy nghe. Hôm nay chúng ta học {topic['vi']}. Hãy dùng hai từ khóa để trả lời câu hỏi."
+    english = f"Listen. Today we study {topic['title'].lower()}. Use two key words to answer the question."
+    task_vi = "Nghe một lần để lấy ý chính, nghe lần hai để ghi lại hai từ khóa."
+    task_en = "Listen once for the main idea, then listen again and write down two key words."
     return {
         "script": f"请听。今天我们学习{w0['hanzi']}。请用{w1['hanzi']}和{w2['hanzi']}回答问题。",
         "pinyin": f"Qing3 ting1. Jin1tian1 wo3men5 xue2xi2 {w0.get('pinyin', '')}. Qing3 yong4 {w1.get('pinyin', '')} he2 {w2.get('pinyin', '')} hui2da2 wen4ti2.",
-        "vietnamese": f"Hãy nghe. Hôm nay chúng ta học {topic['vi']}. Hãy dùng hai từ khóa để trả lời câu hỏi.",
-        "task": "Nghe một lần để lấy ý chính, nghe lần hai để ghi lại hai từ khóa.",
+        "vietnamese": vietnamese,
+        "english": english,
+        "translations": _translations(english, vietnamese),
+        "task": task_vi,
+        "task_translations": _translations(task_en, task_vi),
         "answer": f"{w1['hanzi']} / {w2['hanzi']}",
     }
 
@@ -1021,26 +1248,59 @@ def _writing_characters(vocabulary: list[dict[str, Any]]) -> list[dict[str, Any]
             "hanzi": word["hanzi"],
             "pinyin": word.get("pinyin", ""),
             "meaning": word.get("meaning", ""),
+            "meaning_vi": word.get("meaning_vi", word.get("meaning", "")),
+            "meaning_en": word.get("meaning_en", ""),
+            "translations": word.get("translations", {}),
         }
         for word in vocabulary[:6]
     ]
 
 
-def _practice_tasks(topic: dict[str, str], vocabulary: list[dict[str, Any]]) -> dict[str, list[str]]:
+def _practice_tasks(topic: dict[str, str], vocabulary: list[dict[str, Any]]) -> dict[str, Any]:
     keywords = "、".join(word["hanzi"] for word in vocabulary[:4])
     return {
         "speaking_tasks": [
             f"Nói 3 câu ngắn về {topic['vi']} và dùng ít nhất hai từ: {keywords}.",
             "Ghi âm lại, nghe lại một lần, rồi sửa phát âm của một câu.",
         ],
+        "speaking_task_translations": {
+            "en": [
+                f"Say 3 short sentences about {topic['title'].lower()} and use at least two words: {keywords}.",
+                "Record yourself, listen once, then fix the pronunciation of one sentence.",
+            ],
+            "vi": [
+                f"Nói 3 câu ngắn về {topic['vi']} và dùng ít nhất hai từ: {keywords}.",
+                "Ghi âm lại, nghe lại một lần, rồi sửa phát âm của một câu.",
+            ],
+        },
         "reading_tasks": [
             "Gạch chân từ khóa trong bài đọc trước khi xem câu hỏi.",
             "Tóm tắt bài đọc bằng một câu tiếng Việt và một câu tiếng Trung.",
         ],
+        "reading_task_translations": {
+            "en": [
+                "Underline key words in the reading before looking at the questions.",
+                "Summarize the reading in one English sentence and one Chinese sentence.",
+            ],
+            "vi": [
+                "Gạch chân từ khóa trong bài đọc trước khi xem câu hỏi.",
+                "Tóm tắt bài đọc bằng một câu tiếng Việt và một câu tiếng Trung.",
+            ],
+        },
         "writing_tasks": [
             f"Viết 5 câu có dùng các từ {keywords}.",
             "Chọn một câu sai, viết lại cho ngắn và đúng trật tự hơn.",
         ],
+        "writing_task_translations": {
+            "en": [
+                f"Write 5 sentences using these words: {keywords}.",
+                "Choose one incorrect sentence and rewrite it shorter with better order.",
+            ],
+            "vi": [
+                f"Viết 5 câu có dùng các từ {keywords}.",
+                "Chọn một câu sai, viết lại cho ngắn và đúng trật tự hơn.",
+            ],
+        },
     }
 
 
@@ -1104,9 +1364,29 @@ def _expanded_skill_lessons() -> list[dict[str, Any]]:
                         f"Build HSK {level} language for {topic['vi']}.",
                         "Practice input, output, and quiz recall in one short session.",
                     ],
+                    "learning_objective_translations": {
+                        "en": [
+                            f"Build HSK {level} language for {topic['title'].lower()}.",
+                            "Practice input, output, and quiz recall in one short session.",
+                        ],
+                        "vi": [
+                            f"Xây dựng ngôn ngữ HSK {level} cho chủ đề {topic['vi']}.",
+                            "Luyện đầu vào, đầu ra và ghi nhớ qua quiz trong một buổi ngắn.",
+                        ],
+                    },
                     "overview": (
                         f"Focused {TYPE_TITLES[lesson_type].lower()} practice for HSK {level}. "
                         f"This unit uses the topic of {topic['vi']} with reusable vocabulary and tasks."
+                    ),
+                    "overview_translations": _translations(
+                        (
+                            f"Focused {TYPE_TITLES[lesson_type].lower()} practice for HSK {level}. "
+                            f"This unit uses {topic['title'].lower()} with reusable vocabulary and tasks."
+                        ),
+                        (
+                            f"Luyện {TYPE_TITLES[lesson_type].lower()} trọng tâm cho HSK {level}. "
+                            f"Bài này dùng chủ đề {topic['vi']} với từ vựng và nhiệm vụ có thể tái sử dụng."
+                        ),
                     ),
                     "vocabulary": vocabulary,
                 }
@@ -1124,6 +1404,10 @@ def _expanded_skill_lessons() -> list[dict[str, Any]]:
                 if lesson_type in {"mixed", "writing"}:
                     content["characters"] = _writing_characters(vocabulary)
                     content["tip"] = "Viết chậm từng cụm, đọc to trước khi viết lại để kết nối âm và chữ."
+                    content["tip_translations"] = _translations(
+                        "Write slowly by phrase, read aloud before rewriting, and connect sound with character shape.",
+                        "Viết chậm từng cụm, đọc to trước khi viết lại để kết nối âm và chữ.",
+                    )
                     content["writing_exercises"] = _writing_exercises(level, lesson_number, lesson_type, vocabulary)
                 if lesson_type == "mixed":
                     content["dialogue"] = _dialogue_content(topic, vocabulary)
@@ -1222,6 +1506,121 @@ def _fallback_practice_exercises(
     ]
 
 
+def _augment_chinese_entry(entry: dict[str, Any]) -> None:
+    if not entry.get("hanzi"):
+        return
+
+    meaning_vi = entry.get("meaning_vi") or entry.get("vietnamese") or entry.get("meaning")
+    meaning_en = entry.get("meaning_en") or entry.get("english")
+    if meaning_vi:
+        entry.setdefault("meaning_vi", meaning_vi)
+    if meaning_en:
+        entry.setdefault("meaning_en", meaning_en)
+    if meaning_en or meaning_vi:
+        entry.setdefault("translations", _translations(meaning_en, meaning_vi))
+
+    if entry.get("example_en") or entry.get("example_vi"):
+        entry.setdefault("example_translations", _translations(entry.get("example_en"), entry.get("example_vi")))
+
+
+def _augment_content_translations(content: dict[str, Any]) -> dict[str, Any]:
+    overview = content.get("overview")
+    if overview and "overview_translations" not in content:
+        content["overview_translations"] = _translations(overview, overview)
+
+    objectives = content.get("learning_objectives")
+    if isinstance(objectives, list) and "learning_objective_translations" not in content:
+        content["learning_objective_translations"] = {"en": objectives, "vi": objectives}
+
+    for field in ("vocabulary", "characters", "passage", "transcript", "patterns"):
+        for entry in content.get(field) or []:
+            if isinstance(entry, dict):
+                _augment_chinese_entry(entry)
+
+    for point in content.get("grammar_points") or []:
+        if not isinstance(point, dict):
+            continue
+        title = point.get("title")
+        explanation = point.get("explanation")
+        if title:
+            point.setdefault("title_translations", _translations(title, title))
+        if explanation:
+            point.setdefault("explanation_translations", _translations(explanation, explanation))
+        if point.get("common_mistakes") and "common_mistakes_translations" not in point:
+            point["common_mistakes_translations"] = {
+                "en": point["common_mistakes"],
+                "vi": point["common_mistakes"],
+            }
+        for example in point.get("examples") or []:
+            if isinstance(example, dict):
+                _augment_chinese_entry(example)
+
+    for pattern in content.get("sentence_patterns") or []:
+        if not isinstance(pattern, dict):
+            continue
+        meaning_vi = pattern.get("meaning_vi")
+        meaning_en = pattern.get("meaning_en")
+        if meaning_en or meaning_vi:
+            pattern.setdefault("translations", _translations(meaning_en, meaning_vi))
+
+    reading = content.get("reading")
+    if isinstance(reading, dict):
+        if reading.get("title"):
+            reading.setdefault("title_translations", _translations(reading.get("title"), reading.get("title")))
+        if reading.get("english") or reading.get("vietnamese"):
+            reading.setdefault("translations", _translations(reading.get("english"), reading.get("vietnamese")))
+        for question in reading.get("questions") or []:
+            if not isinstance(question, dict):
+                continue
+            if question.get("question"):
+                question.setdefault("question_translations", _translations(question.get("question"), question.get("question")))
+            if question.get("answer"):
+                question.setdefault("answer_translations", _translations(question.get("answer"), question.get("answer")))
+            if question.get("explanation"):
+                question.setdefault(
+                    "explanation_translations",
+                    _translations(question.get("explanation"), question.get("explanation")),
+                )
+
+    listening = content.get("listening")
+    if isinstance(listening, dict):
+        if listening.get("english") or listening.get("vietnamese"):
+            listening.setdefault("translations", _translations(listening.get("english"), listening.get("vietnamese")))
+        if listening.get("task"):
+            listening.setdefault("task_translations", _translations(listening.get("task"), listening.get("task")))
+        if listening.get("answer"):
+            listening.setdefault("answer_translations", _translations(listening.get("answer"), listening.get("answer")))
+
+    dialogue = content.get("dialogue")
+    if isinstance(dialogue, dict):
+        if dialogue.get("title"):
+            dialogue.setdefault("title_translations", _translations(dialogue.get("title"), dialogue.get("title")))
+        for line in dialogue.get("lines") or []:
+            if isinstance(line, dict) and (line.get("english") or line.get("vietnamese")):
+                line.setdefault("translations", _translations(line.get("english"), line.get("vietnamese")))
+        if dialogue.get("cultural_note"):
+            dialogue.setdefault(
+                "cultural_note_translations",
+                _translations(dialogue.get("cultural_note"), dialogue.get("cultural_note")),
+            )
+
+    cultural_note = content.get("cultural_note")
+    if isinstance(cultural_note, dict) and "translations" not in cultural_note:
+        cultural_note["translations"] = _translations(cultural_note.get("english"), cultural_note.get("vietnamese"))
+
+    for exercise_field in ("practice_exercises", "writing_exercises"):
+        for exercise in content.get(exercise_field) or []:
+            if not isinstance(exercise, dict):
+                continue
+            for base_field in ("title", "prompt", "hint", "explanation"):
+                value = exercise.get(base_field)
+                translations_key = f"{base_field}_translations"
+                if value and translations_key not in exercise:
+                    exercise[translations_key] = _translations(value, value)
+
+    return content
+
+
 
 def _ensure_levels(db: Session) -> dict[int, HskLevel]:
     levels = {level.level_number: level for level in db.scalars(select(HskLevel)).all()}
@@ -1255,7 +1654,7 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
             db.add(lesson)
             existing_by_source_id[source_id] = lesson
 
-        content = dict(item["content"])
+        content = _augment_content_translations(dict(item["content"]))
         content["source_id"] = source_id
         content["hsk_level"] = hsk_level
         content.setdefault("category", TYPE_TITLES.get(item["lesson_type"], item["lesson_type"].title()))
