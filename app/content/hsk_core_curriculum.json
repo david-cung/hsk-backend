@@ -1,0 +1,1212 @@
+{
+  "version": 1,
+  "schema": "hsk-rich-lesson-v1",
+  "description": "Deep sample core lessons for HSK 1-5. Each lesson is designed as a complete learning unit: theory, vocabulary, grammar, input, output, and quiz.",
+  "levels": [
+    {
+      "hsk_level": 1,
+      "lessons": [
+        {
+          "id": "HSK1-CORE-001",
+          "hsk_level": 1,
+          "title": "HSK1 Core: Greetings and Self Introduction",
+          "description": "Learn to greet someone, say your name, and identify yourself as a student or teacher.",
+          "lesson_type": "mixed",
+          "sort_order": 1,
+          "duration_minutes": 30,
+          "content": {
+            "learning_objectives": [
+              "Greet people naturally in simple situations.",
+              "Ask and answer names with 叫.",
+              "Use 是 to identify people and roles."
+            ],
+            "overview": "This lesson builds the first communication loop: greet, introduce yourself, ask a name, and identify a role. It prepares learners for short classroom conversations.",
+            "vocabulary": [
+              {
+                "hanzi": "你好",
+                "pinyin": "ni3 hao3",
+                "meaning": "xin chào",
+                "meaning_en": "hello",
+                "example_cn": "你好，我叫安安。",
+                "example_pinyin": "Ni3 hao3, wo3 jiao4 An1'an1.",
+                "example_vi": "Xin chào, tôi tên là An An.",
+                "usage_note": "Dùng khi chào người khác trong hầu hết tình huống cơ bản."
+              },
+              {
+                "hanzi": "请",
+                "pinyin": "qing3",
+                "meaning": "xin mời; vui lòng",
+                "meaning_en": "please",
+                "example_cn": "请问，你叫什么名字？",
+                "example_pinyin": "Qing3 wen4, ni3 jiao4 shen2me ming2zi?",
+                "example_vi": "Xin hỏi, bạn tên là gì?",
+                "usage_note": "Đặt trước lời hỏi hoặc yêu cầu để câu nghe lịch sự hơn."
+              },
+              {
+                "hanzi": "谢谢",
+                "pinyin": "xie4xie5",
+                "meaning": "cảm ơn",
+                "meaning_en": "thank you",
+                "example_cn": "谢谢老师。",
+                "example_pinyin": "Xie4xie5 lao3shi1.",
+                "example_vi": "Cảm ơn thầy/cô.",
+                "usage_note": "Có thể dùng độc lập hoặc đi với người được cảm ơn."
+              },
+              {
+                "hanzi": "名字",
+                "pinyin": "ming2zi5",
+                "meaning": "tên",
+                "meaning_en": "name",
+                "example_cn": "我的名字是安安。",
+                "example_pinyin": "Wo3 de ming2zi5 shi4 An1'an1.",
+                "example_vi": "Tên của tôi là An An.",
+                "usage_note": "Thường đi với 叫 hoặc 是 khi giới thiệu tên."
+              },
+              {
+                "hanzi": "叫",
+                "pinyin": "jiao4",
+                "meaning": "tên là; gọi là",
+                "meaning_en": "to be called",
+                "example_cn": "我叫明明。",
+                "example_pinyin": "Wo3 jiao4 Ming2ming2.",
+                "example_vi": "Tôi tên là Minh Minh.",
+                "usage_note": "Dùng trực tiếp trước tên, không cần 是."
+              },
+              {
+                "hanzi": "老师",
+                "pinyin": "lao3shi1",
+                "meaning": "giáo viên",
+                "meaning_en": "teacher",
+                "example_cn": "她是老师。",
+                "example_pinyin": "Ta1 shi4 lao3shi1.",
+                "example_vi": "Cô ấy là giáo viên.",
+                "usage_note": "Dùng cho giáo viên; chào giáo viên bằng 老师好 rất tự nhiên."
+              },
+              {
+                "hanzi": "学生",
+                "pinyin": "xue2sheng5",
+                "meaning": "học sinh; sinh viên",
+                "meaning_en": "student",
+                "example_cn": "我是学生。",
+                "example_pinyin": "Wo3 shi4 xue2sheng5.",
+                "example_vi": "Tôi là học sinh.",
+                "usage_note": "Dùng để nói vai trò của người học."
+              },
+              {
+                "hanzi": "朋友",
+                "pinyin": "peng2you5",
+                "meaning": "bạn bè",
+                "meaning_en": "friend",
+                "example_cn": "他是我的朋友。",
+                "example_pinyin": "Ta1 shi4 wo3 de peng2you5.",
+                "example_vi": "Anh ấy là bạn của tôi.",
+                "usage_note": "Có thể dùng trong giới thiệu người quen."
+              }
+            ],
+            "grammar_points": [
+              {
+                "title": "Subject + 叫 + Name",
+                "structure": "我/你/他/她 + 叫 + tên",
+                "explanation": "Dùng 叫 để giới thiệu hoặc hỏi tên. Không thêm 是 giữa chủ ngữ và 叫.",
+                "examples": [
+                  {
+                    "hanzi": "我叫安安。",
+                    "pinyin": "Wo3 jiao4 An1'an1.",
+                    "meaning": "Tôi tên là An An."
+                  },
+                  {
+                    "hanzi": "你叫什么名字？",
+                    "pinyin": "Ni3 jiao4 shen2me ming2zi5?",
+                    "meaning": "Bạn tên là gì?"
+                  }
+                ],
+                "common_mistakes": [
+                  "Sai: 我是叫安安。",
+                  "Đúng: 我叫安安。"
+                ]
+              },
+              {
+                "title": "A 是 B",
+                "structure": "Chủ ngữ + 是 + danh từ",
+                "explanation": "Dùng 是 để nói ai là ai hoặc ai thuộc vai trò nào.",
+                "examples": [
+                  {
+                    "hanzi": "我是学生。",
+                    "pinyin": "Wo3 shi4 xue2sheng5.",
+                    "meaning": "Tôi là học sinh."
+                  },
+                  {
+                    "hanzi": "她是老师。",
+                    "pinyin": "Ta1 shi4 lao3shi1.",
+                    "meaning": "Cô ấy là giáo viên."
+                  }
+                ],
+                "common_mistakes": [
+                  "Không dùng 是 trước tính từ ở HSK1 như 我是好.",
+                  "Dùng 是 chủ yếu để nối với danh từ hoặc vai trò."
+                ]
+              }
+            ],
+            "sentence_patterns": [
+              {
+                "pattern": "你好，我叫...",
+                "meaning_vi": "Xin chào, tôi tên là...",
+                "examples": ["你好，我叫安安。", "你好，我叫明明。"]
+              },
+              {
+                "pattern": "你叫什么名字？",
+                "meaning_vi": "Bạn tên là gì?",
+                "examples": ["请问，你叫什么名字？"]
+              },
+              {
+                "pattern": "我是...",
+                "meaning_vi": "Tôi là...",
+                "examples": ["我是学生。", "我是老师。"]
+              }
+            ],
+            "dialogue": {
+              "title": "Meeting a New Classmate",
+              "lines": [
+                {
+                  "speaker": "安安",
+                  "chinese": "你好，我叫安安。你叫什么名字？",
+                  "pinyin": "Ni3 hao3, wo3 jiao4 An1'an1. Ni3 jiao4 shen2me ming2zi5?",
+                  "vietnamese": "Xin chào, tôi tên là An An. Bạn tên là gì?"
+                },
+                {
+                  "speaker": "明明",
+                  "chinese": "你好，我叫明明。我是学生。",
+                  "pinyin": "Ni3 hao3, wo3 jiao4 Ming2ming2. Wo3 shi4 xue2sheng5.",
+                  "vietnamese": "Xin chào, tôi tên là Minh Minh. Tôi là học sinh."
+                },
+                {
+                  "speaker": "安安",
+                  "chinese": "她是老师。我们谢谢老师。",
+                  "pinyin": "Ta1 shi4 lao3shi1. Wo3men5 xie4xie5 lao3shi1.",
+                  "vietnamese": "Cô ấy là giáo viên. Chúng ta cảm ơn cô giáo."
+                }
+              ]
+            },
+            "reading": {
+              "title": "My First Class",
+              "chinese": "你好。我叫安安。我是学生。她是老师。他是我的朋友。",
+              "pinyin": "Ni3 hao3. Wo3 jiao4 An1'an1. Wo3 shi4 xue2sheng5. Ta1 shi4 lao3shi1. Ta1 shi4 wo3 de peng2you5.",
+              "vietnamese": "Xin chào. Tôi tên là An An. Tôi là học sinh. Cô ấy là giáo viên. Anh ấy là bạn của tôi.",
+              "questions": [
+                {
+                  "question": "安安 là ai?",
+                  "answer": "学生",
+                  "explanation": "Câu 我是学生 cho biết An An là học sinh."
+                }
+              ]
+            },
+            "listening": {
+              "script": "你好，我叫安安。你叫什么名字？",
+              "task": "Nghe và xác định người nói đang hỏi điều gì.",
+              "answer": "Người nói đang hỏi tên."
+            },
+            "speaking_tasks": [
+              "Tự giới thiệu bằng mẫu: 你好，我叫...",
+              "Hỏi tên bạn học bằng mẫu: 你叫什么名字？"
+            ],
+            "reading_tasks": [
+              "Gạch chân các câu dùng 是.",
+              "Tìm tên người trong đoạn đọc."
+            ],
+            "writing_tasks": [
+              "Viết 3 câu giới thiệu bản thân.",
+              "Viết 2 câu giới thiệu một giáo viên hoặc một người bạn."
+            ]
+          },
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "我叫安安 means...",
+              "options": ["My name is An An", "I am a teacher", "Hello teacher", "Thank you"],
+              "correct_answer": "My name is An An",
+              "explanation": "叫 introduces a name."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Choose the natural question for asking a name.",
+              "options": ["你叫什么名字？", "你是老师。", "谢谢你。", "我是学生。"],
+              "correct_answer": "你叫什么名字？",
+              "explanation": "什么名字 asks what name."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "她是老师 means...",
+              "options": ["She is a teacher", "He is a student", "I am a friend", "Hello teacher"],
+              "correct_answer": "She is a teacher",
+              "explanation": "她 means she; 是 links the role 老师."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "hsk_level": 2,
+      "lessons": [
+        {
+          "id": "HSK2-CORE-001",
+          "hsk_level": 2,
+          "title": "HSK2 Core: Plans and Time",
+          "description": "Learn to make simple plans, talk about time, and arrange a meeting with a friend.",
+          "lesson_type": "mixed",
+          "sort_order": 1,
+          "duration_minutes": 35,
+          "content": {
+            "learning_objectives": [
+              "Talk about weekend plans with 想 and 要.",
+              "Use time words before verbs.",
+              "Ask and answer where and when to meet."
+            ],
+            "overview": "This unit connects time, place, and intention. Learners move from isolated sentences to a short plan: when to go, where to meet, and what to do.",
+            "vocabulary": [
+              {
+                "hanzi": "周末",
+                "pinyin": "zhou1mo4",
+                "meaning": "cuối tuần",
+                "meaning_en": "weekend",
+                "example_cn": "周末我想看电影。",
+                "example_pinyin": "Zhou1mo4 wo3 xiang3 kan4 dian4ying3.",
+                "example_vi": "Cuối tuần tôi muốn xem phim.",
+                "usage_note": "Từ chỉ thời gian, thường đứng đầu câu hoặc trước động từ."
+              },
+              {
+                "hanzi": "时间",
+                "pinyin": "shi2jian1",
+                "meaning": "thời gian",
+                "meaning_en": "time",
+                "example_cn": "你有时间吗？",
+                "example_pinyin": "Ni3 you3 shi2jian1 ma?",
+                "example_vi": "Bạn có thời gian không?",
+                "usage_note": "有时间 nghĩa là có thời gian/rảnh."
+              },
+              {
+                "hanzi": "电影",
+                "pinyin": "dian4ying3",
+                "meaning": "phim",
+                "meaning_en": "movie",
+                "example_cn": "我们去看电影。",
+                "example_pinyin": "Wo3men5 qu4 kan4 dian4ying3.",
+                "example_vi": "Chúng ta đi xem phim.",
+                "usage_note": "看电影 là cụm động từ cố định: xem phim."
+              },
+              {
+                "hanzi": "一起",
+                "pinyin": "yi4qi3",
+                "meaning": "cùng nhau",
+                "meaning_en": "together",
+                "example_cn": "我们一起去学校。",
+                "example_pinyin": "Wo3men5 yi4qi3 qu4 xue2xiao4.",
+                "example_vi": "Chúng ta cùng đi đến trường.",
+                "usage_note": "Đặt trước động từ để nói làm việc gì cùng nhau."
+              },
+              {
+                "hanzi": "见面",
+                "pinyin": "jian4mian4",
+                "meaning": "gặp mặt",
+                "meaning_en": "to meet",
+                "example_cn": "我们三点见面。",
+                "example_pinyin": "Wo3men5 san1 dian3 jian4mian4.",
+                "example_vi": "Chúng ta gặp nhau lúc 3 giờ.",
+                "usage_note": "Dùng khi hẹn gặp trực tiếp."
+              },
+              {
+                "hanzi": "门口",
+                "pinyin": "men2kou3",
+                "meaning": "cổng; cửa ra vào",
+                "meaning_en": "entrance",
+                "example_cn": "我在学校门口等你。",
+                "example_pinyin": "Wo3 zai4 xue2xiao4 men2kou3 deng3 ni3.",
+                "example_vi": "Tôi đợi bạn ở cổng trường.",
+                "usage_note": "Dùng với 在 để chỉ địa điểm."
+              },
+              {
+                "hanzi": "等",
+                "pinyin": "deng3",
+                "meaning": "đợi",
+                "meaning_en": "to wait",
+                "example_cn": "请等我五分钟。",
+                "example_pinyin": "Qing3 deng3 wo3 wu3 fen1zhong1.",
+                "example_vi": "Vui lòng đợi tôi 5 phút.",
+                "usage_note": "Theo sau có thể là người được đợi."
+              },
+              {
+                "hanzi": "可以",
+                "pinyin": "ke3yi3",
+                "meaning": "có thể; được",
+                "meaning_en": "can; may",
+                "example_cn": "下午三点可以吗？",
+                "example_pinyin": "Xia4wu3 san1 dian3 ke3yi3 ma?",
+                "example_vi": "Ba giờ chiều được không?",
+                "usage_note": "Dùng để xin phép hoặc đề xuất thời gian."
+              }
+            ],
+            "grammar_points": [
+              {
+                "title": "想 + Verb",
+                "structure": "Subject + 想 + verb phrase",
+                "explanation": "想 diễn tả mong muốn hoặc dự định mềm, thường dịch là muốn.",
+                "examples": [
+                  {
+                    "hanzi": "我想看电影。",
+                    "pinyin": "Wo3 xiang3 kan4 dian4ying3.",
+                    "meaning": "Tôi muốn xem phim."
+                  },
+                  {
+                    "hanzi": "你想一起去吗？",
+                    "pinyin": "Ni3 xiang3 yi4qi3 qu4 ma?",
+                    "meaning": "Bạn muốn đi cùng không?"
+                  }
+                ],
+                "common_mistakes": [
+                  "Không đặt 想 sau động từ: sai 看想电影.",
+                  "Đúng: 想看电影."
+                ]
+              },
+              {
+                "title": "Time Before Action",
+                "structure": "Time + subject + verb hoặc subject + time + verb",
+                "explanation": "Từ chỉ thời gian thường đứng trước hành động chính.",
+                "examples": [
+                  {
+                    "hanzi": "周末我们看电影。",
+                    "pinyin": "Zhou1mo4 wo3men5 kan4 dian4ying3.",
+                    "meaning": "Cuối tuần chúng tôi xem phim."
+                  },
+                  {
+                    "hanzi": "我们下午三点见面。",
+                    "pinyin": "Wo3men5 xia4wu3 san1 dian3 jian4mian4.",
+                    "meaning": "Chúng ta gặp nhau lúc 3 giờ chiều."
+                  }
+                ],
+                "common_mistakes": [
+                  "Không dịch theo thứ tự tiếng Việt một cách máy móc.",
+                  "Tránh đặt thời gian sau toàn bộ câu nếu chưa quen."
+                ]
+              }
+            ],
+            "sentence_patterns": [
+              {
+                "pattern": "你周末有时间吗？",
+                "meaning_vi": "Cuối tuần bạn có thời gian không?",
+                "examples": ["你今天有时间吗？", "你明天有时间吗？"]
+              },
+              {
+                "pattern": "我们...见面。",
+                "meaning_vi": "Chúng ta gặp nhau ở/lúc...",
+                "examples": ["我们三点见面。", "我们在学校门口见面。"]
+              }
+            ],
+            "dialogue": {
+              "title": "Making a Weekend Plan",
+              "lines": [
+                {
+                  "speaker": "朋友A",
+                  "chinese": "你周末有时间吗？",
+                  "pinyin": "Ni3 zhou1mo4 you3 shi2jian1 ma?",
+                  "vietnamese": "Cuối tuần bạn có thời gian không?"
+                },
+                {
+                  "speaker": "朋友B",
+                  "chinese": "有。你想做什么？",
+                  "pinyin": "You3. Ni3 xiang3 zuo4 shen2me?",
+                  "vietnamese": "Có. Bạn muốn làm gì?"
+                },
+                {
+                  "speaker": "朋友A",
+                  "chinese": "我想一起看电影。下午三点可以吗？",
+                  "pinyin": "Wo3 xiang3 yi4qi3 kan4 dian4ying3. Xia4wu3 san1 dian3 ke3yi3 ma?",
+                  "vietnamese": "Tôi muốn cùng xem phim. Ba giờ chiều được không?"
+                },
+                {
+                  "speaker": "朋友B",
+                  "chinese": "可以。我在学校门口等你。",
+                  "pinyin": "Ke3yi3. Wo3 zai4 xue2xiao4 men2kou3 deng3 ni3.",
+                  "vietnamese": "Được. Tôi đợi bạn ở cổng trường."
+                }
+              ]
+            },
+            "reading": {
+              "title": "Weekend Movie Plan",
+              "chinese": "周末我有时间。我和朋友一起去看电影。我们下午三点在学校门口见面。",
+              "pinyin": "Zhou1mo4 wo3 you3 shi2jian1. Wo3 he2 peng2you5 yi4qi3 qu4 kan4 dian4ying3. Wo3men5 xia4wu3 san1 dian3 zai4 xue2xiao4 men2kou3 jian4mian4.",
+              "vietnamese": "Cuối tuần tôi có thời gian. Tôi và bạn cùng đi xem phim. Chúng tôi gặp nhau lúc 3 giờ chiều ở cổng trường.",
+              "questions": [
+                {
+                  "question": "Người nói gặp bạn ở đâu?",
+                  "answer": "学校门口",
+                  "explanation": "Cụm 在学校门口 cho biết địa điểm."
+                }
+              ]
+            },
+            "listening": {
+              "script": "下午三点可以吗？我在学校门口等你。",
+              "task": "Nghe và ghi lại thời gian hẹn.",
+              "answer": "下午三点"
+            },
+            "speaking_tasks": [
+              "Rủ bạn đi xem phim bằng 想.",
+              "Đổi thời gian hẹn sang sáng mai hoặc tối nay."
+            ],
+            "reading_tasks": [
+              "Tìm các từ chỉ thời gian trong đoạn đọc.",
+              "Tìm địa điểm hẹn gặp."
+            ],
+            "writing_tasks": [
+              "Viết một tin nhắn 3 câu rủ bạn đi chơi cuối tuần."
+            ]
+          },
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "你周末有时间吗？ asks...",
+              "options": ["Do you have time on the weekend?", "Where is the school?", "What is your name?", "How much is it?"],
+              "correct_answer": "Do you have time on the weekend?",
+              "explanation": "周末 is weekend; 有时间 asks whether someone has time."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Choose the correct order.",
+              "options": ["我想看电影。", "我看想电影。", "电影想我看。", "想我看电影。"],
+              "correct_answer": "我想看电影。",
+              "explanation": "想 comes before the verb phrase."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "在学校门口 means...",
+              "options": ["at the school entrance", "inside the cinema", "on the weekend", "after three"],
+              "correct_answer": "at the school entrance",
+              "explanation": "门口 means entrance."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "hsk_level": 3,
+      "lessons": [
+        {
+          "id": "HSK3-CORE-001",
+          "hsk_level": 3,
+          "title": "HSK3 Core: Solving a Delivery Problem",
+          "description": "Learn to explain a service problem, request a correction, and confirm details.",
+          "lesson_type": "mixed",
+          "sort_order": 1,
+          "duration_minutes": 40,
+          "content": {
+            "learning_objectives": [
+              "Explain a delivery address problem.",
+              "Use 因为...所以... for cause and result.",
+              "Use 把 to describe handling an object or task."
+            ],
+            "overview": "This unit moves from daily planning to problem-solving. Learners practice describing what went wrong and asking staff to correct information.",
+            "vocabulary": [
+              {
+                "hanzi": "地址",
+                "pinyin": "di4zhi3",
+                "meaning": "địa chỉ",
+                "meaning_en": "address",
+                "example_cn": "我的地址写错了。",
+                "example_pinyin": "Wo3 de di4zhi3 xie3 cuo4 le.",
+                "example_vi": "Địa chỉ của tôi bị viết sai.",
+                "usage_note": "Dùng trong giao hàng, đăng ký, khách sạn."
+              },
+              {
+                "hanzi": "快递",
+                "pinyin": "kuai4di4",
+                "meaning": "chuyển phát nhanh",
+                "meaning_en": "express delivery",
+                "example_cn": "我的快递还没到。",
+                "example_pinyin": "Wo3 de kuai4di4 hai2 mei2 dao4.",
+                "example_vi": "Bưu kiện của tôi vẫn chưa đến.",
+                "usage_note": "Có thể chỉ dịch vụ hoặc gói hàng."
+              },
+              {
+                "hanzi": "付款",
+                "pinyin": "fu4kuan3",
+                "meaning": "thanh toán",
+                "meaning_en": "to pay",
+                "example_cn": "我已经付款了。",
+                "example_pinyin": "Wo3 yi3jing1 fu4kuan3 le.",
+                "example_vi": "Tôi đã thanh toán rồi.",
+                "usage_note": "Trang trọng hơn 买; dùng trong mua hàng/dịch vụ."
+              },
+              {
+                "hanzi": "确认",
+                "pinyin": "que4ren4",
+                "meaning": "xác nhận",
+                "meaning_en": "to confirm",
+                "example_cn": "请确认电话号码。",
+                "example_pinyin": "Qing3 que4ren4 dian4hua4 hao4ma3.",
+                "example_vi": "Vui lòng xác nhận số điện thoại.",
+                "usage_note": "Dùng khi kiểm tra thông tin có đúng không."
+              },
+              {
+                "hanzi": "号码",
+                "pinyin": "hao4ma3",
+                "meaning": "số; mã số",
+                "meaning_en": "number",
+                "example_cn": "这是我的手机号码。",
+                "example_pinyin": "Zhe4 shi4 wo3 de shou3ji1 hao4ma3.",
+                "example_vi": "Đây là số điện thoại di động của tôi.",
+                "usage_note": "Thường đi với 电话, 手机, 房间."
+              },
+              {
+                "hanzi": "错误",
+                "pinyin": "cuo4wu4",
+                "meaning": "lỗi; sai sót",
+                "meaning_en": "mistake; error",
+                "example_cn": "这里有一个错误。",
+                "example_pinyin": "Zhe4li3 you3 yi2 ge4 cuo4wu4.",
+                "example_vi": "Ở đây có một lỗi.",
+                "usage_note": "Danh từ; tính từ thường dùng 错."
+              },
+              {
+                "hanzi": "帮助",
+                "pinyin": "bang1zhu4",
+                "meaning": "giúp đỡ",
+                "meaning_en": "to help",
+                "example_cn": "请帮助我改地址。",
+                "example_pinyin": "Qing3 bang1zhu4 wo3 gai3 di4zhi3.",
+                "example_vi": "Vui lòng giúp tôi sửa địa chỉ.",
+                "usage_note": "Có thể là động từ hoặc danh từ."
+              },
+              {
+                "hanzi": "马上",
+                "pinyin": "ma3shang4",
+                "meaning": "ngay lập tức",
+                "meaning_en": "right away",
+                "example_cn": "我马上发给你。",
+                "example_pinyin": "Wo3 ma3shang4 fa1 gei3 ni3.",
+                "example_vi": "Tôi gửi cho bạn ngay.",
+                "usage_note": "Dùng để nhấn mạnh hành động xảy ra rất sớm."
+              }
+            ],
+            "grammar_points": [
+              {
+                "title": "因为...所以...",
+                "structure": "因为 + reason, 所以 + result",
+                "explanation": "Dùng để nối nguyên nhân và kết quả. Trong tiếng Trung có thể dùng cả 因为 và 所以 cùng lúc.",
+                "examples": [
+                  {
+                    "hanzi": "因为地址错了，所以快递没到。",
+                    "pinyin": "Yin1wei4 di4zhi3 cuo4 le, suo3yi3 kuai4di4 mei2 dao4.",
+                    "meaning": "Vì địa chỉ sai nên bưu kiện chưa đến."
+                  },
+                  {
+                    "hanzi": "因为我已经付款了，所以想确认订单。",
+                    "pinyin": "Yin1wei4 wo3 yi3jing1 fu4kuan3 le, suo3yi3 xiang3 que4ren4 ding4dan1.",
+                    "meaning": "Vì tôi đã thanh toán nên muốn xác nhận đơn hàng."
+                  }
+                ],
+                "common_mistakes": [
+                  "Không đảo kết quả lên trước khi dùng 所以.",
+                  "Nếu câu ngắn, có thể bỏ 因为 hoặc 所以, nhưng bài này luyện đủ cặp."
+                ]
+              },
+              {
+                "title": "把 + Object + Verb + Result",
+                "structure": "Subject + 把 + object + verb + result/complement",
+                "explanation": "把 nhấn mạnh việc xử lý đối tượng và kết quả sau hành động.",
+                "examples": [
+                  {
+                    "hanzi": "请把地址改好。",
+                    "pinyin": "Qing3 ba3 di4zhi3 gai3 hao3.",
+                    "meaning": "Vui lòng sửa địa chỉ cho xong/cho đúng."
+                  },
+                  {
+                    "hanzi": "我把号码发给你。",
+                    "pinyin": "Wo3 ba3 hao4ma3 fa1 gei3 ni3.",
+                    "meaning": "Tôi gửi số cho bạn."
+                  }
+                ],
+                "common_mistakes": [
+                  "把 không dùng cho mọi câu; cần có đối tượng cụ thể.",
+                  "Sau động từ thường cần kết quả/hướng/đích, ví dụ 改好, 发给你."
+                ]
+              }
+            ],
+            "sentence_patterns": [
+              {
+                "pattern": "我的...写错了。",
+                "meaning_vi": "... của tôi bị viết sai.",
+                "examples": ["我的地址写错了。", "我的号码写错了。"]
+              },
+              {
+                "pattern": "请帮我...",
+                "meaning_vi": "Vui lòng giúp tôi...",
+                "examples": ["请帮我确认一下。", "请帮我改地址。"]
+              }
+            ],
+            "dialogue": {
+              "title": "Changing a Delivery Address",
+              "lines": [
+                {
+                  "speaker": "顾客",
+                  "chinese": "你好，我的快递地址写错了。",
+                  "pinyin": "Ni3 hao3, wo3 de kuai4di4 di4zhi3 xie3 cuo4 le.",
+                  "vietnamese": "Xin chào, địa chỉ giao hàng của tôi bị viết sai."
+                },
+                {
+                  "speaker": "工作人员",
+                  "chinese": "请确认你的手机号码。",
+                  "pinyin": "Qing3 que4ren4 ni3 de shou3ji1 hao4ma3.",
+                  "vietnamese": "Vui lòng xác nhận số điện thoại di động của bạn."
+                },
+                {
+                  "speaker": "顾客",
+                  "chinese": "好的。我已经付款了，请帮我把地址改好。",
+                  "pinyin": "Hao3 de. Wo3 yi3jing1 fu4kuan3 le, qing3 bang1 wo3 ba3 di4zhi3 gai3 hao3.",
+                  "vietnamese": "Được. Tôi đã thanh toán rồi, vui lòng giúp tôi sửa địa chỉ cho đúng."
+                },
+                {
+                  "speaker": "工作人员",
+                  "chinese": "没问题。请马上把新地址发给我。",
+                  "pinyin": "Mei2 wen4ti2. Qing3 ma3shang4 ba3 xin1 di4zhi3 fa1 gei3 wo3.",
+                  "vietnamese": "Không vấn đề gì. Vui lòng gửi ngay địa chỉ mới cho tôi."
+                }
+              ]
+            },
+            "reading": {
+              "title": "A Delivery Mistake",
+              "chinese": "小林已经付款了，但是快递地址写错了。因为地址有错误，所以快递还没到。他给工作人员打电话，请他们帮助确认新地址。",
+              "pinyin": "Xiao3 Lin2 yi3jing1 fu4kuan3 le, dan4shi4 kuai4di4 di4zhi3 xie3 cuo4 le. Yin1wei4 di4zhi3 you3 cuo4wu4, suo3yi3 kuai4di4 hai2 mei2 dao4. Ta1 gei3 gong1zuo4 ren2yuan2 da3 dian4hua4, qing3 ta1men5 bang1zhu4 que4ren4 xin1 di4zhi3.",
+              "vietnamese": "Tiểu Lâm đã thanh toán rồi, nhưng địa chỉ chuyển phát bị viết sai. Vì địa chỉ có lỗi nên bưu kiện vẫn chưa đến. Anh ấy gọi cho nhân viên, nhờ họ giúp xác nhận địa chỉ mới.",
+              "questions": [
+                {
+                  "question": "Vì sao bưu kiện chưa đến?",
+                  "answer": "地址有错误",
+                  "explanation": "Câu 因为地址有错误，所以快递还没到 nêu nguyên nhân."
+                }
+              ]
+            },
+            "listening": {
+              "script": "请确认你的手机号码。请马上把新地址发给我。",
+              "task": "Nghe và ghi lại hai thông tin người nói yêu cầu.",
+              "answer": "确认手机号码; 发送新地址"
+            },
+            "speaking_tasks": [
+              "Gọi cho nhân viên và nói địa chỉ bị sai.",
+              "Dùng 因为...所以... để giải thích vấn đề."
+            ],
+            "reading_tasks": [
+              "Tìm câu có 因为...所以....",
+              "Gạch chân các từ liên quan đến dịch vụ giao hàng."
+            ],
+            "writing_tasks": [
+              "Viết một tin nhắn 4 câu yêu cầu sửa địa chỉ giao hàng."
+            ]
+          },
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "因为地址错了，所以快递没到。What is the result?",
+              "options": ["The delivery has not arrived", "The phone number is correct", "The customer paid twice", "The staff is a teacher"],
+              "correct_answer": "The delivery has not arrived",
+              "explanation": "所以 introduces the result."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Choose the correct 把 sentence.",
+              "options": ["请把地址改好。", "请地址把改好。", "把请地址改好。", "请改好把地址。"],
+              "correct_answer": "请把地址改好。",
+              "explanation": "把 comes before the object 地址."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "确认 means...",
+              "options": ["to confirm", "to rest", "to watch", "to rain"],
+              "correct_answer": "to confirm",
+              "explanation": "确认 is used to check that information is correct."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "hsk_level": 4,
+      "lessons": [
+        {
+          "id": "HSK4-CORE-001",
+          "hsk_level": 4,
+          "title": "HSK4 Core: Community Problems and Suggestions",
+          "description": "Learn to discuss a local problem, describe impact, and make a practical suggestion.",
+          "lesson_type": "mixed",
+          "sort_order": 1,
+          "duration_minutes": 45,
+          "content": {
+            "learning_objectives": [
+              "Discuss a community issue with clear reasons.",
+              "Use 虽然...但是... to contrast ideas.",
+              "Give suggestions with 建议 and 应该."
+            ],
+            "overview": "This unit develops opinion language. Learners describe a problem, explain its influence, and propose a realistic solution.",
+            "vocabulary": [
+              {
+                "hanzi": "社区",
+                "pinyin": "she4qu1",
+                "meaning": "khu dân cư; cộng đồng",
+                "meaning_en": "community",
+                "example_cn": "这个社区交通很方便。",
+                "example_pinyin": "Zhe4 ge4 she4qu1 jiao1tong1 hen3 fang1bian4.",
+                "example_vi": "Khu dân cư này giao thông rất thuận tiện.",
+                "usage_note": "Dùng cho khu vực sinh sống hoặc cộng đồng dân cư."
+              },
+              {
+                "hanzi": "噪音",
+                "pinyin": "zao4yin1",
+                "meaning": "tiếng ồn",
+                "meaning_en": "noise",
+                "example_cn": "晚上噪音很大。",
+                "example_pinyin": "Wan3shang5 zao4yin1 hen3 da4.",
+                "example_vi": "Buổi tối tiếng ồn rất lớn.",
+                "usage_note": "Thường là vấn đề tiêu cực trong môi trường sống."
+              },
+              {
+                "hanzi": "影响",
+                "pinyin": "ying3xiang3",
+                "meaning": "ảnh hưởng",
+                "meaning_en": "influence; impact",
+                "example_cn": "噪音影响大家休息。",
+                "example_pinyin": "Zao4yin1 ying3xiang3 da4jia1 xiu1xi5.",
+                "example_vi": "Tiếng ồn ảnh hưởng đến việc nghỉ ngơi của mọi người.",
+                "usage_note": "Có thể là động từ hoặc danh từ."
+              },
+              {
+                "hanzi": "建议",
+                "pinyin": "jian4yi4",
+                "meaning": "đề nghị; lời khuyên",
+                "meaning_en": "suggestion; to suggest",
+                "example_cn": "我建议商店早点关门。",
+                "example_pinyin": "Wo3 jian4yi4 shang1dian4 zao3dian3 guan1men2.",
+                "example_vi": "Tôi đề nghị cửa hàng đóng cửa sớm hơn.",
+                "usage_note": "Sau 建议 có thể là một mệnh đề hoặc hành động."
+              },
+              {
+                "hanzi": "环境",
+                "pinyin": "huan2jing4",
+                "meaning": "môi trường",
+                "meaning_en": "environment",
+                "example_cn": "好的环境让人舒服。",
+                "example_pinyin": "Hao3 de huan2jing4 rang4 ren2 shu1fu5.",
+                "example_vi": "Môi trường tốt khiến người ta dễ chịu.",
+                "usage_note": "Dùng cho môi trường sống, học tập, làm việc."
+              },
+              {
+                "hanzi": "解决",
+                "pinyin": "jie3jue2",
+                "meaning": "giải quyết",
+                "meaning_en": "to solve",
+                "example_cn": "我们应该解决这个问题。",
+                "example_pinyin": "Wo3men5 ying1gai1 jie3jue2 zhe4 ge4 wen4ti2.",
+                "example_vi": "Chúng ta nên giải quyết vấn đề này.",
+                "usage_note": "Đi với 问题, 困难, 麻烦."
+              },
+              {
+                "hanzi": "应该",
+                "pinyin": "ying1gai1",
+                "meaning": "nên",
+                "meaning_en": "should",
+                "example_cn": "大家应该早点休息。",
+                "example_pinyin": "Da4jia1 ying1gai1 zao3dian3 xiu1xi5.",
+                "example_vi": "Mọi người nên nghỉ ngơi sớm hơn.",
+                "usage_note": "Dùng khi đưa lời khuyên hoặc nghĩa vụ nhẹ."
+              },
+              {
+                "hanzi": "减少",
+                "pinyin": "jian3shao3",
+                "meaning": "giảm bớt",
+                "meaning_en": "to reduce",
+                "example_cn": "我们要减少晚上噪音。",
+                "example_pinyin": "Wo3men5 yao4 jian3shao3 wan3shang5 zao4yin1.",
+                "example_vi": "Chúng ta cần giảm tiếng ồn buổi tối.",
+                "usage_note": "Dùng với số lượng hoặc mức độ của vấn đề."
+              }
+            ],
+            "grammar_points": [
+              {
+                "title": "虽然...但是...",
+                "structure": "虽然 + clause A, 但是 + clause B",
+                "explanation": "Dùng để nêu hai ý tương phản: công nhận một mặt, sau đó nhấn mạnh mặt khác.",
+                "examples": [
+                  {
+                    "hanzi": "虽然这里交通方便，但是晚上很吵。",
+                    "pinyin": "Sui1ran2 zhe4li3 jiao1tong1 fang1bian4, dan4shi4 wan3shang5 hen3 chao3.",
+                    "meaning": "Tuy ở đây giao thông thuận tiện, nhưng buổi tối rất ồn."
+                  },
+                  {
+                    "hanzi": "虽然问题不大，但是应该早点解决。",
+                    "pinyin": "Sui1ran2 wen4ti2 bu2 da4, dan4shi4 ying1gai1 zao3dian3 jie3jue2.",
+                    "meaning": "Tuy vấn đề không lớn, nhưng nên giải quyết sớm."
+                  }
+                ],
+                "common_mistakes": [
+                  "Không dùng 但是 để lặp lại cùng ý; vế sau cần có tương phản.",
+                  "Có thể bỏ 但是 trong văn nói, nhưng người học nên luyện đủ cặp."
+                ]
+              },
+              {
+                "title": "建议 + Clause",
+                "structure": "Subject + 建议 + person/event + verb phrase",
+                "explanation": "Dùng 建议 để đưa đề xuất. Có thể dịch là đề nghị/khuyên.",
+                "examples": [
+                  {
+                    "hanzi": "我建议大家晚上少开车。",
+                    "pinyin": "Wo3 jian4yi4 da4jia1 wan3shang5 shao3 kai1che1.",
+                    "meaning": "Tôi đề nghị mọi người buổi tối ít lái xe hơn."
+                  },
+                  {
+                    "hanzi": "他们建议商店早点关门。",
+                    "pinyin": "Ta1men5 jian4yi4 shang1dian4 zao3dian3 guan1men2.",
+                    "meaning": "Họ đề nghị cửa hàng đóng cửa sớm hơn."
+                  }
+                ],
+                "common_mistakes": [
+                  "建议 không phải lúc nào cũng là danh từ; trong câu này nó là động từ.",
+                  "Đừng dịch máy móc thành 给建议 nếu muốn nói đề nghị ai làm gì."
+                ]
+              }
+            ],
+            "sentence_patterns": [
+              {
+                "pattern": "虽然..., 但是...",
+                "meaning_vi": "Tuy..., nhưng...",
+                "examples": ["虽然环境好，但是噪音大。"]
+              },
+              {
+                "pattern": "我建议...",
+                "meaning_vi": "Tôi đề nghị...",
+                "examples": ["我建议大家减少晚上噪音。"]
+              }
+            ],
+            "dialogue": {
+              "title": "Community Noise Meeting",
+              "lines": [
+                {
+                  "speaker": "居民A",
+                  "chinese": "这个社区环境不错，但是晚上噪音太大。",
+                  "pinyin": "Zhe4 ge4 she4qu1 huan2jing4 bu2cuo4, dan4shi4 wan3shang5 zao4yin1 tai4 da4.",
+                  "vietnamese": "Khu dân cư này môi trường khá tốt, nhưng buổi tối tiếng ồn quá lớn."
+                },
+                {
+                  "speaker": "居民B",
+                  "chinese": "是啊，噪音影响大家休息。",
+                  "pinyin": "Shi4 a, zao4yin1 ying3xiang3 da4jia1 xiu1xi5.",
+                  "vietnamese": "Đúng vậy, tiếng ồn ảnh hưởng đến việc nghỉ ngơi của mọi người."
+                },
+                {
+                  "speaker": "居民A",
+                  "chinese": "我建议商店晚上十点以后减少音乐。",
+                  "pinyin": "Wo3 jian4yi4 shang1dian4 wan3shang5 shi2 dian3 yi3hou4 jian3shao3 yin1yue4.",
+                  "vietnamese": "Tôi đề nghị các cửa hàng sau 10 giờ tối giảm nhạc."
+                },
+                {
+                  "speaker": "居民B",
+                  "chinese": "这个办法可以解决一部分问题。",
+                  "pinyin": "Zhe4 ge4 ban4fa3 ke3yi3 jie3jue2 yi2 bu4fen5 wen4ti2.",
+                  "vietnamese": "Cách này có thể giải quyết một phần vấn đề."
+                }
+              ]
+            },
+            "reading": {
+              "title": "A Neighborhood Suggestion",
+              "chinese": "这个社区交通方便，环境也不错。可是，晚上商店的音乐声音很大，影响了很多人的休息。居民建议商店十点以后减少音乐，这样可以让社区更安静。",
+              "pinyin": "Zhe4 ge4 she4qu1 jiao1tong1 fang1bian4, huan2jing4 ye3 bu2cuo4. Ke3shi4, wan3shang5 shang1dian4 de yin1yue4 sheng1yin1 hen3 da4, ying3xiang3 le hen3 duo1 ren2 de xiu1xi5. Ju1min2 jian4yi4 shang1dian4 shi2 dian3 yi3hou4 jian3shao3 yin1yue4, zhe4yang4 ke3yi3 rang4 she4qu1 geng4 an1jing4.",
+              "vietnamese": "Khu dân cư này giao thông thuận tiện, môi trường cũng khá tốt. Nhưng buổi tối nhạc của các cửa hàng rất lớn, ảnh hưởng đến việc nghỉ ngơi của nhiều người. Cư dân đề nghị các cửa hàng sau 10 giờ giảm nhạc, như vậy có thể khiến khu dân cư yên tĩnh hơn.",
+              "questions": [
+                {
+                  "question": "Cư dân đề xuất điều gì?",
+                  "answer": "十点以后减少音乐",
+                  "explanation": "Đoạn đọc nói 居民建议商店十点以后减少音乐."
+                }
+              ]
+            },
+            "listening": {
+              "script": "虽然社区环境不错，但是晚上噪音影响休息。我建议十点以后减少音乐。",
+              "task": "Nghe và xác định vấn đề cùng đề xuất.",
+              "answer": "Vấn đề: 噪音影响休息; đề xuất: 减少音乐"
+            },
+            "speaking_tasks": [
+              "Nêu một vấn đề trong khu bạn sống bằng 虽然...但是....",
+              "Đưa ra một đề xuất với 我建议...."
+            ],
+            "reading_tasks": [
+              "Tìm câu mô tả tác động của tiếng ồn.",
+              "Tóm tắt đề xuất trong 1 câu tiếng Trung."
+            ],
+            "writing_tasks": [
+              "Viết một đoạn 5 câu về một vấn đề trong cộng đồng và cách giải quyết."
+            ]
+          },
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "噪音 ảnh hưởng đến điều gì trong bài?",
+              "options": ["休息", "付款", "名字", "电影"],
+              "correct_answer": "休息",
+              "explanation": "噪音影响大家休息."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "虽然...但是... expresses...",
+              "options": ["contrast", "time", "price", "name"],
+              "correct_answer": "contrast",
+              "explanation": "The pattern connects two contrasting ideas."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "我建议 means...",
+              "options": ["I suggest", "I already paid", "I am a student", "I wait for you"],
+              "correct_answer": "I suggest",
+              "explanation": "建议 can be used as a verb meaning to suggest."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "hsk_level": 5,
+      "lessons": [
+        {
+          "id": "HSK5-CORE-001",
+          "hsk_level": 5,
+          "title": "HSK5 Core: Online Learning Efficiency",
+          "description": "Learn to discuss learning efficiency, resources, self-management, and trade-offs.",
+          "lesson_type": "mixed",
+          "sort_order": 1,
+          "duration_minutes": 50,
+          "content": {
+            "learning_objectives": [
+              "Discuss online learning with abstract vocabulary.",
+              "Use 并不是...而是... to correct an assumption.",
+              "Use 与其...不如... to compare choices."
+            ],
+            "overview": "This unit prepares HSK5 learners for opinion and argument tasks. It teaches how to make a claim, correct a misunderstanding, and support a practical recommendation.",
+            "vocabulary": [
+              {
+                "hanzi": "平台",
+                "pinyin": "ping2tai2",
+                "meaning": "nền tảng",
+                "meaning_en": "platform",
+                "example_cn": "这个学习平台有很多资源。",
+                "example_pinyin": "Zhe4 ge4 xue2xi2 ping2tai2 you3 hen3 duo1 zi1yuan2.",
+                "example_vi": "Nền tảng học tập này có rất nhiều tài nguyên.",
+                "usage_note": "Dùng cho nền tảng học tập, thương mại, công nghệ."
+              },
+              {
+                "hanzi": "资源",
+                "pinyin": "zi1yuan2",
+                "meaning": "tài nguyên; nguồn lực",
+                "meaning_en": "resources",
+                "example_cn": "资源多不一定学习效果好。",
+                "example_pinyin": "Zi1yuan2 duo1 bu4 yi2ding4 xue2xi2 xiao4guo3 hao3.",
+                "example_vi": "Nhiều tài nguyên chưa chắc hiệu quả học tốt.",
+                "usage_note": "Có thể là tài liệu, thời gian, người hỗ trợ."
+              },
+              {
+                "hanzi": "效率",
+                "pinyin": "xiao4lv4",
+                "meaning": "hiệu suất; hiệu quả theo thời gian",
+                "meaning_en": "efficiency",
+                "example_cn": "好的计划可以提高学习效率。",
+                "example_pinyin": "Hao3 de ji4hua4 ke3yi3 ti2gao1 xue2xi2 xiao4lv4.",
+                "example_vi": "Kế hoạch tốt có thể nâng cao hiệu suất học tập.",
+                "usage_note": "Nhấn mạnh kết quả đạt được so với thời gian/công sức."
+              },
+              {
+                "hanzi": "自主",
+                "pinyin": "zi4zhu3",
+                "meaning": "tự chủ",
+                "meaning_en": "autonomous",
+                "example_cn": "线上学习需要自主能力。",
+                "example_pinyin": "Xian4shang4 xue2xi2 xu1yao4 zi4zhu3 neng2li4.",
+                "example_vi": "Học trực tuyến cần năng lực tự chủ.",
+                "usage_note": "Thường dùng trong học tập, công việc, quyết định cá nhân."
+              },
+              {
+                "hanzi": "计划",
+                "pinyin": "ji4hua4",
+                "meaning": "kế hoạch",
+                "meaning_en": "plan",
+                "example_cn": "没有计划，很难坚持。",
+                "example_pinyin": "Mei2you3 ji4hua4, hen3 nan2 jian1chi2.",
+                "example_vi": "Không có kế hoạch thì rất khó kiên trì.",
+                "usage_note": "Có thể là danh từ hoặc động từ."
+              },
+              {
+                "hanzi": "坚持",
+                "pinyin": "jian1chi2",
+                "meaning": "kiên trì",
+                "meaning_en": "to persist",
+                "example_cn": "每天练习才能坚持下去。",
+                "example_pinyin": "Mei3tian1 lian4xi2 cai2 neng2 jian1chi2 xia4qu4.",
+                "example_vi": "Chỉ khi luyện tập mỗi ngày mới có thể kiên trì tiếp.",
+                "usage_note": "Dùng cho thói quen hoặc quan điểm duy trì lâu dài."
+              },
+              {
+                "hanzi": "经验",
+                "pinyin": "jing1yan4",
+                "meaning": "kinh nghiệm",
+                "meaning_en": "experience",
+                "example_cn": "我的经验是先做简单的任务。",
+                "example_pinyin": "Wo3 de jing1yan4 shi4 xian1 zuo4 jian3dan1 de ren4wu4.",
+                "example_vi": "Kinh nghiệm của tôi là làm nhiệm vụ đơn giản trước.",
+                "usage_note": "Có thể chỉ trải nghiệm hoặc bài học rút ra."
+              },
+              {
+                "hanzi": "挑战",
+                "pinyin": "tiao3zhan4",
+                "meaning": "thử thách",
+                "meaning_en": "challenge",
+                "example_cn": "最大的挑战是时间管理。",
+                "example_pinyin": "Zui4 da4 de tiao3zhan4 shi4 shi2jian1 guan3li3.",
+                "example_vi": "Thử thách lớn nhất là quản lý thời gian.",
+                "usage_note": "Dùng trong học tập, công việc, mục tiêu dài hạn."
+              }
+            ],
+            "grammar_points": [
+              {
+                "title": "并不是...而是...",
+                "structure": "并不是 + wrong assumption, 而是 + correction",
+                "explanation": "Dùng để phủ định một cách hiểu chưa chính xác và đưa ra ý đúng hơn.",
+                "examples": [
+                  {
+                    "hanzi": "问题并不是资源少，而是没有计划。",
+                    "pinyin": "Wen4ti2 bing4 bu2 shi4 zi1yuan2 shao3, er2 shi4 mei2you3 ji4hua4.",
+                    "meaning": "Vấn đề không phải là ít tài nguyên, mà là không có kế hoạch."
+                  },
+                  {
+                    "hanzi": "学习效率低并不是因为平台不好，而是因为练习不够。",
+                    "pinyin": "Xue2xi2 xiao4lv4 di1 bing4 bu2 shi4 yin1wei4 ping2tai2 bu4 hao3, er2 shi4 yin1wei4 lian4xi2 bu2 gou4.",
+                    "meaning": "Hiệu suất học thấp không phải vì nền tảng không tốt, mà vì luyện tập chưa đủ."
+                  }
+                ],
+                "common_mistakes": [
+                  "而是 phải đưa ra ý thay thế, không chỉ lặp lại phủ định.",
+                  "并不是 làm giọng văn trang trọng và nhấn mạnh hơn 不是."
+                ]
+              },
+              {
+                "title": "与其...不如...",
+                "structure": "与其 + less useful option, 不如 + better option",
+                "explanation": "Dùng để so sánh hai lựa chọn và khuyên chọn phương án tốt hơn.",
+                "examples": [
+                  {
+                    "hanzi": "与其收藏很多资料，不如每天完成一个任务。",
+                    "pinyin": "Yu3qi2 shou1cang2 hen3 duo1 zi1liao4, bu4ru2 mei3tian1 wan2cheng2 yi2 ge4 ren4wu4.",
+                    "meaning": "Thay vì lưu rất nhiều tài liệu, chi bằng mỗi ngày hoàn thành một nhiệm vụ."
+                  },
+                  {
+                    "hanzi": "与其担心效率，不如先制定计划。",
+                    "pinyin": "Yu3qi2 dan1xin1 xiao4lv4, bu4ru2 xian1 zhi4ding4 ji4hua4.",
+                    "meaning": "Thay vì lo lắng về hiệu suất, chi bằng lập kế hoạch trước."
+                  }
+                ],
+                "common_mistakes": [
+                  "Vế sau 不如 nên là lựa chọn được khuyến nghị.",
+                  "Không dùng cấu trúc này khi hai lựa chọn không thể so sánh."
+                ]
+              }
+            ],
+            "sentence_patterns": [
+              {
+                "pattern": "问题并不是..., 而是...",
+                "meaning_vi": "Vấn đề không phải là..., mà là...",
+                "examples": ["问题并不是资源少，而是没有计划。"]
+              },
+              {
+                "pattern": "与其..., 不如...",
+                "meaning_vi": "Thay vì..., chi bằng...",
+                "examples": ["与其看很多视频，不如每天练习。"]
+              }
+            ],
+            "dialogue": {
+              "title": "Online Learning Advice",
+              "lines": [
+                {
+                  "speaker": "学生",
+                  "chinese": "我收藏了很多学习资源，可是效率还是不高。",
+                  "pinyin": "Wo3 shou1cang2 le hen3 duo1 xue2xi2 zi1yuan2, ke3shi4 xiao4lv4 hai2shi4 bu4 gao1.",
+                  "vietnamese": "Tôi đã lưu rất nhiều tài nguyên học tập, nhưng hiệu suất vẫn không cao."
+                },
+                {
+                  "speaker": "老师",
+                  "chinese": "问题并不是资源少，而是你没有清楚的计划。",
+                  "pinyin": "Wen4ti2 bing4 bu2 shi4 zi1yuan2 shao3, er2 shi4 ni3 mei2you3 qing1chu3 de ji4hua4.",
+                  "vietnamese": "Vấn đề không phải là ít tài nguyên, mà là bạn chưa có kế hoạch rõ ràng."
+                },
+                {
+                  "speaker": "学生",
+                  "chinese": "那我应该怎么做？",
+                  "pinyin": "Na4 wo3 ying1gai1 zen3me zuo4?",
+                  "vietnamese": "Vậy tôi nên làm thế nào?"
+                },
+                {
+                  "speaker": "老师",
+                  "chinese": "与其每天换平台，不如坚持一个计划。",
+                  "pinyin": "Yu3qi2 mei3tian1 huan4 ping2tai2, bu4ru2 jian1chi2 yi2 ge4 ji4hua4.",
+                  "vietnamese": "Thay vì mỗi ngày đổi nền tảng, chi bằng kiên trì với một kế hoạch."
+                }
+              ]
+            },
+            "reading": {
+              "title": "Efficiency Is Not Only Resources",
+              "chinese": "很多学生以为线上学习的关键是找到更多资源。其实，学习效率并不只取决于平台，而取决于学习者是否有自主计划。与其收藏大量资料，不如每天完成一个小任务，并坚持记录自己的问题和经验。",
+              "pinyin": "Hen3 duo1 xue2sheng5 yi3wei2 xian4shang4 xue2xi2 de guan1jian4 shi4 zhao3dao4 geng4 duo1 zi1yuan2. Qi2shi2, xue2xi2 xiao4lv4 bing4 bu4 zhi3 qu3jue2 yu2 ping2tai2, er2 qu3jue2 yu2 xue2xi2zhe3 shi4fou3 you3 zi4zhu3 ji4hua4. Yu3qi2 shou1cang2 da4liang4 zi1liao4, bu4ru2 mei3tian1 wan2cheng2 yi2 ge4 xiao3 ren4wu4, bing4 jian1chi2 ji4lu4 zi4ji3 de wen4ti2 he2 jing1yan4.",
+              "vietnamese": "Nhiều học sinh tưởng rằng mấu chốt của học trực tuyến là tìm thêm nhiều tài nguyên. Thực ra, hiệu suất học không chỉ phụ thuộc vào nền tảng, mà phụ thuộc vào việc người học có kế hoạch tự chủ hay không. Thay vì lưu trữ rất nhiều tài liệu, chi bằng mỗi ngày hoàn thành một nhiệm vụ nhỏ và kiên trì ghi lại vấn đề cùng kinh nghiệm của mình.",
+              "questions": [
+                {
+                  "question": "Theo bài đọc, hiệu suất học phụ thuộc vào điều gì?",
+                  "answer": "自主计划",
+                  "explanation": "Bài đọc nói 效率取决于学习者是否有自主计划."
+                }
+              ]
+            },
+            "listening": {
+              "script": "问题并不是平台不好，而是没有计划。与其收藏很多资料，不如每天完成一个小任务。",
+              "task": "Nghe và xác định cấu trúc sửa ý sai cùng cấu trúc đưa lời khuyên.",
+              "answer": "并不是...而是...; 与其...不如..."
+            },
+            "speaking_tasks": [
+              "Trình bày vấn đề học tập của bạn bằng 并不是...而是....",
+              "Đưa một lời khuyên học tập bằng 与其...不如...."
+            ],
+            "reading_tasks": [
+              "Tìm câu nêu luận điểm chính.",
+              "Tách bài đọc thành: hiểu lầm, ý đúng, lời khuyên."
+            ],
+            "writing_tasks": [
+              "Viết đoạn 6 câu về cách tăng hiệu suất học HSK, dùng cả hai cấu trúc ngữ pháp của bài."
+            ]
+          },
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "并不是...而是... is used to...",
+              "options": ["correct an assumption", "ask a name", "state a price", "give a location"],
+              "correct_answer": "correct an assumption",
+              "explanation": "The pattern rejects one idea and replaces it with a better explanation."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "与其收藏很多资料，不如每天完成一个任务。What is recommended?",
+              "options": ["Finish one task every day", "Collect more resources", "Change platform every day", "Stop studying"],
+              "correct_answer": "Finish one task every day",
+              "explanation": "The 不如 clause gives the recommended option."
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "效率 means...",
+              "options": ["efficiency", "community", "passport", "weather"],
+              "correct_answer": "efficiency",
+              "explanation": "效率 is about results compared with time or effort."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

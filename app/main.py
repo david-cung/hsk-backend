@@ -129,18 +129,37 @@ def score_questions(rows: list[Question], answers: dict[str, str]) -> tuple[int,
 
 
 def get_mock_test_questions(db: Session, mock_test: MockTest) -> list[Question]:
-    return (
+    rows = (
         db.scalars(
             select(Question)
             .join(Lesson, Lesson.id == Question.lesson_id)
             .join(HskLevel, HskLevel.id == Lesson.hsk_level_id)
             .where(HskLevel.level_number == mock_test.hsk_level)
-            .order_by(Lesson.sort_order, Lesson.id, Question.sort_order)
-            .limit(mock_test.question_count)
+            .order_by(Lesson.lesson_type, Lesson.sort_order, Lesson.id, Question.sort_order)
         )
         .unique()
         .all()
     )
+    lesson_type_order = ("listening", "reading", "vocabulary", "grammar", "writing", "mixed")
+    buckets: dict[str, list[Question]] = {lesson_type: [] for lesson_type in lesson_type_order}
+    for row in rows:
+        lesson_type = row.lesson.lesson_type if row.lesson else "mixed"
+        buckets.setdefault(lesson_type, []).append(row)
+
+    selected: list[Question] = []
+    while len(selected) < mock_test.question_count:
+        added = False
+        for lesson_type in lesson_type_order:
+            questions = buckets.get(lesson_type)
+            if not questions:
+                continue
+            selected.append(questions.pop(0))
+            added = True
+            if len(selected) == mock_test.question_count:
+                break
+        if not added:
+            break
+    return selected
 
 
 @app.post("/api/v1/auth/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
