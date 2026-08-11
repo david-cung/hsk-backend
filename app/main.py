@@ -43,7 +43,7 @@ from app.schemas import (
     TokenOut,
     UserOut,
 )
-from app.seed import seed_data
+from app.seed import _native_text_translations, seed_data
 
 
 app = FastAPI(title="HSK Mobile API", version="1.0.0")
@@ -76,6 +76,60 @@ def profile_to_out(profile: Profile) -> ProfileOut:
         study_streak_days=profile.study_streak_days,
         onboarding_completed=profile.onboarding_completed,
     )
+
+
+def _translations(en: str | None = None, vi: str | None = None) -> dict[str, str]:
+    return {key: value for key, value in {"en": en, "vi": vi}.items() if value}
+
+
+def _content_translations(lesson: Lesson, field: str) -> dict[str, str] | None:
+    content = lesson.content if isinstance(lesson.content, dict) else {}
+    value = content.get(field)
+    return value if isinstance(value, dict) else None
+
+
+def _lesson_title_translations(lesson: Lesson) -> dict[str, str]:
+    # Every seeded lesson embeds a real `title_translations` dict in its content
+    # (see app/seed.py). `_native_text_translations` is only a defensive fallback
+    # for a lesson row that (unexpectedly) has no precomputed translations, so we
+    # never fall back to duplicating the same English string as the Vietnamese
+    # translation.
+    return _content_translations(lesson, "title_translations") or _native_text_translations(lesson.title) or _translations(
+        lesson.title
+    )
+
+
+def _lesson_description_translations(lesson: Lesson) -> dict[str, str] | None:
+    if not lesson.description:
+        return None
+    return _content_translations(lesson, "description_translations") or _native_text_translations(
+        lesson.description
+    ) or _translations(lesson.description)
+
+
+def _question_translations(question: Question) -> dict[str, object]:
+    lesson = question.lesson
+    content = lesson.content if lesson and isinstance(lesson.content, dict) else {}
+    rows = content.get("question_translations")
+    if not isinstance(rows, list):
+        return {}
+    index = max(question.sort_order - 1, 0)
+    if index >= len(rows) or not isinstance(rows[index], dict):
+        return {}
+    return rows[index]
+
+
+def _mock_test_title_translations(title: str) -> dict[str, str]:
+    parts = title.split()
+    if len(parts) >= 3 and parts[0] == "HSK":
+        level = parts[1]
+        if "Mini Mock Test" in title:
+            return _translations(title, f"Đề thi thử mini HSK {level}")
+        if "Skills Mix Mock Test" in title:
+            return _translations(title, f"Đề thi thử tổng hợp kỹ năng HSK {level}")
+        if "Full Practice Mock Test" in title:
+            return _translations(title, f"Đề luyện thi đầy đủ HSK {level}")
+    return _translations(title, title)
 
 
 def award_achievements(db: Session, user_id: int) -> None:
@@ -114,14 +168,21 @@ def score_questions(rows: list[Question], answers: dict[str, str]) -> tuple[int,
         user_answer = answers.get(str(question.id), "")
         correct = user_answer == question.correct_answer
         correct_count += int(correct)
+        metadata = _question_translations(question)
         results.append(
             QuizResultItem(
                 question_id=question.id,
                 prompt=question.prompt,
+                prompt_translations=metadata.get("prompt_translations")
+                if isinstance(metadata.get("prompt_translations"), dict)
+                else None,
                 correct=correct,
                 user_answer=user_answer,
                 correct_answer=question.correct_answer,
                 explanation=question.explanation,
+                explanation_translations=metadata.get("explanation_translations")
+                if isinstance(metadata.get("explanation_translations"), dict)
+                else None,
             )
         )
     score = round((correct_count / len(rows)) * 100) if rows else 0
@@ -210,7 +271,23 @@ def update_profile(
 @app.get("/api/v1/content/levels", response_model=list[HskLevelOut])
 def levels(db: Session = Depends(get_db)) -> list[HskLevelOut]:
     rows = db.scalars(select(HskLevel).order_by(HskLevel.level_number)).all()
-    return [HskLevelOut(**row.__dict__) for row in rows]
+    return [
+        HskLevelOut(
+            id=row.id,
+            level_number=row.level_number,
+            title=row.title,
+            # "HSK N" is a standardized proficiency-level name used unchanged in
+            # both languages (like a proper noun), not a missed translation.
+            title_translations=_translations(row.title, row.title),
+            description=row.description,
+            description_translations=_translations(
+                row.description,
+                f"Bài học tiếng Trung có cấu trúc cho HSK {row.level_number}." if row.description else None,
+            ),
+            total_characters=row.total_characters,
+        )
+        for row in rows
+    ]
 
 
 @app.get("/api/v1/content/levels/{level_id}/lessons", response_model=list[LessonListOut])
@@ -237,7 +314,9 @@ def lessons(
         LessonListOut(
             id=lesson.id,
             title=lesson.title,
+            title_translations=_lesson_title_translations(lesson),
             description=lesson.description,
+            description_translations=_lesson_description_translations(lesson),
             lesson_type=lesson.lesson_type,
             sort_order=lesson.sort_order,
             duration_minutes=lesson.duration_minutes,
@@ -257,7 +336,9 @@ def lesson_detail(lesson_id: int, db: Session = Depends(get_db)) -> LessonDetail
         id=lesson.id,
         hsk_level_id=lesson.hsk_level_id,
         title=lesson.title,
+        title_translations=_lesson_title_translations(lesson),
         description=lesson.description,
+        description_translations=_lesson_description_translations(lesson),
         lesson_type=lesson.lesson_type,
         duration_minutes=lesson.duration_minutes,
         content=lesson.content,
@@ -268,13 +349,19 @@ def lesson_detail(lesson_id: int, db: Session = Depends(get_db)) -> LessonDetail
 def questions(lesson_id: int, db: Session = Depends(get_db)) -> list[QuestionOut]:
     rows = db.scalars(select(Question).where(Question.lesson_id == lesson_id).order_by(Question.sort_order)).all()
     return [
-        QuestionOut(
+        (lambda metadata: QuestionOut(
             id=row.id,
             question_type=row.question_type,
             prompt=row.prompt,
+            prompt_translations=metadata.get("prompt_translations")
+            if isinstance(metadata.get("prompt_translations"), dict)
+            else None,
             options=row.options,
+            options_translations=metadata.get("options_translations")
+            if isinstance(metadata.get("options_translations"), dict)
+            else None,
             sort_order=row.sort_order,
-        )
+        ))(_question_translations(row))
         for row in rows
     ]
 
@@ -393,7 +480,7 @@ def progress_dashboard(user: User = Depends(get_current_user), db: Session = Dep
 
     attempt_rows = (
         db.execute(
-            select(QuizAttempt, Lesson.title)
+            select(QuizAttempt, Lesson)
             .join(Lesson, Lesson.id == QuizAttempt.lesson_id)
             .where(QuizAttempt.user_id == user.id)
             .order_by(QuizAttempt.finished_at.desc())
@@ -431,11 +518,12 @@ def progress_dashboard(user: User = Depends(get_current_user), db: Session = Dep
             {
                 "attempt_id": attempt.id,
                 "lesson_id": attempt.lesson_id,
-                "lesson_title": lesson_title,
+                "lesson_title": lesson.title,
+                "lesson_title_translations": _lesson_title_translations(lesson),
                 "score": attempt.score,
                 "finished_at": attempt.finished_at,
             }
-            for attempt, lesson_title in attempt_rows
+            for attempt, lesson in attempt_rows
         ],
     )
 
@@ -468,14 +556,14 @@ def mistakes(user: User = Depends(get_current_user), db: Session = Depends(get_d
 
     question_rows = (
         db.execute(
-            select(Question, Lesson.title)
+            select(Question, Lesson)
             .join(Lesson, Lesson.id == Question.lesson_id)
             .where(Question.id.in_(question_ids))
         )
         .unique()
         .all()
     )
-    question_map = {question.id: (question, lesson_title) for question, lesson_title in question_rows}
+    question_map = {question.id: (question, lesson) for question, lesson in question_rows}
 
     review_items = []
     for attempt in attempts:
@@ -485,19 +573,27 @@ def mistakes(user: User = Depends(get_current_user), db: Session = Depends(get_d
             question_row = question_map.get(int(question_id))
             if not question_row:
                 continue
-            question, lesson_title = question_row
+            question, lesson = question_row
             if user_answer == question.correct_answer:
                 continue
+            metadata = _question_translations(question)
             review_items.append(
                 MistakeOut(
                     attempt_id=attempt.id,
                     lesson_id=question.lesson_id,
-                    lesson_title=lesson_title,
+                    lesson_title=lesson.title,
+                    lesson_title_translations=_lesson_title_translations(lesson),
                     question_id=question.id,
                     prompt=question.prompt,
+                    prompt_translations=metadata.get("prompt_translations")
+                    if isinstance(metadata.get("prompt_translations"), dict)
+                    else None,
                     user_answer=user_answer,
                     correct_answer=question.correct_answer,
                     explanation=question.explanation,
+                    explanation_translations=metadata.get("explanation_translations")
+                    if isinstance(metadata.get("explanation_translations"), dict)
+                    else None,
                     finished_at=attempt.finished_at,
                 )
             )
@@ -567,7 +663,17 @@ def achievements(user: User = Depends(get_current_user), db: Session = Depends(g
 @app.get("/api/v1/learning/mock-tests", response_model=list[MockTestOut])
 def mock_tests(db: Session = Depends(get_db)) -> list[MockTestOut]:
     rows = db.scalars(select(MockTest).order_by(MockTest.hsk_level, MockTest.id)).all()
-    return [MockTestOut(**row.__dict__) for row in rows]
+    return [
+        MockTestOut(
+            id=row.id,
+            title=row.title,
+            title_translations=_mock_test_title_translations(row.title),
+            hsk_level=row.hsk_level,
+            duration_minutes=row.duration_minutes,
+            question_count=row.question_count,
+        )
+        for row in rows
+    ]
 
 
 @app.get("/api/v1/learning/mock-tests/{mock_test_id}/questions", response_model=list[MockTestQuestionOut])
@@ -581,15 +687,22 @@ def mock_test_questions(
         raise HTTPException(status_code=404, detail="Mock test not found")
     rows = get_mock_test_questions(db, mock_test)
     return [
-        MockTestQuestionOut(
+        (lambda metadata: MockTestQuestionOut(
             id=row.id,
             lesson_id=row.lesson_id,
             lesson_title=row.lesson.title,
+            lesson_title_translations=_lesson_title_translations(row.lesson),
             question_type=row.question_type,
             prompt=row.prompt,
+            prompt_translations=metadata.get("prompt_translations")
+            if isinstance(metadata.get("prompt_translations"), dict)
+            else None,
             options=row.options,
+            options_translations=metadata.get("options_translations")
+            if isinstance(metadata.get("options_translations"), dict)
+            else None,
             sort_order=row.sort_order,
-        )
+        ))(_question_translations(row))
         for row in rows
     ]
 

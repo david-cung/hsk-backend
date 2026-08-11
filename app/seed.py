@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -61,6 +62,20 @@ TYPE_TITLES = {
     "writing": "Writing",
 }
 
+TYPE_TITLES_VI = {
+    "mixed": "Bài học cốt lõi",
+    "vocabulary": "Từ vựng",
+    "grammar": "Ngữ pháp",
+    "listening": "Nghe",
+    "reading": "Đọc hiểu",
+    "sentence_pattern": "Mẫu câu",
+    "conversation": "Hội thoại",
+    "review": "Ôn tập",
+    "practice": "Luyện tập",
+    "quiz": "Quiz",
+    "writing": "Viết",
+}
+
 TYPE_SORT_BASE = {
     "mixed": 1000,
     "vocabulary": 2000,
@@ -86,6 +101,180 @@ TOPICS = [
     {"title": "Requests and Help", "vi": "yêu cầu và giúp đỡ"},
     {"title": "Review Challenge", "vi": "ôn tập tổng hợp"},
 ]
+
+TOPIC_TITLE_VI = {topic["title"]: topic["vi"] for topic in TOPICS}
+
+TITLE_PHRASE_VI = {
+    "Greetings and Self Introduction": "Chào hỏi và tự giới thiệu",
+    "Plans and Time": "Kế hoạch và thời gian",
+    "Solving a Delivery Problem": "Giải quyết vấn đề giao hàng",
+    "Community Problems and Suggestions": "Vấn đề cộng đồng và góp ý",
+    "Online Learning Efficiency": "Hiệu quả học trực tuyến",
+    "People and Pronouns": "Con người và đại từ",
+    "Identity with Shi": "Nhận diện với 是",
+    "A New Classmate": "Bạn cùng lớp mới",
+    "Morning Greeting": "Chào buổi sáng",
+    "Asking Names": "Hỏi tên",
+    "Meeting a New Classmate": "Gặp bạn cùng lớp mới",
+    "First Introductions": "Giới thiệu ban đầu",
+    "Introduction Builder": "Luyện xây dựng câu giới thiệu",
+    "Introduction Checkpoint": "Kiểm tra phần giới thiệu",
+    "Daily Actions": "Hoạt động hằng ngày",
+    "Completed Actions": "Hành động đã hoàn thành",
+    "Weekend Library Plan": "Kế hoạch thư viện cuối tuần",
+    "Phone Plan": "Lên kế hoạch qua điện thoại",
+    "Simple Comparisons": "So sánh đơn giản",
+    "Borrowing a Library Book": "Mượn sách thư viện",
+    "Daily Life and Plans": "Đời sống hằng ngày và kế hoạch",
+    "Weekend Planner": "Lập kế hoạch cuối tuần",
+    "Daily Communication Checkpoint": "Kiểm tra giao tiếp hằng ngày",
+    "Problems and Solutions": "Vấn đề và giải pháp",
+    "Handling Objects with Ba": "Xử lý tân ngữ với 把",
+    "Online Delivery Problem": "Vấn đề giao hàng trực tuyến",
+    "Work Reminder": "Nhắc việc ở nơi làm việc",
+    "Reasons and Conditions": "Lý do và điều kiện",
+    "Changing a Delivery Address": "Đổi địa chỉ giao hàng",
+    "Problems, Results, and Requests": "Vấn đề, kết quả và yêu cầu",
+    "Service Problem Solver": "Giải quyết vấn đề dịch vụ",
+    "Practical Problem Checkpoint": "Kiểm tra xử lý vấn đề thực tế",
+    "City and Society": "Thành phố và xã hội",
+    "Contrast and Addition": "Tương phản và bổ sung",
+    "A Neighborhood Noise Issue": "Vấn đề tiếng ồn khu dân cư",
+    "Health Advice at Work": "Lời khuyên sức khỏe ở nơi làm việc",
+    "Change and Conditions": "Thay đổi và điều kiện",
+    "Discussing Exercise Habits": "Thảo luận thói quen vận động",
+    "Society, Health, and Connectors": "Xã hội, sức khỏe và liên từ",
+    "Opinion Paragraph Builder": "Luyện viết đoạn nêu ý kiến",
+    "Intermediate Opinion Checkpoint": "Kiểm tra nêu ý kiến trung cấp",
+    "Media and Viewpoints": "Truyền thông và quan điểm",
+    "Formal Reasoning Patterns": "Mẫu lập luận trang trọng",
+    "Career Interview": "Phỏng vấn nghề nghiệp",
+    "Correcting Misunderstandings": "Điều chỉnh hiểu lầm",
+    "Debating Online Learning": "Tranh luận về học trực tuyến",
+    "Media, Work, and Argument": "Truyền thông, công việc và lập luận",
+    "Argument Response Workshop": "Luyện phản hồi lập luận",
+    "Formal Argument Checkpoint": "Kiểm tra lập luận trang trọng",
+    "Analysis and Trends": "Phân tích và xu hướng",
+    "Discourse Transitions": "Chuyển ý trong diễn ngôn",
+    "Interpreting an Aging Society": "Diễn giải xã hội già hóa",
+    "Research Claim and Evidence": "Luận điểm nghiên cứu và bằng chứng",
+    "Academic Framing": "Khung diễn đạt học thuật",
+    "Interpreting a Social Trend": "Diễn giải xu hướng xã hội",
+    "Advanced Discourse and Analysis": "Diễn ngôn và phân tích nâng cao",
+    "Analytical Response Studio": "Luyện phản hồi phân tích",
+    "Advanced Mastery Checkpoint": "Kiểm tra thành thạo nâng cao",
+    "Introducing Family Members": "Giới thiệu thành viên gia đình",
+    "Ordering Noodles at a Restaurant": "Gọi mì ở nhà hàng",
+    "Asking About Class": "Hỏi về buổi học",
+    "Making Weekend Plans": "Lập kế hoạch cuối tuần",
+    "Talking About the Weather": "Nói về thời tiết",
+    "Buying a Shirt": "Mua áo",
+    "Checking in at the Airport": "Làm thủ tục ở sân bay",
+    "Checking in at a Hotel": "Nhận phòng khách sạn",
+    "Planning a Meeting": "Lên kế hoạch họp",
+    "Seeing a Doctor": "Đi khám bác sĩ",
+    "Asking for Directions While Traveling": "Hỏi đường khi đi du lịch",
+    "Hello": "Xin chào",
+    "The Teacher": "Giáo viên",
+    "At School": "Ở trường",
+    "My Family": "Gia đình tôi",
+    "Dad and Mom": "Bố và mẹ",
+    "A Friend": "Một người bạn",
+    "This Book": "Cuốn sách này",
+    "Water": "Nước",
+    "Tea": "Trà",
+    "Rice": "Cơm",
+    "Apples": "Táo",
+    "Buying Fruit": "Mua trái cây",
+    "How Much": "Bao nhiêu tiền",
+    "Hot Weather": "Thời tiết nóng",
+    "Cold Weather": "Thời tiết lạnh",
+    "Rain": "Trời mưa",
+    "Today and Tomorrow": "Hôm nay và ngày mai",
+    "Yesterday": "Hôm qua",
+    "What Time": "Mấy giờ",
+    "Morning": "Buổi sáng",
+    "Noon Meal": "Bữa trưa",
+    "Sleep": "Ngủ",
+    "Reading a Book": "Đọc sách",
+    "Studying Chinese": "Học tiếng Trung",
+    "Writing Characters": "Viết chữ Hán",
+    "Speaking": "Nói",
+    "Listening": "Nghe",
+    "Television": "Tivi",
+    "Movie": "Phim",
+    "Computer": "Máy tính",
+    "Phone Call": "Gọi điện thoại",
+    "Taxi": "Taxi",
+    "Airplane": "Máy bay",
+    "Hotel": "Khách sạn",
+    "Hospital": "Bệnh viện",
+    "Chair and Table": "Ghế và bàn",
+    "In the Room": "Trong phòng",
+    "Front and Back": "Phía trước và phía sau",
+    "Going Home": "Về nhà",
+    "Coming to School": "Đến trường",
+    "Beijing": "Bắc Kinh",
+    "China": "Trung Quốc",
+    "Where Do You Live": "Bạn sống ở đâu",
+    "Knowing a Friend": "Quen một người bạn",
+    "Who Is She": "Cô ấy là ai",
+    "What Is This": "Đây là gì",
+    "Where Is School": "Trường ở đâu",
+    "Which Student": "Học sinh nào",
+    "How Many People": "Có mấy người",
+    "Age": "Tuổi",
+    "Birthday Date": "Ngày sinh nhật",
+    "Year and Month": "Năm và tháng",
+    "Weekday": "Thứ trong tuần",
+    "Good Weather": "Thời tiết đẹp",
+    "Too Hot": "Quá nóng",
+    "Some Fruit": "Một ít trái cây",
+    "Dog": "Chó",
+    "Cat": "Mèo",
+    "Daughter": "Con gái",
+    "Son": "Con trai",
+    "Mister and Miss": "Ông và cô",
+    "Name": "Tên",
+    "Happy": "Vui",
+    "Likes": "Thích",
+    "Want Water": "Muốn uống nước",
+    "Can Come": "Có thể đến",
+    "Please Sit": "Mời ngồi",
+    "Sorry": "Xin lỗi",
+    "Thanks": "Cảm ơn",
+    "Goodbye": "Tạm biệt",
+    "A Little": "Một chút",
+    "Many and Few": "Nhiều và ít",
+    "Big and Small": "Lớn và nhỏ",
+    "Pretty": "Đẹp",
+    "How Is It": "Nó thế nào",
+    "Work": "Công việc",
+    "Dishes": "Món ăn",
+    "Cup": "Cốc",
+    "Store Is Open": "Cửa hàng mở cửa",
+    "I See You": "Tôi thấy bạn",
+    "Return to Beijing": "Trở về Bắc Kinh",
+    "Sitting": "Ngồi",
+    "Living at Home": "Sống ở nhà",
+    "Doing Homework": "Làm bài tập",
+    "Writing at School": "Viết ở trường",
+    "Classmates": "Bạn cùng lớp",
+    "No Money": "Không có tiền",
+    "Buying Things": "Mua đồ",
+    "Now": "Bây giờ",
+    "In Front of Home": "Trước nhà",
+    "Everyone at Home": "Mọi người ở nhà",
+    "Also a Teacher": "Cũng là giáo viên",
+    "Both Like Tea": "Đều thích trà",
+    "Morning Call": "Cuộc gọi buổi sáng",
+    "Eating at Home": "Ăn ở nhà",
+    "Doctor's Question": "Câu hỏi của bác sĩ",
+    "Asking for a Book": "Hỏi mượn sách",
+    "No Tea": "Không có trà",
+    "Review Day": "Ngày ôn tập",
+    "HSK1 Mini Passage": "Đoạn đọc ngắn HSK1",
+}
 
 LEVEL_WORDS = {
     1: [
@@ -248,7 +437,7 @@ LEVEL_WORDS = {
 
 BEGINNER_GRAMMAR = [
     ("是 sentence", "A + 是 + B", "Dùng 是 để xác định danh tính, vai trò hoặc loại sự vật.", "我是学生。", "Wo3 shi4 xue2sheng5.", "Tôi là học sinh."),
-    ("吗 question", "Statement + 吗?", "Thêm 吗 ở cuối câu trần thuật để tạo câu hỏi yes/no.", "你喜欢茶吗？", "Ni3 xi3huan5 cha2 ma5?", "Bạn thích trà không?"),
+    ("吗 question", "Statement + 吗?", "Thêm 吗 ở cuối câu trần thuật để tạo câu hỏi có/không.", "你喜欢茶吗？", "Ni3 xi3huan5 cha2 ma5?", "Bạn thích trà không?"),
     ("的 possession", "Noun/pronoun + 的 + noun", "Dùng 的 để chỉ sở hữu hoặc quan hệ.", "这是我的书。", "Zhe4 shi4 wo3 de5 shu1.", "Đây là sách của tôi."),
     ("有 and 没有", "Subject + 有/没有 + object", "Dùng 有 để nói có, 没有 để nói không có.", "我有一个朋友。", "Wo3 you3 yi2 ge4 peng2you5.", "Tôi có một người bạn."),
     ("在 location", "Subject + 在 + place", "Dùng 在 trước địa điểm để nói ai/cái gì ở đâu.", "老师在学校。", "Lao3shi1 zai4 xue2xiao4.", "Giáo viên ở trường."),
@@ -260,7 +449,7 @@ BEGINNER_GRAMMAR = [
     ("Time before action", "Time + subject + verb", "Từ chỉ thời gian thường đứng trước hoặc sau chủ ngữ.", "下午我看书。", "Xia4wu3 wo3 kan4 shu1.", "Chiều tôi đọc sách."),
     ("和 connection", "A + 和 + B", "Dùng 和 để nối danh từ hoặc người.", "我和朋友喝茶。", "Wo3 he2 peng2you5 he1 cha2.", "Tôi và bạn uống trà."),
     ("也 and 都", "Subject + 也/都 + verb/adjective", "也 nghĩa là cũng; 都 nghĩa là đều/tất cả.", "我们都学习汉语。", "Wo3men5 dou1 xue2xi2 Han4yu3.", "Chúng tôi đều học tiếng Trung."),
-    ("A-not-A question", "Verb + 不 + verb", "Dùng dạng khẳng định-phủ định để hỏi lựa chọn yes/no.", "你去不去？", "Ni3 qu4 bu2 qu4?", "Bạn có đi không?"),
+    ("A-not-A question", "Verb + 不 + verb", "Dùng dạng khẳng định-phủ định để hỏi lựa chọn có/không.", "你去不去？", "Ni3 qu4 bu2 qu4?", "Bạn có đi không?"),
 ]
 
 INTERMEDIATE_GRAMMAR = [
@@ -296,6 +485,55 @@ ADVANCED_GRAMMAR = [
     ("从...来看", "从 + perspective + 来看", "Nêu góc nhìn dùng để đánh giá.", "从长期来看，积累比速度更重要。", "Cong2 chang2qi1 lai2 kan4, ji1lei3 bi3 su4du4 geng4 zhong4yao4.", "Nhìn dài hạn, tích lũy quan trọng hơn tốc độ."),
     ("值得", "值得 + verb", "Nói việc gì đáng làm.", "这个经验值得记录。", "Zhe4 ge5 jing1yan4 zhi2de2 ji4lu4.", "Kinh nghiệm này đáng ghi lại."),
 ]
+
+# Exact English translation for each `explanation` value above (keyed by the
+# Vietnamese text, which is unique per grammar point). Used so the EN locale
+# shows a translation of the *specific* grammar point instead of one generic
+# templated sentence shared by all points at a level.
+GRAMMAR_EXPLANATION_EN = {
+    "Dùng 是 để xác định danh tính, vai trò hoặc loại sự vật.": "Use 是 to identify a person's identity, role, or a type of thing.",
+    "Thêm 吗 ở cuối câu trần thuật để tạo câu hỏi có/không.": "Add 吗 at the end of a statement to turn it into a yes/no question.",
+    "Dùng 的 để chỉ sở hữu hoặc quan hệ.": "Use 的 to show possession or a relationship.",
+    "Dùng 有 để nói có, 没有 để nói không có.": "Use 有 to say something exists/is owned, and 没有 to say it does not.",
+    "Dùng 在 trước địa điểm để nói ai/cái gì ở đâu.": "Use 在 before a place to say who or what is there.",
+    "很 thường đứng trước tính từ trong câu miêu tả cơ bản.": "很 usually comes before an adjective in a basic descriptive sentence.",
+    "Dùng 想 để nói mong muốn hoặc ý định.": "Use 想 to express a wish or an intention.",
+    "Dùng 会 để nói khả năng đã học được.": "Use 会 to talk about a learned ability.",
+    "Dùng 去 để nói đi đến một địa điểm.": "Use 去 to say you are going to a place.",
+    "Dùng 几 cho số nhỏ dự kiến, 多少 cho số lượng/giá cả rộng hơn.": "Use 几 for a small expected number, and 多少 for a larger quantity or a price.",
+    "Từ chỉ thời gian thường đứng trước hoặc sau chủ ngữ.": "Time words usually come before or after the subject.",
+    "Dùng 和 để nối danh từ hoặc người.": "Use 和 to connect nouns or people.",
+    "也 nghĩa là cũng; 都 nghĩa là đều/tất cả.": "也 means also; 都 means all/every.",
+    "Dùng dạng khẳng định-phủ định để hỏi lựa chọn có/không.": "Use the affirmative-negative form (Verb + 不 + Verb) to ask a yes/no question.",
+    "了 đánh dấu hành động đã hoàn thành hoặc trạng thái mới.": "了 marks a completed action or a new state.",
+    "正在 nhấn mạnh hành động đang diễn ra.": "正在 emphasizes an action currently in progress.",
+    "过 nói về kinh nghiệm từng làm việc gì.": "过 talks about past experience of doing something.",
+    "Dùng 比 để so sánh hai đối tượng.": "Use 比 to compare two things.",
+    "Nêu nguyên nhân rồi kết quả.": "State the cause, then the result.",
+    "Dùng để nói điều kiện và kết quả.": "Used to express a condition and its result.",
+    "Diễn đạt nhượng bộ và ý tương phản.": "Expresses concession and a contrasting idea.",
+    "Diễn đạt hai hành động xảy ra song song.": "Expresses two actions happening at the same time.",
+    "Nói phạm vi thời gian hoặc không gian.": "States a range of time or space.",
+    "Dùng 离 để nói khoảng cách.": "Use 离 to talk about distance.",
+    "Nhấn mạnh cách xử lý đối tượng.": "Emphasizes how an object or task is handled.",
+    "Dùng 被 khi đối tượng chịu tác động.": "Use 被 when the subject is affected by an action.",
+    "Diễn tả xu hướng ngày càng tăng.": "Expresses an increasing trend.",
+    "Nói ngoại trừ hoặc bổ sung ngoài một điều.": "States an exception, or an addition besides one thing.",
+    "Phủ định cách hiểu sai và đưa cách hiểu đúng hơn.": "Denies a mistaken interpretation and gives a more accurate one.",
+    "So sánh hai lựa chọn và khuyên chọn phương án sau.": "Compares two options and recommends the second one.",
+    "Nêu hai mặt, vế sau thường tăng cường ý.": "States two aspects, where the second clause usually reinforces the point.",
+    "Dựa vào sự thật đã nêu để đưa quyết định.": "Uses a stated fact as the basis for a decision.",
+    "Nêu kết quả trước rồi giải thích nguyên nhân.": "States the result first, then explains the reason.",
+    "Diễn đạt bất kể điều kiện nào kết quả vẫn không đổi.": "Expresses that the result stays the same no matter the condition.",
+    "Nêu điều kiện duy nhất để tránh kết quả khác.": "States the only condition that avoids a different outcome.",
+    "Nói khi một việc xảy ra thì kết quả sẽ lập tức theo sau.": "Says that once something happens, the result follows immediately.",
+    "Chọn hy sinh một điều hơn là làm điều không muốn.": "Chooses to give up one thing rather than do something unwanted.",
+    "Diễn đạt kết quả trái với dự đoán.": "Expresses a result that is contrary to expectation.",
+    "Dùng để rút ra kết luận từ thông tin trước.": "Used to draw a conclusion from information stated earlier.",
+    "Giới hạn phạm vi thảo luận.": "Limits the scope of the discussion.",
+    "Nêu góc nhìn dùng để đánh giá.": "States the perspective used for the evaluation.",
+    "Nói việc gì đáng làm.": "Says that something is worth doing.",
+}
 
 GRAMMAR_PATTERNS = {
     1: BEGINNER_GRAMMAR,
@@ -371,6 +609,886 @@ ADJECTIVE_WORDS = {
     "综合",
 }
 
+EN_TERM_VI = {
+    meaning_en.lower(): meaning_vi
+    for words in LEVEL_WORDS.values()
+    for _, _, meaning_vi, meaning_en in words
+}
+EN_TERM_VI.update(
+    {
+        "a book": "một cuốn sách",
+        "also a book": "cũng là một cuốn sách",
+        "age": "tuổi",
+        "airport": "sân bay",
+        "answer": "đáp án",
+        "at home": "ở nhà",
+        "at school": "ở trường",
+        "bad": "không tốt",
+        "beijing": "Bắc Kinh",
+        "book": "sách",
+        "brand": "thương hiệu",
+        "breakfast starts at seven": "Bữa sáng bắt đầu lúc bảy giờ",
+        "can i try it on": "Tôi có thể mặc thử không",
+        "chair": "ghế",
+        "chinese": "tiếng Trung",
+        "chinese language": "tiếng Trung",
+        "class": "buổi học",
+        "classmate": "bạn cùng lớp",
+        "clothes": "quần áo",
+        "clothing item": "món đồ",
+        "cold": "lạnh",
+        "come": "đến",
+        "computer": "máy tính",
+        "correct": "đúng",
+        "customer": "khách hàng",
+        "dad": "bố",
+        "dad, mom, and me": "bố, mẹ và tôi",
+        "daughter": "con gái",
+        "doctor": "bác sĩ",
+        "doctors": "bác sĩ",
+        "dog": "chó",
+        "eight": "tám",
+        "far": "xa",
+        "father": "bố",
+        "five": "năm",
+        "food": "đồ ăn",
+        "four": "bốn",
+        "friend": "bạn",
+        "friends": "những người bạn",
+        "family": "gia đình",
+        "family/home": "gia đình/nhà",
+        "good": "tốt",
+        "goodbye": "tạm biệt",
+        "hello teacher": "chào thầy/cô",
+        "home": "nhà",
+        "hospital": "bệnh viện",
+        "hotel": "khách sạn",
+        "how many people are in your family": "nhà bạn có mấy người",
+        "how old your younger sister is": "em gái bạn bao nhiêu tuổi",
+        "i": "tôi",
+        "it is next to the train station": "Nó ở cạnh ga tàu",
+        "luggage": "hành lý",
+        "medicine": "thuốc",
+        "meeting": "cuộc họp",
+        "mom": "mẹ",
+        "money": "tiền",
+        "morning": "buổi sáng",
+        "movie": "phim",
+        "my friend": "bạn của tôi",
+        "my teacher": "giáo viên của tôi",
+        "name": "tên",
+        "next to": "bên cạnh",
+        "person": "người đó",
+        "no": "không",
+        "no answer": "chưa trả lời",
+        "office": "văn phòng",
+        "passport": "hộ chiếu",
+        "please put the suitcase here": "Vui lòng đặt vali ở đây",
+        "please rest well": "Vui lòng nghỉ ngơi cho tốt",
+        "please write ten sentences": "Vui lòng viết mười câu",
+        "possession/existence": "sở hữu/tồn tại",
+        "price": "giá tiền",
+        "question": "câu hỏi",
+        "restaurant": "nhà hàng",
+        "room": "phòng",
+        "school": "trường học",
+        "she": "cô ấy",
+        "speaker": "người nói",
+        "she is eight years old": "Cô ấy tám tuổi",
+        "shop assistant": "nhân viên bán hàng",
+        "sorry": "xin lỗi",
+        "staff": "nhân viên",
+        "student": "học sinh",
+        "student identity": "thân phận học sinh",
+        "students": "học sinh",
+        "subway station": "ga tàu điện ngầm",
+        "teacher": "giáo viên",
+        "teachers": "giáo viên",
+        "tea": "trà",
+        "thank you": "cảm ơn",
+        "the meeting is in the office": "Cuộc họp ở văn phòng",
+        "three": "ba",
+        "ticket": "vé",
+        "to buy": "mua",
+        "train station": "ga tàu",
+        "water": "nước",
+        "the customer": "khách hàng",
+        "the doctor": "bác sĩ",
+        "the friends": "những người bạn",
+        "the person": "người đó",
+        "the speaker": "người nói",
+        "the staff": "nhân viên",
+        "the student": "học sinh",
+        "the teacher": "giáo viên",
+        "where shall we meet": "Chúng ta gặp nhau ở đâu",
+        "whether you have water": "bạn có nước hay không",
+        "ask": "hỏi",
+        "buy": "mua",
+        "drink": "uống",
+        "eat": "ăn",
+        "have": "có",
+        "like": "thích",
+        "order": "gọi món",
+        "say": "nói",
+        "study": "học",
+        "want": "muốn",
+        "watch": "xem",
+        "write": "viết",
+        "yes": "có",
+        "you": "bạn",
+        "younger sister": "em gái",
+    }
+)
+
+VI_TEXT_EN = {
+    "Bạn tên là gì?": "What is your name?",
+    "Bài đọc nói 学生先听老师说.": "The passage says 学生先听老师说.",
+    "Câu 我是学生 cho biết An An là học sinh.": "The sentence 我是学生 shows that An An is a student.",
+    "Câu 因为地址有错误，所以快递还没到 nêu nguyên nhân.": "The sentence 因为地址有错误，所以快递还没到 gives the reason.",
+    "Câu đầy đủ: 今天我们学习": "Full sentence: 今天我们学习",
+    "Cụm 在学校门口 cho biết địa điểm.": "The phrase 在学校门口 shows the meeting place.",
+    "Cư dân đề xuất điều gì?": "What do the residents suggest?",
+    "Cuối tuần bạn có thời gian không?": "Do you have time this weekend?",
+    "Dùng 叫 để giới thiệu hoặc hỏi tên. Không thêm 是 giữa chủ ngữ và 叫.": "Use 叫 to introduce or ask for names. Do not add 是 between the subject and 叫.",
+    "Dùng 是 chủ yếu để nối với danh từ hoặc vai trò.": "Use 是 mainly before nouns or roles.",
+    "Dùng 是 để nói ai là ai hoặc ai thuộc vai trò nào.": "Use 是 to say who someone is or what role they have.",
+    "Dùng để nối nguyên nhân và kết quả. Trong tiếng Trung có thể dùng cả 因为 và 所以 cùng lúc.": "Use this to connect cause and result. In Chinese, 因为 and 所以 can appear together.",
+    "Dùng để nêu hai ý tương phản: công nhận một mặt, sau đó nhấn mạnh mặt khác.": "Use this to express contrast: acknowledge one side, then emphasize another.",
+    "Dùng để phủ định một cách hiểu chưa chính xác và đưa ra ý đúng hơn.": "Use this to reject an inaccurate understanding and give a better one.",
+    "Dùng để so sánh hai lựa chọn và khuyên chọn phương án tốt hơn.": "Use this to compare two choices and recommend the better one.",
+    "Dùng 建议 để đưa đề xuất. Có thể dịch là đề nghị/khuyên.": "Use 建议 to make a suggestion. It can mean suggest or advise.",
+    "Gạch chân các câu dùng 是.": "Underline the sentences that use 是.",
+    "Gạch chân các từ liên quan đến dịch vụ giao hàng.": "Underline words related to delivery service.",
+    "Hỏi tên bạn học bằng mẫu: 你叫什么名字？": "Ask a classmate's name with the pattern 你叫什么名字？",
+    "Không dùng 是 trước tính từ ở HSK1 như 我是好.": "Do not use 是 before adjectives in HSK1 sentences such as 我是好.",
+    "Không đặt 想 sau động từ: sai 看想电影.": "Do not put 想 after the verb: 看想电影 is incorrect.",
+    "Không đảo kết quả lên trước khi dùng 所以.": "Do not move the result before 所以.",
+    "Không dịch theo thứ tự tiếng Việt một cách máy móc.": "Do not copy Vietnamese word order mechanically.",
+    "Không dùng 但是 để lặp lại cùng ý; vế sau cần có tương phản.": "Do not use 但是 to repeat the same idea; the second clause needs contrast.",
+    "Nghe và ghi lại hai thông tin người nói yêu cầu.": "Listen and write down the two details the speaker requests.",
+    "Nghe và ghi lại thời gian hẹn.": "Listen and write down the meeting time.",
+    "Nghe và xác định cấu trúc sửa ý sai cùng cấu trúc đưa lời khuyên.": "Listen and identify the correction pattern and the advice pattern.",
+    "Nghe và xác định người nói đang hỏi điều gì.": "Listen and identify what the speaker is asking.",
+    "Nghe và xác định vấn đề cùng đề xuất.": "Listen and identify the issue and the suggestion.",
+    "Người nói gặp bạn ở đâu?": "Where does the speaker meet the friend?",
+    "Người nói đang hỏi tên.": "The speaker is asking for a name.",
+    "Nhập một từ/cụm xuất hiện trong bài đọc.": "Enter one word or phrase that appears in the reading.",
+    "Nói 3 câu ngắn về": "Say 3 short sentences about",
+    "Nói tuổi của ai đó.": "Say someone's age.",
+    "Nêu một vấn đề trong khu bạn sống bằng 虽然...但是....": "Describe a problem in your neighborhood with 虽然...但是....",
+    "Theo bài đọc, hiệu suất học phụ thuộc vào điều gì?": "According to the reading, what does study efficiency depend on?",
+    "Tìm câu có 因为...所以....": "Find the sentence with 因为...所以....",
+    "Tìm câu mô tả tác động của tiếng ồn.": "Find the sentence that describes the impact of noise.",
+    "Tìm câu nêu luận điểm chính.": "Find the sentence that states the main argument.",
+    "Tìm các từ chỉ thời gian trong đoạn đọc.": "Find the time words in the passage.",
+    "Tìm địa điểm hẹn gặp.": "Find the meeting place.",
+    "Tìm tên người trong đoạn đọc.": "Find the names in the reading.",
+    "Tách bài đọc thành: hiểu lầm, ý đúng, lời khuyên.": "Separate the reading into misunderstanding, correction, and advice.",
+    "Tự giới thiệu bằng mẫu: 你好，我叫...": "Introduce yourself with the pattern 你好，我叫...",
+    "Từ chỉ thời gian thường đứng trước hành động chính.": "Time words usually appear before the main action.",
+    "Vì sao bưu kiện chưa đến?": "Why has the package not arrived?",
+    "Viết 2 câu giới thiệu một giáo viên hoặc một người bạn.": "Write 2 sentences introducing a teacher or a friend.",
+    "Viết 3 câu giới thiệu bản thân.": "Write 3 sentences introducing yourself.",
+    "Viết một tin nhắn 3 câu rủ bạn đi chơi cuối tuần.": "Write a 3-sentence message inviting a friend out this weekend.",
+    "Viết một tin nhắn 4 câu yêu cầu sửa địa chỉ giao hàng.": "Write a 4-sentence message asking someone to fix a delivery address.",
+    "Viết một đoạn 5 câu về một vấn đề trong cộng đồng và cách giải quyết.": "Write a 5-sentence paragraph about a community problem and solution.",
+    "Viết đoạn 6 câu về cách tăng hiệu suất học HSK, dùng cả hai cấu trúc ngữ pháp của bài.": "Write a 6-sentence paragraph about improving HSK study efficiency using both grammar patterns.",
+    "Vấn đề: 噪音影响休息; đề xuất: 减少音乐": "Issue: 噪音影响休息; suggestion: 减少音乐",
+    "Đoạn đọc nói 居民建议商店十点以后减少音乐.": "The passage says 居民建议商店十点以后减少音乐.",
+    "Đoạn đọc nói 效率取决于学习者是否有自主计划.": "The passage says 效率取决于学习者是否有自主计划.",
+    "Đưa một đề xuất với 我建议....": "Make a suggestion with 我建议....",
+    "Đưa một lời khuyên học tập bằng 与其...不如....": "Give study advice with 与其...不如....",
+    "Đúng: 我叫安安。": "Correct: 我叫安安。",
+    "Đúng: 想看电影.": "Correct: 想看电影.",
+}
+
+EN_TEXT_VI = {
+    "Answer simple comprehension questions.": "Trả lời các câu hỏi đọc hiểu đơn giản.",
+    "Ask and answer names with 叫.": "Hỏi và trả lời tên bằng 叫.",
+    "Build first-person, second-person, and third-person recognition.": "Xây dựng khả năng nhận diện ngôi thứ nhất, thứ hai và thứ ba.",
+    "Choose the best meaning.": "Chọn nghĩa phù hợp nhất.",
+    "Choose the matching Chinese word.": "Chọn từ tiếng Trung phù hợp.",
+    "Choose the matching phrase.": "Chọn cụm phù hợp.",
+    "Choose the matching word.": "Chọn từ phù hợp.",
+    "Discuss a community issue with clear reasons.": "Thảo luận một vấn đề cộng đồng với lý do rõ ràng.",
+    "Discuss online learning with abstract vocabulary.": "Thảo luận việc học trực tuyến bằng từ vựng trừu tượng.",
+    "Explain a delivery address problem.": "Giải thích vấn đề về địa chỉ giao hàng.",
+    "Form identity sentences": "Tạo câu nhận diện danh tính.",
+    "Give suggestions with 建议 and 应该.": "Đưa góp ý bằng 建议 và 应该.",
+    "Greet people naturally in simple situations.": "Chào hỏi tự nhiên trong các tình huống đơn giản.",
+    "Learn to greet someone, say your name, and identify yourself as a student or teacher.": "Học cách chào hỏi, nói tên và giới thiệu mình là học sinh hoặc giáo viên.",
+    "Negate identity sentences": "Phủ định câu nhận diện danh tính.",
+    "No answer": "Chưa trả lời",
+    "Practice input, output, and quiz recall in one short session.": "Luyện đầu vào, đầu ra và ghi nhớ qua quiz trong một buổi ngắn.",
+    "Read a short HSK1 passage and answer comprehension questions.": "Đọc một đoạn ngắn HSK1 và trả lời câu hỏi đọc hiểu.",
+    "Read a short HSK1 text with familiar words.": "Đọc một đoạn HSK1 ngắn với các từ quen thuộc.",
+    "Recognize basic pronouns": "Nhận diện các đại từ cơ bản.",
+    "Talk about weekend plans with 想 and 要.": "Nói về kế hoạch cuối tuần bằng 想 và 要.",
+    "This lesson builds the first communication loop: greet, introduce yourself, ask a name, and identify a role. It prepares learners for short classroom conversations.": "Bài này xây dựng vòng giao tiếp đầu tiên: chào hỏi, tự giới thiệu, hỏi tên và xác định vai trò. Bài chuẩn bị cho hội thoại lớp học ngắn.",
+    "This unit connects time, place, and intention. Learners move from isolated sentences to a short plan: when to go, where to meet, and what to do.": "Bài này nối thời gian, địa điểm và ý định. Người học chuyển từ câu riêng lẻ sang một kế hoạch ngắn: đi khi nào, gặp ở đâu và làm gì.",
+    "This unit develops opinion language. Learners describe a problem, explain its influence, and propose a realistic solution.": "Bài này phát triển ngôn ngữ nêu ý kiến. Người học mô tả vấn đề, giải thích ảnh hưởng và đề xuất giải pháp thực tế.",
+    "This unit moves from daily planning to problem-solving. Learners practice describing what went wrong and asking staff to correct information.": "Bài này chuyển từ lập kế hoạch hằng ngày sang giải quyết vấn đề. Người học luyện mô tả lỗi phát sinh và nhờ nhân viên sửa thông tin.",
+    "This unit prepares HSK5 learners for opinion and argument tasks. It teaches how to make a claim, correct a misunderstanding, and support a practical recommendation.": "Bài này chuẩn bị cho người học HSK5 làm nhiệm vụ nêu ý kiến và lập luận. Bài dạy cách đưa luận điểm, sửa hiểu lầm và hỗ trợ một khuyến nghị thực tế.",
+    "Use 因为...所以... for cause and result.": "Dùng 因为...所以... để nói nguyên nhân và kết quả.",
+    "Use 并不是...而是... to correct an assumption.": "Dùng 并不是...而是... để sửa một giả định.",
+    "Use 想 and 要 to talk about future plans.": "Dùng 想 và 要 để nói về kế hoạch tương lai.",
+    "Use 把 to describe handling an object or task.": "Dùng 把 để mô tả việc xử lý một đồ vật hoặc nhiệm vụ.",
+    "Use 是 to identify people and roles.": "Dùng 是 để xác định người và vai trò.",
+    "Use 虽然...但是... to contrast ideas.": "Dùng 虽然...但是... để tương phản ý.",
+    "Use 与其...不如... to compare choices.": "Dùng 与其...不如... để so sánh lựa chọn.",
+    "What is the main topic of this lesson?": "Chủ đề chính của bài này là gì?",
+}
+
+# Extra learning-content phrases (multiple-choice options, quiz answers/questions,
+# learning objectives, task labels, reading/dialogue titles) that are generated
+# combinatorially and therefore need explicit translations rather than relying on
+# the fallback word-substitution in `_translate_fragment_vi`.
+EN_TEXT_VI.update(
+    {
+        # Reading / dialogue titles
+        "A Delivery Mistake": "Một lỗi giao hàng",
+        "A Neighborhood Suggestion": "Một góp ý cho khu dân cư",
+        "Online Learning Advice": "Lời khuyên về học trực tuyến",
+        # Grammar point titles
+        "A-not-A question": "Câu hỏi dạng A-không-A",
+        "Time before action": "Thời gian đứng trước hành động",
+        # Learning objectives
+        "Add supporting information": "Bổ sung thông tin hỗ trợ",
+        "Assess HSK2 daily-life communication": "Đánh giá khả năng giao tiếp đời thường HSK2",
+        "Assess HSK3 practical communication": "Đánh giá khả năng giao tiếp thực tế HSK3",
+        "Assess HSK4 connector and inference skills": "Đánh giá kỹ năng dùng liên từ và suy luận HSK4",
+        "Assess HSK5 argument and inference skills": "Đánh giá kỹ năng lập luận và suy luận HSK5",
+        "Assess advanced HSK6 reading, listening, and reasoning": "Đánh giá kỹ năng đọc, nghe và lập luận nâng cao HSK6",
+        "Assess first HSK1 communication patterns": "Đánh giá các mẫu giao tiếp đầu tiên của HSK1",
+        "Borrow and return books": "Mượn và trả sách",
+        "Build contrast sentences": "Xây dựng câu tương phản",
+        "Build short introductions": "Xây dựng đoạn giới thiệu ngắn",
+        "Confirm phone and address details": "Xác nhận số điện thoại và địa chỉ",
+        "Connect causes and results": "Kết nối nguyên nhân và kết quả",
+        "Connect reasons and suggestions": "Kết nối lý do và đề xuất",
+        "Create a weekend schedule": "Lập lịch trình cuối tuần",
+        "Describe completed handling actions": "Mô tả hành động xử lý đã hoàn thành",
+        "Describe daily routines": "Mô tả hoạt động thường ngày",
+        "Exchange names": "Trao đổi tên gọi",
+        "Follow an academic explanation": "Theo dõi một lời giải thích học thuật",
+        "Form conditional sentences": "Tạo câu điều kiện",
+        "Frame analytical points": "Xây dựng các luận điểm phân tích",
+        "Give practical advice": "Đưa ra lời khuyên thực tế",
+        "Identify address and payment details": "Xác định địa chỉ và thông tin thanh toán",
+        "Identify cause and recommendation": "Xác định nguyên nhân và khuyến nghị",
+        "Identify location and task": "Xác định vị trí và nhiệm vụ",
+        "Identify opinion and suggestion": "Xác định ý kiến và đề xuất",
+        "Produce structured advanced responses": "Tạo phản hồi nâng cao có cấu trúc",
+        "Qualify abstract claims": "Bổ nghĩa cho các luận điểm trừu tượng",
+        "Read a problem-solution paragraph": "Đọc một đoạn văn nêu vấn đề và giải pháp",
+        "Read a short self-introduction": "Đọc một đoạn tự giới thiệu ngắn",
+        "Read an abstract social-analysis passage": "Đọc một đoạn văn phân tích xã hội trừu tượng",
+        "Read an argumentative paragraph": "Đọc một đoạn văn lập luận",
+        "Recognize abstract topic vocabulary": "Nhận diện từ vựng chủ đề trừu tượng",
+        "Request a correction": "Yêu cầu sửa lại thông tin",
+        "State a reasoned alternative": "Nêu một lựa chọn thay thế có lý do",
+        "State nuanced conclusions": "Nêu kết luận có sắc thái",
+        "Support an opinion with reasons": "Hỗ trợ ý kiến bằng lý do",
+        "Talk about simple activities": "Nói về các hoạt động đơn giản",
+        "Track argument flow": "Theo dõi mạch lập luận",
+        "Understand a workplace reminder": "Hiểu một lời nhắc việc tại nơi làm việc",
+        "Understand advice about stress": "Hiểu lời khuyên về căng thẳng",
+        "Understand greetings": "Hiểu các lời chào hỏi",
+        "Understand interview answers": "Hiểu các câu trả lời phỏng vấn",
+        "Use advanced transitions": "Sử dụng từ chuyển ý nâng cao",
+        "Use analytical vocabulary": "Sử dụng từ vựng phân tích",
+        "Use degree words naturally": "Sử dụng từ chỉ mức độ một cách tự nhiên",
+        "Use polite beginner greetings": "Sử dụng lời chào lịch sự cho người mới học",
+        # Overview / focus summaries
+        "Advanced analytical words for social, academic, and essay contexts.": "Từ vựng phân tích nâng cao cho ngữ cảnh xã hội, học thuật và viết luận.",
+        "Formal discussion vocabulary for media and public topics.": "Từ vựng thảo luận trang trọng cho chủ đề truyền thông và công chúng.",
+        "Intermediate social topics and city-life vocabulary.": "Chủ đề xã hội trung cấp và từ vựng đời sống thành phố.",
+        "Problem statements and practical solution vocabulary.": "Từ vựng nêu vấn đề và giải pháp thực tế.",
+        "Routine verbs and healthy daily habits.": "Động từ thường ngày và thói quen sống lành mạnh.",
+        "Shopping": "Mua sắm",
+        # Reading / speaking task labels (short topic tags)
+        "academic framing": "cách diễn đạt học thuật",
+        "argument structure": "cấu trúc lập luận",
+        "career interview": "phỏng vấn nghề nghiệp",
+        "choose best advice response": "chọn phản hồi lời khuyên phù hợp nhất",
+        "choose comparison forms": "chọn cấu trúc so sánh",
+        "city life": "đời sống thành phố",
+        "combine contrast clauses": "kết hợp các mệnh đề tương phản",
+        "conditions": "điều kiện",
+        "daily actions": "hoạt động hằng ngày",
+        "discourse transitions": "từ chuyển ý trong diễn ngôn",
+        "formal connectors": "liên từ trang trọng",
+        "greetings": "lời chào hỏi",
+        "health habits": "thói quen sức khỏe",
+        "identify thesis": "xác định luận điểm chính",
+        "map argument structure": "sơ đồ hóa cấu trúc lập luận",
+        "match pronouns": "nối đại từ phù hợp",
+        "media topics": "chủ đề truyền thông",
+        "problem statements": "câu nêu vấn đề",
+        "pronouns": "đại từ",
+        "reasons": "lý do",
+        "respond to an interview prompt": "trả lời một câu hỏi phỏng vấn",
+        "rewrite with formal patterns": "viết lại bằng mẫu câu trang trọng",
+        "skills": "kỹ năng",
+        "social analysis": "phân tích xã hội",
+        "summarize a community issue": "tóm tắt một vấn đề trong cộng đồng",
+        # Multiple-choice quiz options / answers (short vocabulary-level phrases)
+        "A cat": "Một con mèo",
+        "A little": "Một ít",
+        "A lot": "Nhiều",
+        "A phone": "Một chiếc điện thoại",
+        "All": "Tất cả",
+        "At noon": "Vào buổi trưa",
+        "At the store": "Ở cửa hàng",
+        "Behind": "Phía sau",
+        "Big": "To",
+        "Bird": "Chim",
+        "Buying apples": "Mua táo",
+        "Buying things": "Mua đồ",
+        "Call": "Gọi điện",
+        "Cats": "Những con mèo",
+        "Characters": "Chữ Hán",
+        "Coffee": "Cà phê",
+        "English": "Tiếng Anh",
+        "February 1": "Ngày 1 tháng 2",
+        "Fine": "Ổn",
+        "Fish": "Cá",
+        "Fly": "Bay",
+        "Friday": "Thứ Sáu",
+        "Fruit": "Trái cây",
+        "Fruit and apples": "Trái cây và táo",
+        "Horse": "Ngựa",
+        "Hot": "Nóng",
+        "How much": "Bao nhiêu tiền",
+        "How old someone is": "Tuổi của ai đó",
+        "In front": "Phía trước",
+        "In the taxi": "Trong xe taxi",
+        "It opened": "Nó đã mở",
+        "It's okay": "Không sao",
+        "January": "Tháng Một",
+        "January 1": "Ngày 1 tháng 1",
+        "January 2": "Ngày 2 tháng 1",
+        "July": "Tháng Bảy",
+        "June": "Tháng Sáu",
+        "Location": "Vị trí",
+        "Many cats": "Nhiều con mèo",
+        "Many chairs only": "Chỉ có nhiều ghế",
+        "Many dishes": "Nhiều món ăn",
+        "March 3": "Ngày 3 tháng 3",
+        "Milk": "Sữa",
+        "Monday": "Thứ Hai",
+        "My son": "Con trai tôi",
+        "None": "Không có gì",
+        "Noon": "Buổi trưa",
+        "Not stated": "Không được nêu rõ",
+        "October": "Tháng Mười",
+        "On the table": "Trên bàn",
+        "Only a plane": "Chỉ có máy bay",
+        "Only at noon": "Chỉ vào buổi trưa",
+        "Only by phone": "Chỉ qua điện thoại",
+        "Only numbers": "Chỉ có số",
+        "Open a store": "Mở một cửa hàng",
+        "Please sit": "Xin hãy ngồi",
+        "Rainy": "Mưa",
+        "Read": "Đọc",
+        "Reading books": "Đọc sách",
+        "Reads": "Đọc",
+        "Shop": "Cửa hàng",
+        "Sleep only": "Chỉ ngủ",
+        "Sleeping": "Đang ngủ",
+        "Small": "Nhỏ",
+        "Small and pretty": "Nhỏ và xinh",
+        "Speak": "Nói",
+        "Store": "Cửa hàng",
+        "Sunday": "Chủ Nhật",
+        "Sunny": "Nắng",
+        "TV": "Ti vi",
+        "Taxi": "Xe taxi",
+        "The 2nd": "Ngày 2",
+        "The place": "Địa điểm đó",
+        "This dish": "Món này",
+        "Tired": "Mệt",
+        "Too hot": "Quá nóng",
+        "Tuesday": "Thứ Ba",
+        "Twenty": "Hai mươi",
+        "Watching movies": "Xem phim",
+        "What this is": "Đây là cái gì",
+        "Where": "Ở đâu",
+        "Which one": "Cái nào",
+        "Who": "Ai",
+        # Reading-comprehension / quiz questions
+        "What month is it now?": "Bây giờ là tháng mấy?",
+        "What place is asked about?": "Địa điểm nào được hỏi đến?",
+        "What request is made?": "Yêu cầu nào được đưa ra?",
+        "What transportation is used?": "Phương tiện di chuyển nào được dùng?",
+        "Where are they?": "Họ ở đâu?",
+        "Where do they go?": "Họ đi đâu?",
+        "Where do they live?": "Họ sống ở đâu?",
+        "Where do they stay?": "Họ ở lại đâu?",
+        "Who also comes?": "Ai cũng đến?",
+        "Who also likes apples?": "Ai cũng thích táo?",
+        "Who also reads?": "Ai cũng đọc?",
+        "Who also watches?": "Ai cũng xem?",
+        "Who speaks first?": "Ai nói trước?",
+        "Who watches?": "Ai xem?",
+        # Grammar explanations that mix Chinese words with an English gloss
+        # (the Chinese stays unchanged; only the English commentary is translated).
+        "昨天 and 今天 show the timing of two actions.": "昨天 và 今天 cho biết thời điểm của hai hành động.",
+        "上午 and 下午 appear before the actions.": "上午 và 下午 đứng trước hành động.",
+        "在饭店 gives the location of the action 吃米饭.": "在饭店 cho biết địa điểm của hành động 吃米饭.",
+        "汉语 is used as the object of both 学习 and 说.": "汉语 được dùng làm tân ngữ cho cả 学习 và 说.",
+        "前面 and 上 are location words.": "前面 và 上 là các từ chỉ vị trí.",
+        "Place + 有 introduces things that exist in that place.": "Địa điểm + 有 dùng để nêu những gì tồn tại ở nơi đó.",
+        "写字 is the action, and 在学校 gives the location.": "写字 là hành động, còn 在学校 cho biết địa điểm.",
+        "不去 negates going, and 在家吃饭 gives the alternative.": "不去 phủ định việc đi, còn 在家吃饭 nêu lựa chọn thay thế.",
+        "星期天 gives the day, and 在家 gives the location.": "星期天 cho biết ngày, còn 在家 cho biết địa điểm.",
+        # Multiple-choice options and short answers that previously fell through to
+        # the word-by-word fragment translator, producing mixed English/Vietnamese
+        # strings (e.g. "At the trường học gate"). Each entry below is a full,
+        # natural Vietnamese translation of the whole phrase.
+        "At the airport": "Ở sân bay",
+        "At the hospital": "Ở bệnh viện",
+        "At the hotel": "Ở khách sạn",
+        "At the hotel front desk": "Ở lễ tân khách sạn",
+        "At the office": "Ở văn phòng",
+        "At the restaurant": "Ở nhà hàng",
+        "At the school gate": "Ở cổng trường",
+        "At/in home": "Ở nhà",
+        "Behind the chair": "Sau cái ghế",
+        "Behind the doctor": "Sau bác sĩ",
+        "Clothes and receipt": "Quần áo và hóa đơn",
+        "Clothes and shoes": "Quần áo và giày",
+        "Cold and rainy": "Lạnh và có mưa",
+        "Cold and tired": "Lạnh và mệt",
+        "Computer and documents": "Máy tính và tài liệu",
+        "Do you have breakfast?": "Bạn có ăn sáng không?",
+        "Do you have homework?": "Bạn có bài tập về nhà không?",
+        "Do you have luggage?": "Bạn có hành lý không?",
+        "Do you have medicine?": "Bạn có thuốc không?",
+        "Do you have time on the weekend?": "Bạn có thời gian vào cuối tuần không?",
+        "Drink more water and rest": "Uống nhiều nước hơn và nghỉ ngơi",
+        "Go back home": "Quay về nhà",
+        "Go home": "Về nhà",
+        "Go to a meeting": "Đi họp",
+        "Go to school": "Đi học",
+        "Go to the airport": "Đi đến sân bay",
+        "Go to the hospital": "Đi đến bệnh viện",
+        "He is a student": "Anh ấy là học sinh",
+        "Homework and book": "Bài tập về nhà và sách",
+        "How are you?": "Bạn khỏe không?",
+        "How much clothes cost": "Quần áo giá bao nhiêu",
+        "How much money": "Bao nhiêu tiền",
+        "How much the book is": "Sách giá bao nhiêu",
+        "How old you are": "Bạn bao nhiêu tuổi",
+        "I, dad, and mom": "Tôi, bố và mẹ",
+        "In front of the school": "Trước cổng trường",
+        "In the hospital": "Trong bệnh viện",
+        "In the morning": "Vào buổi sáng",
+        "In the school": "Trong trường",
+        "Is there a hotel nearby?": "Gần đây có khách sạn không?",
+        "It is at school": "Đang ở trường",
+        "It is cold": "Trời lạnh",
+        "It is cold and raining": "Trời lạnh và có mưa",
+        "It is not cold": "Trời không lạnh",
+        "Medicine and water": "Thuốc và nước",
+        "My friend and I": "Tôi và bạn tôi",
+        "My name is An An": "Tên tôi là An An",
+        "Number of people in the family": "Số người trong gia đình",
+        "Old and expensive": "Cũ và đắt",
+        "On the chair": "Trên ghế",
+        "Only in the morning": "Chỉ vào buổi sáng",
+        "Passport and luggage": "Hộ chiếu và hành lý",
+        "Passport and ticket": "Hộ chiếu và vé",
+        "Room card and medicine": "Thẻ phòng và thuốc",
+        "Room card and passport": "Thẻ phòng và hộ chiếu",
+        "School gate": "Cổng trường",
+        "She is a teacher": "Cô ấy là giáo viên",
+        "Table, chairs, and computer": "Bàn, ghế và máy tính",
+        "Teacher and doctor": "Giáo viên và bác sĩ",
+        "The customer paid twice": "Khách hàng đã trả tiền hai lần",
+        "The name": "Tên",
+        "The phone number is correct": "Số điện thoại đúng",
+        "The staff is a teacher": "Nhân viên là giáo viên",
+        "The time": "Thời gian",
+        "The weather": "Thời tiết",
+        "Ticket and suitcase": "Vé và vali",
+        "To see a doctor": "Đi khám bác sĩ",
+        "What is your name?": "Bạn tên là gì?",
+        "What time": "Giờ nào",
+        "What time it is": "Mấy giờ rồi",
+        "What to eat": "Ăn gì",
+        "What we study today": "Hôm nay chúng ta học gì",
+        "What you drink": "Bạn uống gì",
+        "What you eat": "Bạn ăn gì",
+        "What you want to eat": "Bạn muốn ăn gì",
+        "What your dad eats": "Bố bạn ăn gì",
+        "When the meeting starts": "Khi nào cuộc họp bắt đầu",
+        "Where are you?": "Bạn đang ở đâu?",
+        "Where is the office?": "Văn phòng ở đâu?",
+        "Where is the school?": "Trường ở đâu?",
+        "Where school is": "Trường ở đâu",
+        "Where the teacher is": "Giáo viên ở đâu",
+        "Where we go today": "Hôm nay chúng ta đi đâu",
+        "Where you live": "Bạn sống ở đâu",
+        "Where your mom works": "Mẹ bạn làm việc ở đâu",
+        "Whether the teacher has a book": "Giáo viên có sách hay không",
+        "Whether tomorrow's weather is good": "Ngày mai thời tiết có tốt hay không",
+        "Which student is your friend": "Học sinh nào là bạn của bạn",
+        "Who he is": "Anh ấy là ai",
+        "Who is a teacher": "Ai là giáo viên",
+        "Who she is": "Cô ấy là ai",
+        "Who the teacher is": "Giáo viên là ai",
+        "Who your teacher is": "Giáo viên của bạn là ai",
+        "Your medicine": "Thuốc của bạn",
+        "Your room card": "Thẻ phòng của bạn",
+        "Your ticket": "Vé của bạn",
+        "airport gate": "cổng sân bay",
+        "at the school entrance": "ở cổng trường",
+        "to have a fever": "bị sốt",
+        "to have a meeting": "có cuộc họp",
+        "to try clothes": "thử quần áo",
+        # Prompts with no matching sentence pattern above (question-answer context
+        # from `conversation_quizzes.json`).
+        "When should the homework be handed in?": "Bài tập về nhà nên nộp khi nào?",
+        "Where will they meet?": "Họ sẽ gặp nhau ở đâu?",
+        "Which word connects a contrast?": "Từ nào dùng để nối ý tương phản?",
+        "Which boarding gate does the traveler need?": "Hành khách cần cổng lên máy bay số nào?",
+        "What surname does the guest give?": "Khách cho biết họ là gì?",
+        "When is colleague B available?": "Đồng nghiệp B có thời gian khi nào?",
+        "Tomorrow morning": "Sáng ngày mai",
+        "Today afternoon": "Chiều nay",
+        "Next week": "Tuần sau",
+        "Tonight": "Tối nay",
+        "At the school entrance": "Ở cổng trường",
+        "At the train station": "Ở nhà ga",
+        "Gate 8": "Cổng số 8",
+        "Gate 6": "Cổng số 6",
+        "Gate 3": "Cổng số 3",
+        "Gate 10": "Cổng số 10",
+        "After 10 a.m.": "Sau 10 giờ sáng",
+        "Before 8 a.m.": "Trước 8 giờ sáng",
+        "After 3 p.m.": "Sau 3 giờ chiều",
+        # HSK1 reading-passage comprehension questions/answers/explanations
+        # (`hsk1_reading_passages.json`). These full-sentence entries take
+        # precedence over the compositional pattern translators below, which
+        # cannot safely translate arbitrary multi-word captured groups (e.g.
+        # noun phrases like "the weather today") without leaving a broken
+        # mixed-language remainder.
+        "How is that store?": "Cửa hàng đó thế nào?",
+        "How is the cat?": "Con mèo thế nào?",
+        "How is the chair?": "Cái ghế thế nào?",
+        "How is the computer?": "Máy tính thế nào?",
+        "How is the dog?": "Con chó thế nào?",
+        "How is the hotel?": "Khách sạn thế nào?",
+        "How is the movie?": "Bộ phim thế nào?",
+        "How is the water?": "Nước thế nào?",
+        "How is the weather in July?": "Thời tiết tháng Bảy thế nào?",
+        "How is the weather?": "Thời tiết thế nào?",
+        "How is this school?": "Trường này thế nào?",
+        "How many people are in my family?": "Gia đình tôi có mấy người?",
+        "How much Chinese can the person speak?": "Người đó nói được bao nhiêu tiếng Trung?",
+        "What animal does she have?": "Cô ấy có con vật gì?",
+        "What animal is at home?": "Ở nhà có con vật gì?",
+        "What are they doing?": "Họ đang làm gì?",
+        "What are we all?": "Chúng ta đều là gì?",
+        "What are we?": "Chúng ta là gì?",
+        "What do they eat?": "Họ ăn gì?",
+        "What do they like drinking?": "Họ thích uống gì?",
+        "What do they watch?": "Họ xem gì?",
+        "What do we all study?": "Chúng ta đều học gì?",
+        "What do we study?": "Chúng ta học gì?",
+        "What does the person do in the afternoon?": "Người đó làm gì vào buổi chiều?",
+        "What does the person do in the morning?": "Người đó làm gì vào buổi sáng?",
+        "What does the person not do?": "Người đó không làm gì?",
+        "What does the person not have?": "Người đó không có gì?",
+        "What does the person study today?": "Hôm nay người đó học gì?",
+        "What does the person want to do?": "Người đó muốn làm gì?",
+        "What does the restaurant have?": "Nhà hàng có gì?",
+        "What does the school have many of?": "Trường có nhiều gì?",
+        "What does the speaker not have?": "Người nói không có gì?",
+        "What does the speaker want to drink?": "Người nói muốn uống gì?",
+        "What is behind the home?": "Sau nhà có gì?",
+        "What is in front of the home?": "Trước nhà có gì?",
+        "What is in front of the table?": "Trước cái bàn có gì?",
+        "What is in the cup?": "Trong cốc có gì?",
+        "What is not at home?": "Cái gì không có ở nhà?",
+        "What is that one?": "Cái đó là gì?",
+        "What is the listener asked about?": "Người nghe được hỏi về điều gì?",
+        "What is the response?": "Câu trả lời là gì?",
+        "What is the weather today?": "Hôm nay thời tiết thế nào?",
+        "What is this one?": "Cái này là gì?",
+        "What is this?": "Đây là gì?",
+        "What language can he speak?": "Anh ấy nói được ngôn ngữ gì?",
+        "What nationality is he?": "Anh ấy là người nước nào?",
+        "What question is asked?": "Câu hỏi nào được đặt ra?",
+        "What question word is used?": "Từ hỏi nào được dùng?",
+        "What time is it?": "Mấy giờ rồi?",
+        "What word means name?": "Từ nào có nghĩa là tên?",
+        "When do the students go home?": "Khi nào học sinh về nhà?",
+        "When does dad go?": "Bố đi khi nào?",
+        "When does mom call?": "Mẹ gọi điện khi nào?",
+        "When does the person eat?": "Người đó ăn khi nào?",
+        "When does the person study?": "Người đó học khi nào?",
+        "When is the person asked to come?": "Người đó được yêu cầu đến khi nào?",
+        "When is the weather cold?": "Khi nào thời tiết lạnh?",
+        "Where are the students?": "Học sinh ở đâu?",
+        "Where do the speaker and friend go?": "Người nói và bạn đi đâu?",
+        "Where do they eat?": "Họ ăn ở đâu?",
+        "Where does dad go?": "Bố đi đâu?",
+        "Where does dad return?": "Bố trở về đâu?",
+        "Where does dad work?": "Bố làm việc ở đâu?",
+        "Where does mom work?": "Mẹ làm việc ở đâu?",
+        "Where does she go?": "Cô ấy đi đâu?",
+        "Where does she read?": "Cô ấy đọc ở đâu?",
+        "Where does the person go?": "Người đó đi đâu?",
+        "Where does the person live?": "Người đó sống ở đâu?",
+        "Where does the person study Chinese?": "Người đó học tiếng Trung ở đâu?",
+        "Where does the person work?": "Người đó làm việc ở đâu?",
+        "Where does the student sit?": "Học sinh ngồi ở đâu?",
+        "Where does the teacher not go?": "Giáo viên không đi đâu?",
+        "Where is it?": "Nó ở đâu?",
+        "Where is the book?": "Sách ở đâu?",
+        "Where is the caller?": "Người gọi điện ở đâu?",
+        "Where is the cup?": "Cốc ở đâu?",
+        "Where is the fruit?": "Trái cây ở đâu?",
+        "Where is the person today?": "Hôm nay người đó ở đâu?",
+        "Where is the speaker now?": "Bây giờ người nói ở đâu?",
+        "Where will the person go tomorrow?": "Ngày mai người đó sẽ đi đâu?",
+        "Which dish does the speaker like?": "Người nói thích món nào?",
+        "Who also goes home?": "Ai cũng về nhà?",
+        "Who also says goodbye?": "Ai cũng chào tạm biệt?",
+        "Who comes to school in the morning?": "Ai đến trường vào buổi sáng?",
+        "Who does the person see?": "Người đó gặp ai?",
+        "Who does the speaker see?": "Người nói gặp ai?",
+        "Who does the student listen to?": "Học sinh nghe ai?",
+        "Who goes to the hospital?": "Ai đi đến bệnh viện?",
+        "Who has money?": "Ai có tiền?",
+        "Who is also at school?": "Ai cũng ở trường?",
+        "Who is in front?": "Ai ở phía trước?",
+        "Who is in the family?": "Trong gia đình có ai?",
+        "Who likes tea?": "Ai thích trà?",
+        "Who lives together?": "Ai sống cùng nhau?",
+        "Who looks at the computer?": "Ai nhìn vào máy tính?",
+        "Who speaks Chinese?": "Ai nói tiếng Trung?",
+        "Why does the person go?": "Tại sao người đó đi?",
+        "Chinese date order is month before day.": "Thứ tự ngày tháng trong tiếng Trung là tháng trước ngày.",
+        "This final passage combines weather, people, school, study, and emotion using HSK1 vocabulary.": "Đoạn đọc cuối cùng này kết hợp thời tiết, con người, trường học, việc học và cảm xúc bằng từ vựng HSK1.",
+        "A movie": "Một bộ phim",
+        "Also a teacher": "Cũng là giáo viên",
+        "Buy things": "Mua đồ",
+        "Her daughter": "Con gái của cô ấy",
+        "My daughter": "Con gái tôi",
+        "The movie": "Bộ phim đó",
+        "Three yuan": "Ba tệ",
+        "To buy things": "Để mua đồ",
+        "Whether you can write": "Có thể viết được hay không",
+        # HSK1 reading-passage grammar explanations that quote a Chinese
+        # word/phrase inline (kept unchanged) alongside English commentary
+        # (translated below).
+        "Both sentences use 在学校 to show location.": "Cả hai câu đều dùng 在学校 để chỉ địa điểm.",
+        "The passage introduces 我是学生 and asks a yes-no question with 吗.": "Đoạn văn giới thiệu 我是学生 và đặt câu hỏi có/không với 吗.",
+        "The structure A 是 B identifies each person's role.": "Cấu trúc A 是 B xác định vai trò của mỗi người.",
+        "The verb 喝 is followed by different drinks.": "Động từ 喝 được theo sau bởi các loại đồ uống khác nhau.",
+        "一点儿 means a little amount.": "一点儿 nghĩa là một chút.",
+        "上 and 里 show location.": "上 và 里 chỉ vị trí.",
+        "不去学校 means the teacher does not go to school.": "不去学校 nghĩa là giáo viên không đến trường.",
+        "不是 negates identity, and the next sentence gives the correct identity.": "不是 phủ định danh tính, và câu tiếp theo đưa ra danh tính đúng.",
+        "中午 sets the time; 也 adds another action.": "中午 nêu thời gian; 也 thêm một hành động khác.",
+        "中国人 means Chinese person, and 会说汉语 means can speak Chinese.": "中国人 nghĩa là người Trung Quốc, và 会说汉语 nghĩa là biết nói tiếng Trung.",
+        "也 comes before 是 to mean also is.": "也 đứng trước 是 để nói cũng là.",
+        "也喜欢 shows that mom has the same preference.": "也喜欢 cho thấy mẹ cũng có cùng sở thích.",
+        "也很漂亮 adds another description of the cat.": "也很漂亮 thêm một miêu tả khác về con mèo.",
+        "也很高兴 adds a second adjective.": "也很高兴 thêm một tính từ thứ hai.",
+        "也说再见 shows the students repeat the same farewell.": "也说再见 cho thấy các học sinh cũng nói lời tạm biệt tương tự.",
+        "了 shows a new situation: the store has opened.": "了 cho thấy một tình huống mới: cửa hàng đã mở cửa.",
+        "什么 asks for the identity of the thing.": "什么 dùng để hỏi đó là vật gì.",
+        "今天 and 明天 mark two different days.": "今天 và 明天 đánh dấu hai ngày khác nhau.",
+        "住在中国 gives the place of living.": "住在中国 cho biết nơi sinh sống.",
+        "你好吗 is a simple greeting question.": "你好吗 là một câu hỏi chào hỏi đơn giản.",
+        "几个人 asks for a small number of people.": "几个人 dùng để hỏi một số lượng người nhỏ.",
+        "前面 and 后面 contrast two locations.": "前面 và 后面 đối lập hai vị trí.",
+        "前面 and 后面 describe relative position.": "前面 và 后面 mô tả vị trí tương đối.",
+        "去商店买 shows purpose: going to the store to buy something.": "去商店买 cho biết mục đích: đến cửa hàng để mua thứ gì đó.",
+        "去商店买东西 shows destination and purpose.": "去商店买东西 cho biết điểm đến và mục đích.",
+        "叫什么名字 is the standard HSK1 pattern for asking a name.": "叫什么名字 là mẫu câu HSK1 chuẩn để hỏi tên.",
+        "同学 means classmate, and 都 applies to all of 我们.": "同学 nghĩa là bạn học, và 都 áp dụng cho tất cả 我们.",
+        "听老师说话 means listen to the teacher speak.": "听老师说话 nghĩa là nghe giáo viên nói.",
+        "哪个 asks which one from a group.": "哪个 dùng để hỏi cái nào trong một nhóm.",
+        "喂 is used when answering or starting a phone call.": "喂 được dùng khi trả lời hoặc bắt đầu một cuộc gọi điện thoại.",
+        "喜欢 can be followed by a verb phrase.": "喜欢 có thể được theo sau bởi một cụm động từ.",
+        "回北京 means return to Beijing.": "回北京 nghĩa là trở về Bắc Kinh.",
+        "回家 means return/go home, and 也 shows the teacher does the same.": "回家 nghĩa là về nhà, và 也 cho thấy giáo viên cũng làm như vậy.",
+        "在 + place + 工作 shows where someone works.": "在 + địa điểm + 工作 cho biết ai đó làm việc ở đâu.",
+        "在北京 shows location, and 很大 describes Beijing.": "在北京 cho biết địa điểm, và 很大 miêu tả Bắc Kinh.",
+        "在医院 gives the doctor's location, and 去医院 shows mom's destination.": "在医院 cho biết vị trí của bác sĩ, và 去医院 cho biết điểm đến của mẹ.",
+        "在哪儿 asks for location.": "在哪儿 dùng để hỏi địa điểm.",
+        "在学校 comes before the action 看书.": "在学校 đứng trước hành động 看书.",
+        "在家 shows where the action 做工作 happens.": "在家 cho biết hành động 做工作 diễn ra ở đâu.",
+        "坐出租车 means take a taxi, and 去医院 gives the destination.": "坐出租车 nghĩa là đi taxi, và 去医院 cho biết điểm đến.",
+        "坐在椅子上 describes sitting on the chair.": "坐在椅子上 miêu tả việc ngồi trên ghế.",
+        "坐飞机去北京 means take a plane to Beijing.": "坐飞机去北京 nghĩa là đi máy bay đến Bắc Kinh.",
+        "多大 asks age, and 岁 marks years old.": "多大 dùng để hỏi tuổi, và 岁 đánh dấu đơn vị tuổi.",
+        "多少钱 asks price, and 三块 gives the spoken price.": "多少钱 dùng để hỏi giá, và 三块 cho biết giá được nói ra.",
+        "太...了 expresses a strong degree; 不喝 is negative.": "太...了 diễn tả mức độ mạnh; 不喝 là dạng phủ định.",
+        "女儿 is identified as a student, then her location is given.": "女儿 được xác định là học sinh, sau đó vị trí của cô được nêu ra.",
+        "她是老师 identifies her role, and 老师好 is a greeting to a teacher.": "她是老师 xác định vai trò của cô ấy, và 老师好 là lời chào dành cho giáo viên.",
+        "很 + 多 means many, while 不多 means not many.": "很 + 多 nghĩa là nhiều, còn 不多 nghĩa là không nhiều.",
+        "很大 and 很小 describe size.": "很大 và 很小 miêu tả kích thước.",
+        "很好 describes the weather positively.": "很好 miêu tả thời tiết theo hướng tích cực.",
+        "很好 evaluates the movie positively.": "很好 đánh giá bộ phim theo hướng tích cực.",
+        "很热 describes the weather, and the second sentence gives the action.": "很热 miêu tả thời tiết, và câu thứ hai nêu hành động.",
+        "怎么样 asks about condition, and 很好 answers positively.": "怎么样 dùng để hỏi tình trạng, và 很好 trả lời theo hướng tích cực.",
+        "怎么样 asks how something is.": "怎么样 dùng để hỏi một điều gì đó như thế nào.",
+        "想 + verb expresses wanting to do something.": "想 + động từ diễn tả mong muốn làm điều gì đó.",
+        "想睡觉 means want to sleep.": "想睡觉 nghĩa là muốn ngủ.",
+        "我家有 introduces the people in the family.": "我家有 giới thiệu những người trong gia đình.",
+        "我的朋友 shows possession, and 都 means all.": "我的朋友 cho biết sở hữu, và 都 nghĩa là tất cả.",
+        "明天 gives future time, and 在家 gives location.": "明天 cho biết thời gian trong tương lai, và 在家 cho biết địa điểm.",
+        "星期 plus a number gives the weekday.": "星期 cộng với một con số cho biết thứ trong tuần.",
+        "月 marks the month, and 很热 describes the weather.": "月 đánh dấu tháng, và 很热 miêu tả thời tiết.",
+        "有 expresses possession, and 吗 turns the second sentence into a question.": "有 diễn tả sự sở hữu, và 吗 biến câu thứ hai thành câu hỏi.",
+        "有 is repeated as a short positive answer.": "有 được lặp lại như một câu trả lời khẳng định ngắn.",
+        "来学校 means come to school.": "来学校 nghĩa là đến trường.",
+        "桌子上有 introduces what is on the table.": "桌子上有 giới thiệu những gì có trên bàn.",
+        "没有 is the negative form of 有.": "没有 là dạng phủ định của 有.",
+        "没有 negates existence, and the second sentence gives the replacement drink.": "没有 phủ định sự tồn tại, và câu thứ hai đưa ra loại đồ uống thay thế.",
+        "没有钱 explains why the person does not buy things.": "没有钱 giải thích lý do người đó không mua đồ.",
+        "狗 is the subject of the second sentence and is described with 很大.": "狗 là chủ ngữ của câu thứ hai và được miêu tả bằng 很大.",
+        "现在 sets the present time for both sentences.": "现在 xác lập thời điểm hiện tại cho cả hai câu.",
+        "看电视 means watch TV; 也 shows dad does the same.": "看电视 nghĩa là xem TV; 也 cho thấy bố cũng làm như vậy.",
+        "看见 means see, and 学校前面 gives the location.": "看见 nghĩa là nhìn thấy, và 学校前面 cho biết địa điểm.",
+        "看见 means to see, and 很高兴 describes feeling.": "看见 nghĩa là nhìn thấy, và 很高兴 miêu tả cảm xúc.",
+        "能来 means be able to come.": "能来 nghĩa là có thể đến.",
+        "菜 means dish/food, and 这个菜 identifies a specific dish.": "菜 nghĩa là món ăn, và 这个菜 xác định một món ăn cụ thể.",
+        "认识 means to know or be acquainted with someone.": "认识 nghĩa là biết hoặc quen biết ai đó.",
+        "请 makes the command polite.": "请 làm cho câu mệnh lệnh trở nên lịch sự.",
+        "谁 asks about a person.": "谁 dùng để hỏi về một người.",
+        "谢谢 and 不客气 form a basic polite exchange.": "谢谢 và 不客气 tạo thành một cặp trao đổi lịch sự cơ bản.",
+        "这 and 那 point to two things, and 也 shows the second is also a book.": "这 và 那 chỉ vào hai vật, và 也 cho thấy vật thứ hai cũng là một quyển sách.",
+        "这个电脑 is described with 很好.": "这个电脑 được miêu tả bằng 很好.",
+        "都 applies to both 先生 and 小姐.": "都 áp dụng cho cả 先生 và 小姐.",
+        "都 applies to both 我 and 朋友.": "都 áp dụng cho cả 我 và 朋友.",
+        "都 means all members of the listed group are at home.": "都 nghĩa là tất cả thành viên trong nhóm được liệt kê đều ở nhà.",
+        "饭店 can mean hotel/restaurant in beginner HSK context; here 住饭店 means stay at a hotel.": "饭店 trong ngữ cảnh HSK sơ cấp có thể nghĩa là khách sạn/nhà hàng; ở đây 住饭店 nghĩa là ở khách sạn.",
+        # Remaining lesson/reading titles and learning objectives found by the
+        # i18n audit to have identical (untranslated) EN/VI values.
+        "My First Class": "Buổi học đầu tiên của tôi",
+        "Making a Weekend Plan": "Lập kế hoạch cuối tuần",
+        "Use time words before verbs.": "Dùng từ chỉ thời gian trước động từ.",
+        "Ask and answer where and when to meet.": "Hỏi và trả lời về nơi và thời gian gặp mặt.",
+        "Efficiency Is Not Only Resources": "Hiệu quả không chỉ là nguồn lực",
+        "Use simple person words in short sentences": "Dùng từ chỉ người đơn giản trong câu ngắn",
+        "Identify person and role information": "Xác định thông tin về người và vai trò",
+        "Ask a person's name": "Hỏi tên một người",
+        "Answer with a name": "Trả lời bằng tên",
+        "Review identity and name patterns": "Ôn tập mẫu câu về danh tính và tên gọi",
+        "Ask whether an action happened": "Hỏi xem một hành động đã xảy ra chưa",
+        "Read a simple weekend plan": "Đọc một kế hoạch cuối tuần đơn giản",
+        "Identify time and place": "Xác định thời gian và địa điểm",
+        "Understand a short phone plan": "Hiểu một cuộc hẹn ngắn qua điện thoại",
+        "Compare two people or things": "So sánh hai người hoặc hai vật",
+        "Review completed actions and comparisons": "Ôn tập hành động đã hoàn thành và so sánh",
+        "Read a service problem": "Đọc một vấn đề về dịch vụ",
+        "Explain causes and solutions": "Giải thích nguyên nhân và giải pháp",
+        "Name social and environmental issues": "Nêu tên các vấn đề xã hội và môi trường",
+        "Express sufficient and concessive conditions": "Diễn đạt điều kiện đủ và nhượng bộ",
+        "Discuss habits and plans": "Thảo luận về thói quen và kế hoạch",
+        "Review contrast and condition structures": "Ôn tập cấu trúc tương phản và điều kiện",
+        "Discuss reports and viewpoints": "Thảo luận báo cáo và quan điểm",
+        "Identify claim and supporting reason": "Xác định luận điểm và lý do hỗ trợ",
+        "Distinguish experience and opinion": "Phân biệt trải nghiệm và ý kiến",
+        "Correct an assumption": "Sửa một giả định sai",
+        "Compare online and offline study": "So sánh học trực tuyến và học trực tiếp",
+        "Review opinion and debate vocabulary": "Ôn tập từ vựng nêu ý kiến và tranh luận",
+        "Listen for stance and evidence": "Nghe để xác định lập trường và bằng chứng",
+        "Identify thesis, evidence, and implication": "Xác định luận điểm, bằng chứng và hàm ý",
+        "Review abstract reading and listening strategies": "Ôn tập chiến lược đọc và nghe trừu tượng",
+        "write a qualified analytical response": "viết một bài phân tích có luận cứ rõ ràng",
+        # HSK1 reading-passage multiple-choice answer options.
+        "My doctor": "Bác sĩ của tôi",
+        "My dad": "Bố tôi",
+        "A chair": "Một cái ghế",
+        "The price": "Giá tiền",
+        "A movie only": "Chỉ xem phim",
+        "Only a doctor": "Chỉ có bác sĩ",
+        "Price of apples": "Giá táo",
+        "Her teacher": "Giáo viên của cô ấy",
+        "Her doctor": "Bác sĩ của cô ấy",
+        "Her friend": "Bạn của cô ấy",
+        "It has no money": "Không có tiền",
+        "In Beijing": "Ở Bắc Kinh",
+        # Conversation-quiz prompts/explanations/image-keywords found by a
+        # full database scan to still be identical or partially untranslated.
+        "What is his job?": "Công việc của anh ấy là gì?",
+        "What is the advice?": "Lời khuyên là gì?",
+        "What is the guest's surname?": "Họ của khách là gì?",
+        "What is the speaker asking?": "Người nói đang hỏi gì?",
+        "What price do you hear?": "Bạn nghe thấy giá bao nhiêu?",
+        "What should the patient do?": "Bệnh nhân nên làm gì?",
+        "What should the student write?": "Học sinh nên viết gì?",
+        "What will the customer do?": "Khách hàng sẽ làm gì?",
+        "What will the speaker bring?": "Người nói sẽ mang theo gì?",
+        "When does it start?": "Khi nào bắt đầu?",
+        "When is the person free?": "Khi nào người đó rảnh?",
+        "When should it be handed in?": "Khi nào cần nộp?",
+        "Which two items are requested?": "Hai món đồ nào được yêu cầu?",
+        "school gate": "cổng trường",
+        "hotel room key card": "thẻ phòng khách sạn",
+        "Type the Hanzi for 'to buy'.": "Nhập chữ Hán cho nghĩa 'mua'.",
+        "同事 means colleague.": "同事 nghĩa là đồng nghiệp.",
+        "Choose the correct order.": "Chọn thứ tự đúng.",
+        "Choose the natural question for asking a name.": "Chọn câu hỏi tự nhiên để hỏi tên.",
+        "How is the weather today?": "Hôm nay thời tiết thế nào?",
+        "How much are these noodles?": "Mì này giá bao nhiêu?",
+        "How long does it take on foot?": "Đi bộ mất bao lâu?",
+        "How many people are in the speaker's family?": "Gia đình người nói có mấy người?",
+        "How much is the clothing item?": "Món quần áo đó giá bao nhiêu?",
+        "The image shows a doctor.": "Hình ảnh cho thấy một bác sĩ.",
+        "The image shows a hotel front desk.": "Hình ảnh cho thấy quầy lễ tân khách sạn.",
+        "The image shows a movie setting.": "Hình ảnh cho thấy bối cảnh một bộ phim.",
+        "The image shows a park.": "Hình ảnh cho thấy một công viên.",
+        "The image shows a passport.": "Hình ảnh cho thấy một hộ chiếu.",
+        "The image shows a room card.": "Hình ảnh cho thấy một thẻ phòng.",
+        "The image shows a school gate.": "Hình ảnh cho thấy cổng trường.",
+        "The image shows a subway station sign.": "Hình ảnh cho thấy biển ga tàu điện ngầm.",
+        "The image shows a suitcase.": "Hình ảnh cho thấy một vali.",
+        "The image shows a teacher.": "Hình ảnh cho thấy một giáo viên.",
+        "The image shows a train station.": "Hình ảnh cho thấy một nhà ga.",
+        "The image shows an office.": "Hình ảnh cho thấy một văn phòng.",
+        "The image shows beef noodles.": "Hình ảnh cho thấy mì bò.",
+        "The image shows clothing.": "Hình ảnh cho thấy quần áo.",
+        "The image shows documents.": "Hình ảnh cho thấy tài liệu.",
+        "The image shows four people.": "Hình ảnh cho thấy bốn người.",
+        "The image shows homework.": "Hình ảnh cho thấy bài tập về nhà.",
+        "The image shows medicine.": "Hình ảnh cho thấy thuốc.",
+        "The image shows rain.": "Hình ảnh cho thấy trời mưa.",
+        "The pattern connects two contrasting ideas.": "Mẫu câu này nối hai ý tương phản.",
+        "The pattern rejects one idea and replaces it with a better explanation.": "Mẫu câu này bác bỏ một ý và thay bằng cách giải thích tốt hơn.",
+        "They discuss going to the park tomorrow.": "Họ bàn về việc đi công viên vào ngày mai.",
+        "Time comes before the verb phrase.": "Từ chỉ thời gian đứng trước cụm động từ.",
+        "Type the polite Chinese pronoun for 'you'.": "Nhập đại từ tiếng Trung lịch sự cho 'bạn'.",
+        "What are the students studying today?": "Hôm nay học sinh đang học gì?",
+        "What do the friends plan to do?": "Nhóm bạn dự định làm gì?",
+        "What does the customer order to eat?": "Khách hàng gọi món gì để ăn?",
+        "What does the doctor advise?": "Bác sĩ khuyên điều gì?",
+        "What is the father's job?": "Công việc của người bố là gì?",
+        "What symptoms does the patient have?": "Bệnh nhân có triệu chứng gì?",
+        "What will the friends do tomorrow?": "Ngày mai nhóm bạn sẽ làm gì?",
+        "Where does the tourist want to go?": "Du khách muốn đi đâu?",
+        "Where is the fitting room?": "Phòng thử đồ ở đâu?",
+        "Where is the meeting?": "Cuộc họp ở đâu?",
+        "Which phrase is most polite for asking a question?": "Cụm từ nào lịch sự nhất để đặt câu hỏi?",
+        "Which phrase means 'I want to go'?": "Cụm từ nào có nghĩa là 'tôi muốn đi'?",
+        "Which phrase means 'a little smaller'?": "Cụm từ nào có nghĩa là 'nhỏ hơn một chút'?",
+        "Which phrase means 'a little'?": "Cụm từ nào có nghĩa là 'một chút'?",
+        "Which phrase means 'after ten o'clock'?": "Cụm từ nào có nghĩa là 'sau mười giờ'?",
+        "Which structure asks age?": "Cấu trúc nào dùng để hỏi tuổi?",
+        "Which structure gives direction?": "Cấu trúc nào chỉ hướng?",
+        "Which word asks 'what'?": "Từ nào dùng để hỏi 'cái gì'?",
+        "Which word means 'then'?": "Từ nào có nghĩa là 'thì/rồi'?",
+    }
+)
+
 
 def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -388,6 +1506,343 @@ def _meaning(english: str | None, vietnamese: str | None) -> str:
 
 def _translations(en: str | None = None, vi: str | None = None) -> dict[str, str]:
     return {key: value for key, value in {"en": en, "vi": vi}.items() if value}
+
+
+def _translate_title_phrase(phrase: str) -> str:
+    return TOPIC_TITLE_VI.get(phrase) or TITLE_PHRASE_VI.get(phrase) or phrase
+
+
+def _lesson_title_translations(title: str, lesson_type: str | None = None) -> dict[str, str]:
+    generated_match = re.match(
+        r"^(HSK\d+) (Core Lesson|Vocabulary|Grammar|Listening|Reading|Writing) (\d{2}): (.+)$",
+        title,
+    )
+    if generated_match:
+        hsk, type_label, number, topic = generated_match.groups()
+        type_vi = TYPE_TITLES_VI.get(lesson_type or "", type_label)
+        return _translations(title, f"{hsk} {type_vi} {number}: {_translate_title_phrase(topic)}")
+
+    hsk_match = re.match(r"^(HSK\d+) ([^:]+): (.+)$", title)
+    if hsk_match:
+        hsk, type_label, phrase = hsk_match.groups()
+        type_vi = TYPE_TITLES_VI.get(lesson_type or "", type_label)
+        return _translations(title, f"{hsk} {type_vi}: {_translate_title_phrase(phrase)}")
+
+    reading_match = re.match(r"^Reading (\d{3}): (.+)$", title)
+    if reading_match:
+        number, phrase = reading_match.groups()
+        return _translations(title, f"Bài đọc {number}: {_translate_title_phrase(phrase)}")
+
+    return _translations(title, _translate_title_phrase(title))
+
+
+def _lesson_description_translations(
+    description: str | None,
+    lesson_type: str,
+    hsk_level: int,
+    title_translations: dict[str, str],
+) -> dict[str, str]:
+    if not description:
+        return {}
+
+    type_en = TYPE_TITLES.get(lesson_type, lesson_type.title())
+    type_vi = TYPE_TITLES_VI.get(lesson_type, type_en)
+    vi_title = title_translations.get("vi", "")
+    return _translations(
+        description,
+        f"{type_vi} HSK {hsk_level}: {vi_title.split(': ', 1)[-1] if vi_title else description}.",
+    )
+
+
+def _has_vietnamese_letters(text: str) -> bool:
+    return bool(re.search(r"[À-ỹ]", text))
+
+
+_ENGLISH_FUNCTION_WORDS_RE = re.compile(
+    r"\b(the|a|an|is|are|was|were|am|do|does|did|will|would|can|could|should|"
+    r"shall|must|may|might|has|have|had|and|or|but|if|when|where|what|how|who|"
+    r"whom|whose|which|why|at|in|on|to|of|for|with|before|after|behind|front|"
+    r"this|that|these|those|it|its|he|she|they|we|you|your|my|his|her|their|"
+    r"our|not|no|yes|home|gate|room|card|meeting|school|hospital|hotel|"
+    r"airport|office|restaurant|teacher|student|doctor|weather|morning|"
+    r"afternoon|tonight|money|price|name|time|water|table|chair|chairs|"
+    r"computer|documents?|medicine|luggage|passport|ticket|suitcase|receipt|"
+    r"shoes|clothes|correct|paid|twice|nearby|cold|expensive|old)\b",
+    re.IGNORECASE,
+)
+
+_CJK_RE = re.compile(r"[\u4e00-\u9fff]")
+
+
+def _maybe_translate_subject_vi(text: str) -> str:
+    """Translate a captured sentence subject unless it is (or contains) Chinese
+    content, which must stay untouched (e.g. grammar explanations quoting a
+    Chinese word/phrase as the subject)."""
+    if _CJK_RE.search(text):
+        return text
+    return _translate_fragment_vi(text)
+
+
+def _translate_fragment_vi(text: str) -> str:
+    stripped = text.strip().strip("'\"")
+    bare = stripped.rstrip(".?")
+    lower = bare.lower()
+    if stripped in EN_TEXT_VI:
+        return EN_TEXT_VI[stripped]
+    if bare in EN_TEXT_VI:
+        return EN_TEXT_VI[bare]
+    if stripped in TITLE_PHRASE_VI:
+        return TITLE_PHRASE_VI[stripped]
+    if lower in EN_TERM_VI:
+        return EN_TERM_VI[lower]
+
+    word_map = {
+        key: value
+        for key, value in EN_TERM_VI.items()
+        if re.fullmatch(r"[a-z]+", key)
+    }
+    substituted = re.sub(
+        r"[A-Za-z]+",
+        lambda match: word_map.get(match.group(0).lower(), match.group(0)),
+        stripped,
+    )
+    if substituted == stripped:
+        # Nothing matched at all; there is no dictionary entry for this phrase.
+        return stripped
+    # Word-by-word substitution can leave common English function words next to
+    # the newly-translated Vietnamese words (e.g. "At the trường học gate"),
+    # producing a mixed-language string. That is strictly worse than a single
+    # consistent language, so bail out to the untranslated original phrase
+    # rather than surface a half-translated result; callers should add a full
+    # phrase entry to `EN_TEXT_VI` once this fires.
+    if _ENGLISH_FUNCTION_WORDS_RE.search(substituted):
+        return stripped
+    return substituted
+
+
+def _translate_grammar_title_vi(text: str) -> str:
+    grammar_replacements = {
+        "Subject": "Chủ ngữ",
+        "Object": "tân ngữ",
+        "Verb": "động từ",
+        "Name": "tên",
+        "Adjective": "tính từ",
+        "Time Before Action": "Thời gian đứng trước hành động",
+        "Time": "thời gian",
+        "Statement": "Câu trần thuật",
+        "question": "câu hỏi",
+        "sentence": "câu",
+        "future/intention": "tương lai/dự định",
+        "completed action": "hành động đã hoàn thành",
+        "negated identity": "nhận diện phủ định",
+        "identity statements": "câu nhận diện",
+        "measure word": "lượng từ",
+        "noun": "danh từ",
+        "direction": "hướng",
+        "parallel development": "diễn biến song song",
+        "conclusion": "kết luận",
+        "restatement": "diễn đạt lại",
+    }
+    translated = text
+    for source, target in sorted(grammar_replacements.items(), key=lambda item: len(item[0]), reverse=True):
+        translated = re.sub(rf"\b{re.escape(source)}\b", target, translated)
+    return translated
+
+
+def _translate_native_text(text: str | None) -> str:
+    if not text:
+        return ""
+    if "\n" in text:
+        return "\n".join(_translate_native_text(line) for line in text.splitlines())
+    if text.startswith("Audio: "):
+        return f"Âm thanh: {text.removeprefix('Audio: ')}"
+    if text.startswith("Image: "):
+        return f"Hình ảnh: {_translate_fragment_vi(text.removeprefix('Image: '))}"
+    if text.startswith("Tokens: "):
+        return f"Từ cho sẵn: {text.removeprefix('Tokens: ')}"
+    if text in EN_TEXT_VI:
+        return EN_TEXT_VI[text]
+    if text in TITLE_PHRASE_VI:
+        return TITLE_PHRASE_VI[text]
+    replacements = {
+        "Choose the best meaning.": "Chọn nghĩa phù hợp nhất.",
+        "Choose the matching Chinese word.": "Chọn từ tiếng Trung phù hợp.",
+        "Choose the matching phrase.": "Chọn cụm phù hợp.",
+        "Choose the matching word.": "Chọn từ phù hợp.",
+        "Arrange the words into a sentence.": "Sắp xếp các từ thành câu.",
+        "Arrange the words into a question.": "Sắp xếp các từ thành câu hỏi.",
+        "Arrange the words into a location question.": "Sắp xếp các từ thành câu hỏi vị trí.",
+        "Arrange the words into a permission question.": "Sắp xếp các từ thành câu hỏi xin phép.",
+        "Arrange the words into a price question.": "Sắp xếp các từ thành câu hỏi giá tiền.",
+        "What is the main topic of this lesson?": "Chủ đề chính của bài này là gì?",
+        "Reading": "Đọc hiểu",
+        "Listening": "Nghe",
+        "Writing": "Viết",
+        "Grammar": "Ngữ pháp",
+        "Vocabulary": "Từ vựng",
+        "Practice": "Luyện tập",
+        "Correct": "Đúng",
+        "No answer": "Chưa trả lời",
+        "Are there many teachers?": "Có nhiều giáo viên không?",
+        "Can the speaker come?": "Người nói có thể đến không?",
+        "Do they go to the restaurant today?": "Hôm nay họ có đi nhà hàng không?",
+        "Does the person drink it?": "Người đó có uống nó không?",
+        "Does the speaker know him?": "Người nói có biết anh ấy không?",
+        "Does the teacher have a book?": "Giáo viên có sách không?",
+        "How do they feel?": "Họ cảm thấy thế nào?",
+        "How does the person feel?": "Người đó cảm thấy thế nào?",
+        "How does the teacher feel?": "Giáo viên cảm thấy thế nào?",
+        "How else does the daughter feel?": "Con gái còn cảm thấy thế nào?",
+        "How much is it?": "Giá bao nhiêu?",
+        "How much are the noodles?": "Mì giá bao nhiêu?",
+        "How old is the speaker?": "Người nói bao nhiêu tuổi?",
+        "Is it far?": "Nó có xa không?",
+        "Is the son a teacher?": "Người con trai có phải giáo viên không?",
+        "What is asked?": "Đang hỏi điều gì?",
+        "What is asked about?": "Đang hỏi về điều gì?",
+        "What is being asked?": "Đang hỏi điều gì?",
+        "What is being bought?": "Đang mua gì?",
+        "What is asked about?": "Đang hỏi về điều gì?",
+        "What date is today?": "Hôm nay là ngày mấy?",
+        "What date is tomorrow?": "Ngày mai là ngày mấy?",
+        "What day is mentioned?": "Nhắc đến ngày nào?",
+        "What day is today?": "Hôm nay là thứ mấy?",
+        "What day is tomorrow?": "Ngày mai là thứ mấy?",
+        "What direction is given?": "Chỉ hướng nào?",
+        "What is the main topic of this lesson?": "Chủ đề chính của bài này là gì?",
+        "What does the question ask?": "Câu hỏi hỏi gì?",
+        "What does the speaker ask?": "Người nói hỏi gì?",
+        "What does the speaker say about today?": "Người nói nói gì về hôm nay?",
+        "What does the staff ask to see?": "Nhân viên yêu cầu xem gì?",
+        "What does 不客气 mean?": "不客气 nghĩa là gì?",
+        "What does 哪个 mean?": "哪个 nghĩa là gì?",
+        "What does 家里 mean here?": "家里 ở đây nghĩa là gì?",
+        "What does 有 show?": "有 biểu thị điều gì?",
+        "What does 都 mean here?": "都 ở đây nghĩa là gì?",
+        "What floor is the room on?": "Phòng ở tầng mấy?",
+        "What fruit is liked?": "Thích loại trái cây nào?",
+        "What happened to the store?": "Cửa hàng đã xảy ra chuyện gì?",
+        "Who is a student?": "Ai là học sinh?",
+    }
+    if text in replacements:
+        return replacements[text]
+
+    translated_grammar = _translate_grammar_title_vi(text)
+    if translated_grammar != text and not _ENGLISH_FUNCTION_WORDS_RE.search(translated_grammar):
+        return translated_grammar
+
+    for prefix, translated_prefix in (
+        ("Choose the meaning of ", "Chọn nghĩa của "),
+        ("Complete the sentence: ", "Hoàn thành câu: "),
+        ("Complete the question: ", "Hoàn thành câu hỏi: "),
+        ("Complete: ", "Hoàn thành: "),
+        ("Translate to Chinese: ", "Dịch sang tiếng Trung: "),
+        ("Translate to English: ", "Dịch sang tiếng Anh: "),
+        ("Translate to Vietnamese: ", "Dịch sang tiếng Việt: "),
+        ("Type the Hanzi for ", "Nhập chữ Hán cho nghĩa "),
+    ):
+        if text.startswith(prefix):
+            return translated_prefix + _translate_fragment_vi(text.removeprefix(prefix))
+
+    pattern_translators = (
+        (r"^What does (.+) mean\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} nghĩa là gì?"),
+        (r"^What is (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} là gì?"),
+        (r"^Who is (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} là ai?"),
+        (r"^Where is (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} ở đâu?"),
+        (r"^How is (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} như thế nào?"),
+        (r"^How much (?:is|are) (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} giá bao nhiêu?"),
+        (r"^How many people are in (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} có mấy người?"),
+        (r"^How long does it take (.+)\?$", lambda m: f"Mất bao lâu { _translate_fragment_vi(m.group(1)) }?"),
+        (r"^What can (.+) do\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} có thể làm gì?"),
+        (r"^What can (.+) speak\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} nói được gì?"),
+        (r"^What are (.+)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} là gì?"),
+        (r"^What are (.+) doing\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} đang làm gì?"),
+        (r"^What did (.+) do yesterday\?$", lambda m: f"Hôm qua {_translate_fragment_vi(m.group(1))} đã làm gì?"),
+        (r"^What do (.+) (?:eat|drink|watch|study|like)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} {_translate_fragment_vi(m.group(0).split()[-1].rstrip('?'))} gì?"),
+        (r"^What do (.+) have\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} có gì?"),
+        (r"^What does (.+) (?:eat|drink|watch|study|write|buy|like|order|want)\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} {_translate_fragment_vi(m.group(0).split()[-1].rstrip('?'))} gì?"),
+        (r"^What does (.+) ask\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} hỏi gì?"),
+        (r"^What does (.+) say\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} nói gì?"),
+        (r"^What does (.+) do\?$", lambda m: f"{_translate_fragment_vi(m.group(1))} làm gì?"),
+        (r"^The speaker says: (.+)\.?$", lambda m: f"Người nói nói: {m.group(1)}."),
+        (r"^The passage introduces (.+)\.?$", lambda m: f"Đoạn đọc giới thiệu {_maybe_translate_subject_vi(m.group(1))}."),
+        (r"^(.+) asks (.+)\.?$", lambda m: f"{_maybe_translate_subject_vi(m.group(1))} dùng để hỏi {_translate_fragment_vi(m.group(2))}."),
+        (r"^(.+) means (.+)\.?$", lambda m: f"{_maybe_translate_subject_vi(m.group(1))} nghĩa là {_translate_fragment_vi(m.group(2))}."),
+        (r"^(.+) shows (.+)\.?$", lambda m: f"{_maybe_translate_subject_vi(m.group(1))} biểu thị {_translate_fragment_vi(m.group(2))}."),
+        (r"^(.+) identifies (.+)\.?$", lambda m: f"{_maybe_translate_subject_vi(m.group(1))} xác định {_translate_fragment_vi(m.group(2))}."),
+    )
+    for pattern, translator in pattern_translators:
+        match = re.match(pattern, text)
+        if match:
+            candidate = translator(match)
+            # Skip patterns that leave a broken mixed-language remainder (a
+            # captured group with no dictionary translation); try the next
+            # pattern instead of surfacing half-translated text.
+            if not _ENGLISH_FUNCTION_WORDS_RE.search(candidate):
+                return candidate
+
+    fragment_translation = _translate_fragment_vi(text)
+    if fragment_translation != text:
+        return fragment_translation
+
+    return text
+
+
+def _translate_native_text_en(text: str | None) -> str:
+    if not text:
+        return ""
+    if "\n" in text:
+        return "\n".join(_translate_native_text_en(line) for line in text.splitlines())
+    if text in VI_TEXT_EN:
+        return VI_TEXT_EN[text]
+    inverse_titles = {value: key for key, value in TITLE_PHRASE_VI.items()}
+    if text in inverse_titles:
+        return inverse_titles[text]
+    inverse_terms = {value: key for key, value in EN_TERM_VI.items()}
+    if text.lower() in inverse_terms:
+        return inverse_terms[text.lower()]
+    for prefix, translated_prefix in (
+        ("Sai: ", "Incorrect: "),
+        ("Đúng: ", "Correct: "),
+        ("Nghĩa: ", "Meaning: "),
+        ("Câu đầy đủ: ", "Full sentence: "),
+        ("Theo bài đọc, ", "According to the reading, "),
+        ("Điền từ còn thiếu: ", "Fill in the missing word: "),
+        ("Hoàn thành câu: ", "Complete the sentence: "),
+        ("Nhập chữ Hán cho nghĩa: ", "Type the Chinese character for: "),
+        ("Sắp xếp thành câu đúng rồi nhập lại.", "Put the words in the correct order and type the sentence."),
+    ):
+        if text.startswith(prefix):
+            return translated_prefix + text.removeprefix(prefix)
+    if _has_vietnamese_letters(text):
+        return text
+    return text
+
+
+def _native_text_translations(text: str | None) -> dict[str, str]:
+    if not text:
+        return {}
+    return _translations(_translate_native_text_en(text), _translate_native_text(text))
+
+
+def _option_translations(options: list[str]) -> dict[str, list[str]]:
+    return {
+        "en": [_translate_native_text_en(option) for option in options],
+        "vi": [_translate_native_text(option) for option in options],
+    }
+
+
+def _question_translation_payload(question: dict[str, Any]) -> dict[str, Any]:
+    prompt = question.get("prompt", "")
+    explanation = question.get("explanation", "")
+    options = question.get("options") or []
+    return {
+        "prompt_translations": question.get("prompt_translations")
+        or _native_text_translations(prompt),
+        "options_translations": question.get("options_translations") or (_option_translations(options) if options else {}),
+        "explanation_translations": question.get("explanation_translations")
+        or _native_text_translations(explanation),
+    }
 
 
 def _chinese_entry(hanzi: str, pinyin: str = "", meaning: str = "") -> dict[str, str]:
@@ -428,6 +1883,7 @@ def _external_vocabulary_entries(lesson: dict[str, Any]) -> list[dict[str, Any]]
             "translations": _translations(item.get("meaning_en"), item.get("meaning_vi")),
             "word_type": _word_type(hanzi),
             "category": category,
+            "category_translations": _native_text_translations(category) or _translations(category, category),
             "hsk_level": level,
         }
         if item.get("example_en") or item.get("example_vi"):
@@ -452,7 +1908,7 @@ def _external_grammar_points(lesson: dict[str, Any]) -> list[dict[str, Any]]:
         points.append(
             {
                 "title": title,
-                "title_translations": _translations(title, title),
+                "title_translations": _native_text_translations(title),
                 "structure": structure,
                 "explanation": usage or structure or title,
                 "explanation_translations": _translations(usage_en or usage, usage_vi),
@@ -513,12 +1969,22 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
         "hsk_level": level,
         "category": title.split(": ", 1)[-1] or TYPE_TITLES.get(lesson_type, lesson_type.title()),
         "learning_objectives": lesson.get("learning_objectives", []),
+        "learning_objective_translations": {
+            "en": lesson.get("learning_objectives", []),
+            "vi": [_translate_native_text(objective) for objective in lesson.get("learning_objectives", [])],
+        },
     }
 
     focus = raw.get("focus")
-    if focus:
+    # Some quiz entries store a prerequisite lesson id (e.g. "HSK1-CON-002") in
+    # `focus` instead of a human-readable summary; never surface a raw id as
+    # on-screen overview text.
+    if focus and not re.match(r"^[A-Z]+\d*-[A-Z]+-\d+$", focus):
         content["overview"] = focus
-        content["overview_translations"] = _translations(focus, raw.get("focus_vi") or focus)
+        content["overview_translations"] = _translations(
+            _translate_native_text_en(focus),
+            raw.get("focus_vi") or _translate_native_text(focus),
+        )
 
     vocabulary = _external_vocabulary_entries(lesson)
     grammar_points = _external_grammar_points(lesson)
@@ -536,7 +2002,7 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
     if text_entry and lesson_type == "reading":
         content["reading"] = {
             "title": title,
-            "title_translations": _translations(title, title),
+            "title_translations": _lesson_title_translations(title, lesson_type),
             "chinese": text_entry["hanzi"],
             "pinyin": text_entry.get("pinyin", ""),
             "vietnamese": text_entry.get("meaning", ""),
@@ -551,13 +2017,16 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
             "english": raw.get("english", ""),
             "translations": _translations(raw.get("english", ""), raw.get("vietnamese", text_entry.get("meaning", ""))),
             "task": focus or "Listen and answer the checkpoint.",
-            "task_translations": _translations(focus or "Listen and answer the checkpoint.", focus or "Nghe và trả lời câu kiểm tra."),
+            "task_translations": _translations(
+                _translate_native_text_en(focus) if focus else "Listen and answer the checkpoint.",
+                raw.get("focus_vi") or _translate_native_text(focus) if focus else "Nghe và trả lời câu kiểm tra.",
+            ),
         }
         content["transcript"] = [text_entry]
     elif text_entry and lesson_type == "conversation":
         content["dialogue"] = {
             "title": title,
-            "title_translations": _translations(title, title),
+            "title_translations": _lesson_title_translations(title, lesson_type),
             "lines": [
                 {
                     "speaker": "A",
@@ -571,7 +2040,7 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
         }
     elif text_entry:
         content["passage_title"] = title
-        content["passage_title_translations"] = _translations(title, title)
+        content["passage_title_translations"] = _lesson_title_translations(title, lesson_type)
         content["passage"] = [text_entry]
 
     items = raw.get("items", [])
@@ -582,20 +2051,20 @@ def _external_mobile_content(lesson: dict[str, Any]) -> dict[str, Any]:
             {
                 "pattern": text,
                 "meaning_vi": focus or "",
-                "meaning_en": focus or "",
-                "translations": _translations(focus or "", focus or ""),
+                "meaning_en": _translate_native_text_en(focus) if focus else "",
+                "translations": _translations(_translate_native_text_en(focus) if focus else "", raw.get("focus_vi") or _translate_native_text(focus) if focus else ""),
             }
             for text in item_texts
         ]
     elif "activity" in item_types:
         content["speaking_tasks"] = item_texts
-        content["speaking_task_translations"] = {"en": item_texts, "vi": item_texts}
+        content["speaking_task_translations"] = {"en": [_translate_native_text_en(item) for item in item_texts], "vi": [_translate_native_text(item) for item in item_texts]}
     elif "review_scope" in item_types:
         content["reading_tasks"] = item_texts
-        content["reading_task_translations"] = {"en": item_texts, "vi": item_texts}
+        content["reading_task_translations"] = {"en": [_translate_native_text_en(item) for item in item_texts], "vi": [_translate_native_text(item) for item in item_texts]}
     elif item_texts:
         content["reading_tasks"] = item_texts
-        content["reading_task_translations"] = {"en": item_texts, "vi": item_texts}
+        content["reading_task_translations"] = {"en": [_translate_native_text_en(item) for item in item_texts], "vi": [_translate_native_text(item) for item in item_texts]}
 
     cultural_note = raw.get("cultural_note", {})
     if isinstance(cultural_note, dict) and (cultural_note.get("english") or cultural_note.get("vietnamese")):
@@ -665,20 +2134,29 @@ def _hsk1_reading_lessons() -> list[dict[str, Any]]:
         for question_index, question in enumerate(passage.get("comprehension_questions", []), start=1):
             question_id = question.get("id", f"q{question_index}")
             answer = answer_key.get(question_id, "")
+            prompt = question.get("question", "")
+            options = question.get("options", [])
+            explanation = passage.get("explanation", "")
             questions.append(
                 {
                     "type": "multiple_choice",
-                    "prompt": question.get("question", ""),
-                    "options": question.get("options", []),
+                    "prompt": prompt,
+                    "prompt_translations": _native_text_translations(prompt),
+                    "options": options,
+                    "options_translations": _option_translations(options),
                     "correct_answer": answer,
-                    "explanation": passage.get("explanation", ""),
+                    "explanation": explanation,
+                    "explanation_translations": _native_text_translations(explanation),
                 }
             )
             reading_questions.append(
                 {
-                    "question": question.get("question", ""),
+                    "question": prompt,
+                    "question_translations": _native_text_translations(prompt),
                     "answer": answer,
-                    "explanation": passage.get("explanation", ""),
+                    "answer_translations": _native_text_translations(answer),
+                    "explanation": explanation,
+                    "explanation_translations": _native_text_translations(explanation),
                 }
             )
 
@@ -701,20 +2179,40 @@ def _hsk1_reading_lessons() -> list[dict[str, Any]]:
                         "Read a short HSK1 text with familiar words.",
                         "Answer simple comprehension questions.",
                     ],
+                    "learning_objective_translations": {
+                        "en": [
+                            "Read a short HSK1 text with familiar words.",
+                            "Answer simple comprehension questions.",
+                        ],
+                        "vi": [
+                            "Đọc một đoạn HSK1 ngắn với các từ quen thuộc.",
+                            "Trả lời các câu hỏi đọc hiểu đơn giản.",
+                        ],
+                    },
                     "vocabulary": [
                         _chinese_entry(word)
                         for word in passage.get("vocabulary_list", [])
                     ],
                     "passage_title": passage.get("title", ""),
+                    "passage_title_translations": _lesson_title_translations(passage.get("title", ""), "reading"),
                     "passage": [
-                        _chinese_entry(
-                            passage.get("chinese_text", ""),
-                            passage.get("pinyin", ""),
-                            _meaning(passage.get("english_translation"), passage.get("vietnamese_translation")),
-                        )
+                        {
+                            **_chinese_entry(
+                                passage.get("chinese_text", ""),
+                                passage.get("pinyin", ""),
+                                passage.get("vietnamese_translation", "") or passage.get("english_translation", ""),
+                            ),
+                            "meaning_en": passage.get("english_translation", ""),
+                            "meaning_vi": passage.get("vietnamese_translation", ""),
+                            "translations": _translations(
+                                passage.get("english_translation", ""),
+                                passage.get("vietnamese_translation", ""),
+                            ),
+                        }
                     ],
                     "reading": {
                         "title": passage.get("title", ""),
+                        "title_translations": _lesson_title_translations(passage.get("title", ""), "reading"),
                         "chinese": passage.get("chinese_text", ""),
                         "pinyin": passage.get("pinyin", ""),
                         "english": passage.get("english_translation", ""),
@@ -725,24 +2223,49 @@ def _hsk1_reading_lessons() -> list[dict[str, Any]]:
                         {
                             "id": f"{source_id}-PRACTICE-QUESTION",
                             "title": "Reading checkpoint",
+                            "title_translations": _translations("Reading checkpoint", "Kiểm tra đọc"),
                             "exercise_type": "multiple_choice",
                             "skill": "reading",
                             "prompt": first_question["prompt"] if first_question else "What is the passage about?",
+                            "prompt_translations": first_question.get("prompt_translations")
+                            if first_question
+                            else _translations("What is the passage about?", "Bài đọc nói về điều gì?"),
                             "options": first_question["options"] if first_question else ["Reading", "Listening", "Writing", "Grammar"],
+                            "options_translations": first_question.get("options_translations")
+                            if first_question
+                            else _option_translations(["Reading", "Listening", "Writing", "Grammar"]),
                             "correct_answer": first_question["correct_answer"] if first_question else "Reading",
                             "hint": "Đọc lại câu chứa thông tin chính trong đoạn.",
+                            "hint_translations": _translations(
+                                "Read again the sentence that contains the main information.",
+                                "Đọc lại câu chứa thông tin chính trong đoạn.",
+                            ),
                             "explanation": passage.get("explanation", ""),
+                            "explanation_translations": _native_text_translations(passage.get("explanation", "")),
                         },
                         {
                             "id": f"{source_id}-PRACTICE-KEYWORD",
                             "title": "Keyword recall",
+                            "title_translations": _translations("Keyword recall", "Nhớ từ khóa"),
                             "exercise_type": "text_input",
                             "skill": "reading",
                             "prompt": "Nhập một từ/cụm xuất hiện trong bài đọc.",
+                            "prompt_translations": _translations(
+                                "Enter one word or phrase that appears in the reading.",
+                                "Nhập một từ/cụm xuất hiện trong bài đọc.",
+                            ),
                             "correct_answer": first_keyword,
                             "expected_answer": first_keyword,
                             "hint": "Xem lại danh sách từ vựng của passage.",
+                            "hint_translations": _translations(
+                                "Review the passage vocabulary list.",
+                                "Xem lại danh sách từ vựng của bài đọc.",
+                            ),
                             "explanation": f"{first_keyword} xuất hiện trong đoạn đọc này.",
+                            "explanation_translations": _translations(
+                                f"{first_keyword} appears in this passage.",
+                                f"{first_keyword} xuất hiện trong đoạn đọc này.",
+                            ),
                         },
                     ],
                 },
@@ -767,6 +2290,7 @@ def _word_entry(word: tuple[str, str, str, str], level: int, topic: dict[str, st
         "translations": _translations(meaning_en, meaning_vi),
         "word_type": _word_type(hanzi),
         "category": topic["title"],
+        "category_translations": _translations(topic["title"], topic["vi"]),
         "hsk_level": level,
         "example_cn": f"今天我练习{hanzi}。",
         "example_pinyin": f"Jin1tian1 wo3 lian4xi2 {pinyin}.",
@@ -820,13 +2344,18 @@ def _grammar_point(level: int, lesson_number: int) -> dict[str, Any]:
     title, structure, explanation, example_cn, example_pinyin, example_vi = GRAMMAR_PATTERNS[level][
         lesson_number - 1
     ]
-    explanation_en = (
+    # `GRAMMAR_EXPLANATION_EN` gives the exact English translation of this
+    # specific grammar point's `explanation`. Without it, every grammar point
+    # fell back to one generic templated sentence that did not match the
+    # actual (specific) Vietnamese explanation, so switching locale from vi to
+    # en showed unrelated content for the same grammar point.
+    explanation_en = GRAMMAR_EXPLANATION_EN.get(explanation) or (
         f"Use the pattern {structure} to build accurate HSK {level} sentences. "
         "Read the example aloud, then replace one key word."
     )
     return {
         "title": title,
-        "title_translations": _translations(title, title),
+        "title_translations": _native_text_translations(title) or _translations(title, title),
         "structure": structure,
         "explanation": explanation,
         "explanation_translations": _translations(explanation_en, explanation),
@@ -1014,6 +2543,8 @@ def _practice_exercises(
     grammar_example = (grammar_point.get("examples") or [{}])[0]
     exercise_prefix = f"HSK{level}-{lesson_type.upper()}-{lesson_number:03d}"
     meanings = [item[2] for item in LEVEL_WORDS[level]]
+    meaning_en_by_vi = {meaning_vi: meaning_en for _, _, meaning_vi, meaning_en in LEVEL_WORDS[level]}
+    vocabulary_options = _with_correct_option(str(w0["meaning"]), meanings)
 
     exercises: list[dict[str, Any]] = [
         {
@@ -1027,7 +2558,11 @@ def _practice_exercises(
                 f"What does {w0['hanzi']} mean?",
                 f"{w0['hanzi']} nghĩa là gì?",
             ),
-            "options": _with_correct_option(str(w0["meaning"]), meanings),
+            "options": vocabulary_options,
+            "options_translations": {
+                "en": [meaning_en_by_vi.get(option, option) for option in vocabulary_options],
+                "vi": vocabulary_options,
+            },
             "correct_answer": str(w0["meaning"]),
             "hint": f"Pinyin: {w0.get('pinyin', '')}",
             "hint_translations": _translations(
@@ -1314,29 +2849,69 @@ def _generated_questions(
 ) -> list[dict[str, Any]]:
     word = vocabulary[0]
     all_meanings = [item[2] for item in LEVEL_WORDS[level]]
+    meaning_en_by_vi = {meaning_vi: meaning_en for _, _, meaning_vi, meaning_en in LEVEL_WORDS[level]}
     grammar_titles = [item[0] for item in GRAMMAR_PATTERNS[level]]
     topic_titles = [item["title"] for item in TOPICS]
+    vocab_options = _with_correct_option(str(word["meaning"]), all_meanings)
+    grammar_options = _with_correct_option(str(grammar_point["title"]), grammar_titles)
+    topic_options = _with_correct_option(topic["title"], topic_titles[lesson_number:] + topic_titles[:lesson_number])
     return [
         {
             "type": "multiple_choice",
             "prompt": f"{word['hanzi']} means...",
-            "options": _with_correct_option(str(word["meaning"]), all_meanings),
+            "prompt_translations": _translations(
+                f"What does {word['hanzi']} mean?",
+                f"{word['hanzi']} nghĩa là gì?",
+            ),
+            "options": vocab_options,
+            "options_translations": {
+                "en": [meaning_en_by_vi.get(option, option) for option in vocab_options],
+                "vi": vocab_options,
+            },
             "correct_answer": str(word["meaning"]),
             "explanation": f"{word['hanzi']} ({word.get('pinyin', '')}) = {word['meaning']}.",
+            "explanation_translations": _translations(
+                f"{word['hanzi']} ({word.get('pinyin', '')}) means {word.get('meaning_en', word['meaning'])}.",
+                f"{word['hanzi']} ({word.get('pinyin', '')}) nghĩa là {word['meaning']}.",
+            ),
         },
         {
             "type": "multiple_choice",
             "prompt": f"Which grammar point is practiced in this {lesson_type} lesson?",
-            "options": _with_correct_option(str(grammar_point["title"]), grammar_titles),
+            "prompt_translations": _translations(
+                f"Which grammar point is practiced in this {TYPE_TITLES.get(lesson_type, lesson_type)} lesson?",
+                f"Bài {TYPE_TITLES_VI.get(lesson_type, lesson_type)} này luyện điểm ngữ pháp nào?",
+            ),
+            "options": grammar_options,
+            "options_translations": {
+                "en": grammar_options,
+                "vi": grammar_options,
+            },
             "correct_answer": str(grammar_point["title"]),
             "explanation": f"The lesson highlights: {grammar_point['structure']}.",
+            "explanation_translations": _translations(
+                f"The lesson highlights: {grammar_point['structure']}.",
+                f"Bài học nhấn mạnh mẫu: {grammar_point['structure']}.",
+            ),
         },
         {
             "type": "multiple_choice",
             "prompt": "What is the main topic of this lesson?",
-            "options": _with_correct_option(topic["title"], topic_titles[lesson_number:] + topic_titles[:lesson_number]),
+            "prompt_translations": _translations(
+                "What is the main topic of this lesson?",
+                "Chủ đề chính của bài này là gì?",
+            ),
+            "options": topic_options,
+            "options_translations": {
+                "en": topic_options,
+                "vi": [_translate_title_phrase(option) for option in topic_options],
+            },
             "correct_answer": topic["title"],
             "explanation": f"The lesson title and tasks focus on {topic['title'].lower()}.",
+            "explanation_translations": _translations(
+                f"The lesson title and tasks focus on {topic['title'].lower()}.",
+                f"Tiêu đề và nhiệm vụ của bài tập trung vào chủ đề {topic['vi']}.",
+            ),
         },
     ]
 
@@ -1360,6 +2935,7 @@ def _expanded_skill_lessons() -> list[dict[str, Any]]:
                     "source_id": source_id,
                     "hsk_level": level,
                     "category": topic["title"],
+                    "category_translations": _translations(topic["title"], topic["vi"]),
                     "learning_objectives": [
                         f"Build HSK {level} language for {topic['vi']}.",
                         "Practice input, output, and quiz recall in one short session.",
@@ -1461,18 +3037,27 @@ def _fallback_practice_exercises(
     exercises = []
     for index, question in enumerate(questions[:2], start=1):
         exercise_type = "multiple_choice" if question.get("options") else "text_input"
+        metadata = _question_translation_payload(question)
         exercises.append(
             {
                 "id": f"{source_id}-FALLBACK-{index}",
                 "title": f"{TYPE_TITLES.get(lesson_type, 'Lesson')} checkpoint",
+                "title_translations": _native_text_translations(f"{TYPE_TITLES.get(lesson_type, 'Lesson')} checkpoint"),
                 "exercise_type": exercise_type,
                 "skill": lesson_type,
                 "prompt": question.get("prompt", "Review the lesson and answer."),
+                "prompt_translations": metadata.get("prompt_translations"),
                 "options": question.get("options"),
+                "options_translations": metadata.get("options_translations"),
                 "correct_answer": question.get("correct_answer", ""),
                 "expected_answer": question.get("correct_answer", ""),
                 "hint": "Xem lại nội dung chính của bài trước khi trả lời.",
+                "hint_translations": _translations(
+                    "Review the main lesson content before answering.",
+                    "Xem lại nội dung chính của bài trước khi trả lời.",
+                ),
                 "explanation": question.get("explanation", ""),
+                "explanation_translations": metadata.get("explanation_translations"),
             }
         )
 
@@ -1495,13 +3080,23 @@ def _fallback_practice_exercises(
         {
             "id": f"{source_id}-FALLBACK-KEYWORD",
             "title": f"{TYPE_TITLES.get(lesson_type, 'Lesson')} recall",
+            "title_translations": _native_text_translations(f"{TYPE_TITLES.get(lesson_type, 'Lesson')} recall"),
             "exercise_type": "text_input",
             "skill": lesson_type,
             "prompt": "Nhập lại từ khóa đầu tiên của bài.",
+            "prompt_translations": _translations(
+                "Type the first key word from the lesson.",
+                "Nhập lại từ khóa đầu tiên của bài.",
+            ),
             "correct_answer": answer,
             "expected_answer": answer,
             "hint": str(first_word.get("pinyin", "")),
+            "hint_translations": _translations(str(first_word.get("pinyin", "")), str(first_word.get("pinyin", ""))),
             "explanation": f"Từ khóa đầu tiên là {answer}.",
+            "explanation_translations": _translations(
+                f"The first key word is {answer}.",
+                f"Từ khóa đầu tiên là {answer}.",
+            ),
         }
     ]
 
@@ -1526,11 +3121,14 @@ def _augment_chinese_entry(entry: dict[str, Any]) -> None:
 def _augment_content_translations(content: dict[str, Any]) -> dict[str, Any]:
     overview = content.get("overview")
     if overview and "overview_translations" not in content:
-        content["overview_translations"] = _translations(overview, overview)
+        content["overview_translations"] = _native_text_translations(overview)
 
     objectives = content.get("learning_objectives")
     if isinstance(objectives, list) and "learning_objective_translations" not in content:
-        content["learning_objective_translations"] = {"en": objectives, "vi": objectives}
+        content["learning_objective_translations"] = {
+            "en": [_translate_native_text_en(objective) for objective in objectives],
+            "vi": [_translate_native_text(objective) for objective in objectives],
+        }
 
     for field in ("vocabulary", "characters", "passage", "transcript", "patterns"):
         for entry in content.get(field) or []:
@@ -1543,13 +3141,13 @@ def _augment_content_translations(content: dict[str, Any]) -> dict[str, Any]:
         title = point.get("title")
         explanation = point.get("explanation")
         if title:
-            point.setdefault("title_translations", _translations(title, title))
+            point.setdefault("title_translations", _native_text_translations(title))
         if explanation:
-            point.setdefault("explanation_translations", _translations(explanation, explanation))
+            point.setdefault("explanation_translations", _native_text_translations(explanation))
         if point.get("common_mistakes") and "common_mistakes_translations" not in point:
             point["common_mistakes_translations"] = {
-                "en": point["common_mistakes"],
-                "vi": point["common_mistakes"],
+                "en": [_translate_native_text_en(item) for item in point["common_mistakes"]],
+                "vi": [_translate_native_text(item) for item in point["common_mistakes"]],
             }
         for example in point.get("examples") or []:
             if isinstance(example, dict):
@@ -1566,20 +3164,20 @@ def _augment_content_translations(content: dict[str, Any]) -> dict[str, Any]:
     reading = content.get("reading")
     if isinstance(reading, dict):
         if reading.get("title"):
-            reading.setdefault("title_translations", _translations(reading.get("title"), reading.get("title")))
+            reading.setdefault("title_translations", _native_text_translations(reading.get("title")))
         if reading.get("english") or reading.get("vietnamese"):
             reading.setdefault("translations", _translations(reading.get("english"), reading.get("vietnamese")))
         for question in reading.get("questions") or []:
             if not isinstance(question, dict):
                 continue
             if question.get("question"):
-                question.setdefault("question_translations", _translations(question.get("question"), question.get("question")))
+                question.setdefault("question_translations", _native_text_translations(question.get("question")))
             if question.get("answer"):
-                question.setdefault("answer_translations", _translations(question.get("answer"), question.get("answer")))
+                question.setdefault("answer_translations", _native_text_translations(question.get("answer")))
             if question.get("explanation"):
                 question.setdefault(
                     "explanation_translations",
-                    _translations(question.get("explanation"), question.get("explanation")),
+                    _native_text_translations(question.get("explanation")),
                 )
 
     listening = content.get("listening")
@@ -1587,21 +3185,21 @@ def _augment_content_translations(content: dict[str, Any]) -> dict[str, Any]:
         if listening.get("english") or listening.get("vietnamese"):
             listening.setdefault("translations", _translations(listening.get("english"), listening.get("vietnamese")))
         if listening.get("task"):
-            listening.setdefault("task_translations", _translations(listening.get("task"), listening.get("task")))
+            listening.setdefault("task_translations", _native_text_translations(listening.get("task")))
         if listening.get("answer"):
-            listening.setdefault("answer_translations", _translations(listening.get("answer"), listening.get("answer")))
+            listening.setdefault("answer_translations", _native_text_translations(listening.get("answer")))
 
     dialogue = content.get("dialogue")
     if isinstance(dialogue, dict):
         if dialogue.get("title"):
-            dialogue.setdefault("title_translations", _translations(dialogue.get("title"), dialogue.get("title")))
+            dialogue.setdefault("title_translations", _native_text_translations(dialogue.get("title")))
         for line in dialogue.get("lines") or []:
             if isinstance(line, dict) and (line.get("english") or line.get("vietnamese")):
                 line.setdefault("translations", _translations(line.get("english"), line.get("vietnamese")))
         if dialogue.get("cultural_note"):
             dialogue.setdefault(
                 "cultural_note_translations",
-                _translations(dialogue.get("cultural_note"), dialogue.get("cultural_note")),
+                _native_text_translations(dialogue.get("cultural_note")),
             )
 
     cultural_note = content.get("cultural_note")
@@ -1616,7 +3214,10 @@ def _augment_content_translations(content: dict[str, Any]) -> dict[str, Any]:
                 value = exercise.get(base_field)
                 translations_key = f"{base_field}_translations"
                 if value and translations_key not in exercise:
-                    exercise[translations_key] = _translations(value, value)
+                    exercise[translations_key] = _native_text_translations(value)
+            options = exercise.get("options") or []
+            if options and "options_translations" not in exercise:
+                exercise["options_translations"] = _option_translations(options)
 
     return content
 
@@ -1654,7 +3255,21 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
             db.add(lesson)
             existing_by_source_id[source_id] = lesson
 
-        content = _augment_content_translations(dict(item["content"]))
+        title_translations = item.get("title_translations") or _lesson_title_translations(
+            item["title"],
+            item["lesson_type"],
+        )
+        description_translations = item.get("description_translations") or _lesson_description_translations(
+            item.get("description"),
+            item["lesson_type"],
+            hsk_level,
+            title_translations,
+        )
+        content = dict(item["content"])
+        content["title_translations"] = title_translations
+        if description_translations:
+            content["description_translations"] = description_translations
+        content = _augment_content_translations(content)
         content["source_id"] = source_id
         content["hsk_level"] = hsk_level
         content.setdefault("category", TYPE_TITLES.get(item["lesson_type"], item["lesson_type"].title()))
@@ -1665,6 +3280,10 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
                 item.get("questions", []),
                 content,
             )
+        content["question_translations"] = [
+            _question_translation_payload(question)
+            for question in item.get("questions", [])
+        ]
         lesson.hsk_level_id = levels[hsk_level].id
         lesson.title = item["title"]
         lesson.description = item.get("description")

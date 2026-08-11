@@ -44,14 +44,18 @@ class HskLevelOut(BaseModel):
     id: int
     level_number: int
     title: str
+    title_translations: dict[str, str] | None = None
     description: str | None
+    description_translations: dict[str, str] | None = None
     total_characters: int
 
 
 class LessonListOut(BaseModel):
     id: int
     title: str
+    title_translations: dict[str, str] | None = None
     description: str | None
+    description_translations: dict[str, str] | None = None
     lesson_type: str
     sort_order: int
     duration_minutes: int
@@ -63,7 +67,9 @@ class LessonDetailOut(BaseModel):
     id: int
     hsk_level_id: int
     title: str
+    title_translations: dict[str, str] | None = None
     description: str | None
+    description_translations: dict[str, str] | None = None
     lesson_type: str
     duration_minutes: int
     content: dict[str, Any] | None
@@ -73,7 +79,9 @@ class QuestionOut(BaseModel):
     id: int
     question_type: str
     prompt: str
+    prompt_translations: dict[str, str] | None = None
     options: list[str] | None
+    options_translations: dict[str, list[str]] | None = None
     sort_order: int
 
 
@@ -84,10 +92,12 @@ class QuizSubmitIn(BaseModel):
 class QuizResultItem(BaseModel):
     question_id: int
     prompt: str | None = None
+    prompt_translations: dict[str, str] | None = None
     correct: bool
     user_answer: str
     correct_answer: str
     explanation: str | None = None
+    explanation_translations: dict[str, str] | None = None
 
 
 class QuizSubmitOut(BaseModel):
@@ -102,6 +112,7 @@ class RecentAttemptOut(BaseModel):
     attempt_id: int
     lesson_id: int
     lesson_title: str | None = None
+    lesson_title_translations: dict[str, str] | None = None
     score: int
     finished_at: datetime
 
@@ -155,6 +166,7 @@ class AchievementOut(BaseModel):
 class MockTestOut(BaseModel):
     id: int
     title: str
+    title_translations: dict[str, str] | None = None
     hsk_level: int
     duration_minutes: int
     question_count: int
@@ -163,15 +175,19 @@ class MockTestOut(BaseModel):
 class MockTestQuestionOut(QuestionOut):
     lesson_id: int
     lesson_title: str
+    lesson_title_translations: dict[str, str] | None = None
 
 
 class MistakeOut(BaseModel):
     attempt_id: int
     lesson_id: int
     lesson_title: str | None
+    lesson_title_translations: dict[str, str] | None = None
     question_id: int
     prompt: str | None
+    prompt_translations: dict[str, str] | None = None
     user_answer: str
     correct_answer: str
     explanation: str | None = None
+    explanation_translations: dict[str, str] | None = None
     finished_at: datetime
