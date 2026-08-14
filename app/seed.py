@@ -6,8 +6,15 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models import Achievement, HskLevel, Lesson, MockTest, Question
-
+from app.models import (
+    Achievement,
+    ContentStatus,
+    Course,
+    HskLevel,
+    Lesson,
+    MockTest,
+    Question,
+)
 
 CONTENT_DIR = Path(__file__).resolve().parent / "content"
 LEVEL_CHARACTER_TOTALS = [150, 300, 600, 1200, 2500, 5000]
@@ -83,6 +90,20 @@ TYPE_SORT_BASE = {
     "listening": 4000,
     "reading": 5000,
     "writing": 6000,
+}
+
+COURSE_TYPE_ORDER = {
+    "mixed": 1,
+    "vocabulary": 2,
+    "grammar": 3,
+    "reading": 4,
+    "listening": 5,
+    "writing": 6,
+    "sentence_pattern": 7,
+    "conversation": 8,
+    "practice": 9,
+    "review": 10,
+    "quiz": 11,
 }
 
 TOPICS = [
@@ -1699,7 +1720,6 @@ def _translate_native_text(text: str | None) -> str:
         "Is it far?": "Nó có xa không?",
         "Is the son a teacher?": "Người con trai có phải giáo viên không?",
         "What is asked?": "Đang hỏi điều gì?",
-        "What is asked about?": "Đang hỏi về điều gì?",
         "What is being asked?": "Đang hỏi điều gì?",
         "What is being bought?": "Đang mua gì?",
         "What is asked about?": "Đang hỏi về điều gì?",
@@ -1709,7 +1729,6 @@ def _translate_native_text(text: str | None) -> str:
         "What day is today?": "Hôm nay là thứ mấy?",
         "What day is tomorrow?": "Ngày mai là thứ mấy?",
         "What direction is given?": "Chỉ hướng nào?",
-        "What is the main topic of this lesson?": "Chủ đề chính của bài này là gì?",
         "What does the question ask?": "Câu hỏi hỏi gì?",
         "What does the speaker ask?": "Người nói hỏi gì?",
         "What does the speaker say about today?": "Người nói nói gì về hôm nay?",
@@ -1915,10 +1934,13 @@ def _external_grammar_points(lesson: dict[str, Any]) -> list[dict[str, Any]]:
                 "examples": [
                     {
                         **_chinese_entry(
-                            example.get("hanzi", example.get("Chinese", "")),
-                            example.get("pinyin", example.get("Pinyin", "")),
-                            example.get("meaning_vi", example.get("Vietnamese", ""))
-                            or example.get("meaning_en", example.get("English", "")),
+                            str(example.get("hanzi", example.get("Chinese", "")) or ""),
+                            str(example.get("pinyin", example.get("Pinyin", "")) or ""),
+                            str(
+                                example.get("meaning_vi", example.get("Vietnamese", ""))
+                                or example.get("meaning_en", example.get("English", ""))
+                                or ""
+                            ),
                         ),
                         "meaning_vi": example.get("meaning_vi", example.get("Vietnamese", "")),
                         "meaning_en": example.get("meaning_en", example.get("English", "")),
@@ -2599,7 +2621,7 @@ def _practice_exercises(
             "title_translations": _translations("Key word in context", "Từ khóa trong ngữ cảnh"),
             "exercise_type": "fill_blank",
             "skill": lesson_type if lesson_type != "mixed" else "core",
-            "prompt": f"Điền từ còn thiếu: 今天我们学习____。",
+            "prompt": "Điền từ còn thiếu: 今天我们学习____。",
             "prompt_translations": _translations(
                 "Fill in the missing word: 今天我们学习____。",
                 "Điền từ còn thiếu: 今天我们学习____。",
@@ -3235,18 +3257,72 @@ def _ensure_levels(db: Session) -> dict[int, HskLevel]:
             )
             db.add(level)
             levels[level_number] = level
+        levels[level_number].display_order = level_number
+        levels[level_number].status = ContentStatus.PUBLISHED
     db.flush()
     return levels
 
 
-def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
+def _ensure_courses(
+    db: Session,
+    levels: dict[int, HskLevel],
+    content_lessons: list[dict[str, Any]],
+) -> dict[tuple[int, str], Course]:
+    courses = {
+        (course.hsk_level.level_number, course.course_type): course
+        for course in db.scalars(select(Course)).all()
+    }
+    course_types_by_level = {
+        (int(item["hsk_level"]), item["lesson_type"]) for item in content_lessons
+    }
+    for level_number, course_type in sorted(
+        course_types_by_level,
+        key=lambda key: (key[0], COURSE_TYPE_ORDER.get(key[1], 99), key[1]),
+    ):
+        key = (level_number, course_type)
+        course = courses.get(key)
+        title = TYPE_TITLES.get(course_type, course_type.replace("_", " ").title())
+        title_vi = TYPE_TITLES_VI.get(course_type, title)
+        if course is None:
+            course = Course(
+                hsk_level_id=levels[level_number].id,
+                course_type=course_type,
+                sort_order=COURSE_TYPE_ORDER.get(course_type, 99),
+            )
+            db.add(course)
+            courses[key] = course
+        course.title = f"HSK {level_number} {title}"
+        course.title_translations = {
+            "en": course.title,
+            "vi": f"HSK {level_number} - {title_vi}",
+        }
+        course.description = (
+            f"Structured {title.lower()} lessons for HSK {level_number}."
+        )
+        course.description_translations = {
+            "en": course.description,
+            "vi": f"Các bài học {title_vi.lower()} có cấu trúc cho HSK {level_number}.",
+        }
+        course.sort_order = COURSE_TYPE_ORDER.get(course_type, 99)
+        course.status = ContentStatus.PUBLISHED
+        course.metadata_json = {"source": "seed_content"}
+    db.flush()
+    return courses
+
+
+def _upsert_content_lessons(
+    db: Session,
+    levels: dict[int, HskLevel],
+    courses: dict[tuple[int, str], Course],
+    content_lessons: list[dict[str, Any]],
+) -> None:
     existing_by_source_id = {
         lesson.content.get("source_id"): lesson
         for lesson in db.scalars(select(Lesson)).all()
         if isinstance(lesson.content, dict) and lesson.content.get("source_id")
     }
 
-    for item in _content_lessons():
+    for item in content_lessons:
         source_id = item["id"]
         hsk_level = int(item["hsk_level"])
         lesson = existing_by_source_id.get(source_id)
@@ -3285,6 +3361,7 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
             for question in item.get("questions", [])
         ]
         lesson.hsk_level_id = levels[hsk_level].id
+        lesson.course_id = courses[(hsk_level, item["lesson_type"])].id
         lesson.title = item["title"]
         lesson.description = item.get("description")
         lesson.lesson_type = item["lesson_type"]
@@ -3295,7 +3372,11 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
 
         existing_questions = {
             question.sort_order: question
-            for question in db.scalars(select(Question).where(Question.lesson_id == lesson.id)).all()
+            for question in db.scalars(
+                select(Question).where(Question.lesson_id == lesson.id)
+            ).all()
+            if (question.metadata_json or {}).get("source")
+            != "legacy_jsonb_practice"
         }
         for index, question_data in enumerate(item.get("questions", []), start=1):
             question = existing_questions.get(index)
@@ -3307,6 +3388,10 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
             question.options = question_data.get("options") or None
             question.correct_answer = question_data.get("correct_answer", "")
             question.explanation = question_data.get("explanation", "")
+            question.metadata_json = {
+                **(question.metadata_json or {}),
+                "source": "lesson_seed",
+            }
         for sort_order, question in existing_questions.items():
             if sort_order > len(item.get("questions", [])):
                 db.delete(question)
@@ -3327,19 +3412,27 @@ def _upsert_achievements(db: Session) -> None:
 def _upsert_mock_tests(db: Session) -> None:
     existing = {mock_test.title: mock_test for mock_test in db.scalars(select(MockTest)).all()}
     for item in MOCK_TESTS:
-        mock_test = existing.get(item["title"])
+        title = str(item["title"])
+        mock_test = existing.get(title)
         if mock_test is None:
-            mock_test = MockTest(title=item["title"])
+            mock_test = MockTest(title=title)
             db.add(mock_test)
-        mock_test.hsk_level = item["hsk_level"]
-        mock_test.duration_minutes = item["duration_minutes"]
-        mock_test.question_count = item["question_count"]
+        mock_test.hsk_level = int(str(item["hsk_level"]))
+        mock_test.duration_minutes = int(str(item["duration_minutes"]))
+        mock_test.question_count = int(str(item["question_count"]))
 
 
 
 def seed_data(db: Session) -> None:
+    from app.content_import import backfill_normalized_content
+    from app.practice_engine import backfill_exercise_engine
+
     levels = _ensure_levels(db)
-    _upsert_content_lessons(db, levels)
+    content_lessons = _content_lessons()
+    courses = _ensure_courses(db, levels, content_lessons)
+    _upsert_content_lessons(db, levels, courses, content_lessons)
+    backfill_normalized_content(db)
+    backfill_exercise_engine(db)
     _upsert_achievements(db)
     _upsert_mock_tests(db)
     db.commit()

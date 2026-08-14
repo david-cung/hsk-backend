@@ -20,7 +20,9 @@ services:
       context: .
     environment:
       DATABASE_URL: postgresql+psycopg://hsk:hsk@postgres:5432/hsk
-      JWT_SECRET: dev-hsk-mobile-secret
+      JWT_SECRET: ${JWT_SECRET:-dev-hsk-mobile-secret}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      PASSWORD_RESET_URL: ${PASSWORD_RESET_URL:-hsk://reset-password}
       CORS_ORIGINS: '["*"]'
     ports:
       - "8000:8000"

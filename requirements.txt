@@ -7,3 +7,6 @@ passlib[bcrypt]==1.7.4
 bcrypt==4.0.1
 pydantic-settings==2.7.1
 email-validator==2.2.0
+alembic==1.19.1
+google-auth==2.56.3
+requests==2.34.2

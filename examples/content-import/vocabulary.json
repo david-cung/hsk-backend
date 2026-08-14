@@ -1,0 +1,24 @@
+{
+  "records": [
+    {
+      "hsk_level": 1,
+      "simplified": "你好",
+      "traditional": "你好",
+      "pinyin": "ni3 hao3",
+      "meaning_translations": {
+        "en": "hello",
+        "vi": "xin chào"
+      },
+      "part_of_speech": "phrase",
+      "category": "Greetings",
+      "difficulty": 1,
+      "order": 1,
+      "lesson_ids": [],
+      "example_ids": [],
+      "status": "published",
+      "metadata": {
+        "source": "example-import"
+      }
+    }
+  ]
+}
