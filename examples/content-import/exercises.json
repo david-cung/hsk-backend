@@ -1,0 +1,43 @@
+{
+  "records": [
+    {
+      "lesson_id": 1,
+      "exercise_set_slug": "lesson-practice",
+      "external_id": "hsk1-greetings-vocabulary-recall",
+      "exercise_type": "multiple_choice",
+      "title": "Vocabulary Recall",
+      "skill": "vocabulary",
+      "order": 20,
+      "status": "published",
+      "metadata": {
+        "source": "example-import"
+      },
+      "questions": [
+        {
+          "external_id": "hsk1-greetings-vocabulary-recall-q1",
+          "question_type": "multiple_choice",
+          "prompt": "你好 means:",
+          "explanation": "你好 is the standard greeting for hello.",
+          "points": 1,
+          "order": 1,
+          "status": "published",
+          "configuration": {
+            "options": [
+              {
+                "id": "a",
+                "text": "Hello"
+              },
+              {
+                "id": "b",
+                "text": "Goodbye"
+              }
+            ],
+            "correct_option_ids": [
+              "a"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

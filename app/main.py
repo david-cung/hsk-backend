@@ -1,19 +1,46 @@
-from datetime import UTC, datetime
+import logging
+import secrets
+from collections.abc import Sequence
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.auth import create_access_token, get_current_user, hash_password, verify_password
+from app.auth import (
+    get_current_user,
+    hash_opaque_token,
+    hash_password,
+    issue_token_pair,
+    require_admin,
+    revoke_refresh_token,
+    revoke_user_refresh_tokens,
+    rotate_refresh_token,
+    verify_password,
+)
 from app.config import settings
-from app.database import Base, SessionLocal, engine, get_db
+from app.content_router import router as content_router
+from app.content_security import public_lesson_content
+from app.database import SessionLocal, get_db
+from app.email import EmailSender, get_email_sender
+from app.google_auth import (
+    GoogleConfigurationError,
+    GoogleTokenError,
+    GoogleTokenVerifier,
+    get_google_token_verifier,
+)
 from app.models import (
     Achievement,
     HskLevel,
     Lesson,
     LessonProgress,
     MockTest,
+    OAuthAccount,
+    OAuthProvider,
+    PasswordResetToken,
     Profile,
     Question,
     QuizAttempt,
@@ -21,30 +48,41 @@ from app.models import (
     User,
     UserAchievement,
 )
+from app.practice_router import router as practice_router
 from app.schemas import (
     AchievementOut,
+    AdminStatusOut,
     AuthIn,
+    ForgotPasswordIn,
+    GoogleAuthIn,
     HskLevelOut,
     LessonDetailOut,
     LessonListOut,
+    MessageOut,
     MistakeOut,
-    MockTestQuestionOut,
     MockTestOut,
+    MockTestQuestionOut,
+    PasswordChangeIn,
     ProfileOut,
-    ProgressDashboardOut,
     ProfileUpdate,
+    ProgressDashboardOut,
     QuestionOut,
     QuizResultItem,
     QuizSubmitIn,
     QuizSubmitOut,
+    RecentAttemptOut,
+    RefreshTokenIn,
     RegisterIn,
+    ResetPasswordIn,
     SavedWordIn,
     SavedWordOut,
+    SkillBreakdownOut,
     TokenOut,
     UserOut,
 )
 from app.seed import _native_text_translations, seed_data
 
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="HSK Mobile API", version="1.0.0")
 app.add_middleware(
@@ -54,11 +92,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(content_router)
+app.include_router(practice_router)
 
 
 @app.on_event("startup")
 def on_startup() -> None:
-    Base.metadata.create_all(bind=engine)
     with SessionLocal() as db:
         seed_data(db)
 
@@ -70,6 +109,7 @@ def health() -> dict[str, str]:
 
 def profile_to_out(profile: Profile) -> ProfileOut:
     return ProfileOut(
+        learning_goal=profile.learning_goal,
         target_hsk_level=profile.target_hsk_level,
         current_hsk_level=profile.current_hsk_level,
         daily_goal_minutes=profile.daily_goal_minutes,
@@ -119,6 +159,26 @@ def _question_translations(question: Question) -> dict[str, object]:
     return rows[index]
 
 
+def _text_translations(value: object) -> dict[str, str] | None:
+    if not isinstance(value, dict):
+        return None
+    return {
+        str(key): str(text)
+        for key, text in value.items()
+        if isinstance(text, str)
+    }
+
+
+def _options_translations(value: object) -> dict[str, list[str]] | None:
+    if not isinstance(value, dict):
+        return None
+    return {
+        str(key): [str(item) for item in items]
+        for key, items in value.items()
+        if isinstance(items, list)
+    }
+
+
 def _mock_test_title_translations(title: str) -> dict[str, str]:
     parts = title.split()
     if len(parts) >= 3 and parts[0] == "HSK":
@@ -144,9 +204,13 @@ def award_achievements(db: Session, user_id: int) -> None:
         select(func.count()).select_from(LessonProgress).where(
             LessonProgress.user_id == user_id, LessonProgress.status == "completed"
         )
-    )
-    saved_count = db.scalar(select(func.count()).select_from(SavedWord).where(SavedWord.user_id == user_id))
-    attempt_count = db.scalar(select(func.count()).select_from(QuizAttempt).where(QuizAttempt.user_id == user_id))
+    ) or 0
+    saved_count = db.scalar(
+        select(func.count()).select_from(SavedWord).where(SavedWord.user_id == user_id)
+    ) or 0
+    attempt_count = db.scalar(
+        select(func.count()).select_from(QuizAttempt).where(QuizAttempt.user_id == user_id)
+    ) or 0
     unlocks = []
     if attempt_count and "first_quiz" not in earned_codes:
         unlocks.append("first_quiz")
@@ -161,7 +225,9 @@ def award_achievements(db: Session, user_id: int) -> None:
         db.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
 
 
-def score_questions(rows: list[Question], answers: dict[str, str]) -> tuple[int, int, list[QuizResultItem]]:
+def score_questions(
+    rows: Sequence[Question], answers: dict[str, str]
+) -> tuple[int, int, list[QuizResultItem]]:
     results = []
     correct_count = 0
     for question in rows:
@@ -173,16 +239,16 @@ def score_questions(rows: list[Question], answers: dict[str, str]) -> tuple[int,
             QuizResultItem(
                 question_id=question.id,
                 prompt=question.prompt,
-                prompt_translations=metadata.get("prompt_translations")
-                if isinstance(metadata.get("prompt_translations"), dict)
-                else None,
+                prompt_translations=_text_translations(
+                    metadata.get("prompt_translations")
+                ),
                 correct=correct,
                 user_answer=user_answer,
                 correct_answer=question.correct_answer,
                 explanation=question.explanation,
-                explanation_translations=metadata.get("explanation_translations")
-                if isinstance(metadata.get("explanation_translations"), dict)
-                else None,
+                explanation_translations=_text_translations(
+                    metadata.get("explanation_translations")
+                ),
             )
         )
     score = round((correct_count / len(rows)) * 100) if rows else 0
@@ -225,28 +291,195 @@ def get_mock_test_questions(db: Session, mock_test: MockTest) -> list[Question]:
 
 @app.post("/api/v1/auth/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
 def register(payload: RegisterIn, db: Session = Depends(get_db)) -> TokenOut:
-    email = payload.email.lower()
+    email = payload.email.strip().lower()
     if db.scalar(select(User.id).where(User.email == email)):
         raise HTTPException(status_code=409, detail="Email already registered")
     user = User(email=email, display_name=payload.display_name, password_hash=hash_password(payload.password))
     db.add(user)
     db.flush()
     db.add(Profile(user_id=user.id))
+    access_token, refresh_token = issue_token_pair(db, user.id)
     db.commit()
-    return TokenOut(access_token=create_access_token(user.id))
+    return TokenOut(access_token=access_token, refresh_token=refresh_token)
 
 
 @app.post("/api/v1/auth/login", response_model=TokenOut)
 def login(payload: AuthIn, db: Session = Depends(get_db)) -> TokenOut:
-    user = db.scalar(select(User).where(User.email == payload.email.lower()))
-    if not user or not verify_password(payload.password, user.password_hash):
+    user = db.scalar(select(User).where(User.email == payload.email.strip().lower()))
+    if not user or not user.is_active or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    return TokenOut(access_token=create_access_token(user.id))
+    access_token, refresh_token = issue_token_pair(db, user.id)
+    db.commit()
+    return TokenOut(access_token=access_token, refresh_token=refresh_token)
+
+
+@app.post("/api/v1/auth/refresh", response_model=TokenOut)
+def refresh_access_token(payload: RefreshTokenIn, db: Session = Depends(get_db)) -> TokenOut:
+    _, access_token, refresh_token = rotate_refresh_token(db, payload.refresh_token)
+    return TokenOut(access_token=access_token, refresh_token=refresh_token)
+
+
+@app.post("/api/v1/auth/logout", status_code=status.HTTP_204_NO_CONTENT)
+def logout(payload: RefreshTokenIn, db: Session = Depends(get_db)) -> Response:
+    revoke_refresh_token(db, payload.refresh_token)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@app.post("/api/v1/auth/google", response_model=TokenOut)
+def google_login(
+    payload: GoogleAuthIn,
+    db: Session = Depends(get_db),
+    verifier: GoogleTokenVerifier = Depends(get_google_token_verifier),
+) -> TokenOut:
+    try:
+        identity = verifier.verify(payload.id_token)
+    except GoogleConfigurationError as exc:
+        raise HTTPException(status_code=503, detail="Google OAuth is not configured") from exc
+    except GoogleTokenError as exc:
+        raise HTTPException(status_code=401, detail="Invalid Google ID token") from exc
+
+    account = db.scalar(
+        select(OAuthAccount).where(
+            OAuthAccount.provider == OAuthProvider.GOOGLE,
+            OAuthAccount.provider_user_id == identity.subject,
+        )
+    )
+    if account:
+        user = db.get(User, account.user_id)
+    else:
+        user = db.scalar(select(User).where(User.email == identity.email))
+        if not user:
+            user = User(
+                email=identity.email,
+                display_name=identity.display_name,
+                password_hash=None,
+            )
+            db.add(user)
+            db.flush()
+            db.add(Profile(user_id=user.id))
+        db.add(
+            OAuthAccount(
+                user_id=user.id,
+                provider=OAuthProvider.GOOGLE,
+                provider_user_id=identity.subject,
+            )
+        )
+        try:
+            db.flush()
+        except IntegrityError as exc:
+            db.rollback()
+            raise HTTPException(status_code=409, detail="Google account already linked") from exc
+
+    if not user or not user.is_active:
+        raise HTTPException(status_code=401, detail="Invalid Google ID token")
+    access_token, refresh_token = issue_token_pair(db, user.id)
+    db.commit()
+    return TokenOut(access_token=access_token, refresh_token=refresh_token)
+
+
+@app.post("/api/v1/auth/forgot-password", response_model=MessageOut, status_code=status.HTTP_202_ACCEPTED)
+def forgot_password(
+    payload: ForgotPasswordIn,
+    db: Session = Depends(get_db),
+    email_sender: EmailSender = Depends(get_email_sender),
+) -> MessageOut:
+    generic_message = "If the account exists, password reset instructions have been sent."
+    user = db.scalar(select(User).where(User.email == payload.email.strip().lower()))
+    if not user or not user.is_active:
+        return MessageOut(message=generic_message)
+
+    raw_token = secrets.token_urlsafe(48)
+    expires_at = datetime.now(UTC) + timedelta(minutes=settings.password_reset_expire_minutes)
+    db.execute(
+        update(PasswordResetToken)
+        .where(
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.used_at.is_(None),
+        )
+        .values(used_at=datetime.now(UTC))
+    )
+    db.add(
+        PasswordResetToken(
+            user_id=user.id,
+            token_hash=hash_opaque_token(raw_token),
+            expires_at=expires_at,
+        )
+    )
+    db.commit()
+    try:
+        email_sender.send_password_reset(user.email, raw_token, expires_at)
+    except Exception:
+        logger.exception("Password reset email delivery failed")
+    return MessageOut(message=generic_message)
+
+
+@app.post("/api/v1/auth/reset-password", status_code=status.HTTP_204_NO_CONTENT)
+def reset_password(payload: ResetPasswordIn, db: Session = Depends(get_db)) -> Response:
+    reset_token = db.scalar(
+        select(PasswordResetToken)
+        .where(PasswordResetToken.token_hash == hash_opaque_token(payload.token))
+        .with_for_update()
+    )
+    now = datetime.now(UTC)
+    if not reset_token or reset_token.used_at is not None or reset_token.expires_at <= now:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+
+    user = db.get(User, reset_token.user_id)
+    if not user or not user.is_active:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token")
+    user.password_hash = hash_password(payload.new_password)
+    db.execute(
+        update(PasswordResetToken)
+        .where(
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.used_at.is_(None),
+        )
+        .values(used_at=now)
+    )
+    revoke_user_refresh_tokens(db, user.id)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@app.patch("/api/v1/auth/password", status_code=status.HTTP_204_NO_CONTENT)
+def change_password(
+    payload: PasswordChangeIn,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Response:
+    if not verify_password(payload.current_password, user.password_hash):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    user.password_hash = hash_password(payload.new_password)
+    revoke_user_refresh_tokens(db, user.id)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @app.get("/api/v1/auth/me", response_model=UserOut)
 def me(user: User = Depends(get_current_user)) -> UserOut:
-    return UserOut(id=user.id, email=user.email, display_name=user.display_name)
+    return UserOut(
+        id=user.id,
+        email=user.email,
+        display_name=user.display_name,
+        is_admin=user.is_admin,
+    )
+
+
+@app.delete("/api/v1/auth/me", status_code=status.HTTP_204_NO_CONTENT)
+def delete_account(
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Response:
+    revoke_user_refresh_tokens(db, user.id)
+    db.delete(user)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@app.get("/api/v1/admin/status", response_model=AdminStatusOut)
+def admin_status(_: User = Depends(require_admin)) -> AdminStatusOut:
+    return AdminStatusOut(status="ok")
 
 
 @app.get("/api/v1/auth/me/profile", response_model=ProfileOut)
@@ -310,21 +543,24 @@ def lessons(
             )
         )
     }
-    return [
-        LessonListOut(
-            id=lesson.id,
-            title=lesson.title,
-            title_translations=_lesson_title_translations(lesson),
-            description=lesson.description,
-            description_translations=_lesson_description_translations(lesson),
-            lesson_type=lesson.lesson_type,
-            sort_order=lesson.sort_order,
-            duration_minutes=lesson.duration_minutes,
-            status=progress.get(lesson.id).status if lesson.id in progress else None,
-            score_percent=progress.get(lesson.id).score_percent if lesson.id in progress else None,
+    output = []
+    for lesson in rows:
+        lesson_progress = progress.get(lesson.id)
+        output.append(
+            LessonListOut(
+                id=lesson.id,
+                title=lesson.title,
+                title_translations=_lesson_title_translations(lesson),
+                description=lesson.description,
+                description_translations=_lesson_description_translations(lesson),
+                lesson_type=lesson.lesson_type,
+                sort_order=lesson.sort_order,
+                duration_minutes=lesson.duration_minutes,
+                status=lesson_progress.status if lesson_progress else None,
+                score_percent=lesson_progress.score_percent if lesson_progress else None,
+            )
         )
-        for lesson in rows
-    ]
+    return output
 
 
 @app.get("/api/v1/content/lessons/{lesson_id}", response_model=LessonDetailOut)
@@ -341,7 +577,7 @@ def lesson_detail(lesson_id: int, db: Session = Depends(get_db)) -> LessonDetail
         description_translations=_lesson_description_translations(lesson),
         lesson_type=lesson.lesson_type,
         duration_minutes=lesson.duration_minutes,
-        content=lesson.content,
+        content=public_lesson_content(lesson.content),
     )
 
 
@@ -353,13 +589,13 @@ def questions(lesson_id: int, db: Session = Depends(get_db)) -> list[QuestionOut
             id=row.id,
             question_type=row.question_type,
             prompt=row.prompt,
-            prompt_translations=metadata.get("prompt_translations")
-            if isinstance(metadata.get("prompt_translations"), dict)
-            else None,
+            prompt_translations=_text_translations(
+                metadata.get("prompt_translations")
+            ),
             options=row.options,
-            options_translations=metadata.get("options_translations")
-            if isinstance(metadata.get("options_translations"), dict)
-            else None,
+            options_translations=_options_translations(
+                metadata.get("options_translations")
+            ),
             sort_order=row.sort_order,
         ))(_question_translations(row))
         for row in rows
@@ -396,9 +632,14 @@ def submit_quiz(
     if not progress:
         progress = LessonProgress(user_id=user.id, lesson_id=lesson_id)
         db.add(progress)
+    now = datetime.now(UTC)
     progress.status = "completed" if score >= 60 else "in_progress"
     progress.score_percent = score
     progress.minutes_studied = max(progress.minutes_studied, lesson.duration_minutes)
+    progress.started_at = progress.started_at or now
+    progress.last_viewed_at = now
+    if score >= 60:
+        progress.completed_at = now
     user.profile.study_streak_days = max(user.profile.study_streak_days, 1)
     db.flush()
     award_achievements(db, user.id)
@@ -461,7 +702,7 @@ def progress_dashboard(user: User = Depends(get_current_user), db: Session = Dep
         if progress_by_lesson.get(lesson.id) and progress_by_lesson[lesson.id].status == "completed"
     )
 
-    skill_totals: dict[str, dict[str, object]] = {}
+    skill_totals: dict[str, dict[str, Any]] = {}
     for lesson in lessons:
         bucket = skill_totals.setdefault(
             lesson.lesson_type,
@@ -504,25 +745,25 @@ def progress_dashboard(user: User = Depends(get_current_user), db: Session = Dep
         current_level_progress_percent=percent(current_level_completed, len(current_level_lessons)),
         exam_readiness_percent=percent(exam_completed, len(lessons)),
         skill_breakdown=[
-            {
-                "lesson_type": str(bucket["lesson_type"]),
-                "completed": int(bucket["completed"]),
-                "total": int(bucket["total"]),
-                "average_score": round(sum(bucket["scores"]) / len(bucket["scores"]))
+            SkillBreakdownOut(
+                lesson_type=str(bucket["lesson_type"]),
+                completed=int(bucket["completed"]),
+                total=int(bucket["total"]),
+                average_score=round(sum(bucket["scores"]) / len(bucket["scores"]))
                 if isinstance(bucket["scores"], list) and bucket["scores"]
                 else None,
-            }
+            )
             for bucket in skill_totals.values()
         ],
         recent_attempts=[
-            {
-                "attempt_id": attempt.id,
-                "lesson_id": attempt.lesson_id,
-                "lesson_title": lesson.title,
-                "lesson_title_translations": _lesson_title_translations(lesson),
-                "score": attempt.score,
-                "finished_at": attempt.finished_at,
-            }
+            RecentAttemptOut(
+                attempt_id=attempt.id,
+                lesson_id=attempt.lesson_id,
+                lesson_title=lesson.title,
+                lesson_title_translations=_lesson_title_translations(lesson),
+                score=attempt.score,
+                finished_at=attempt.finished_at,
+            )
             for attempt, lesson in attempt_rows
         ],
     )
@@ -585,15 +826,15 @@ def mistakes(user: User = Depends(get_current_user), db: Session = Depends(get_d
                     lesson_title_translations=_lesson_title_translations(lesson),
                     question_id=question.id,
                     prompt=question.prompt,
-                    prompt_translations=metadata.get("prompt_translations")
-                    if isinstance(metadata.get("prompt_translations"), dict)
-                    else None,
+                    prompt_translations=_text_translations(
+                        metadata.get("prompt_translations")
+                    ),
                     user_answer=user_answer,
                     correct_answer=question.correct_answer,
                     explanation=question.explanation,
-                    explanation_translations=metadata.get("explanation_translations")
-                    if isinstance(metadata.get("explanation_translations"), dict)
-                    else None,
+                    explanation_translations=_text_translations(
+                        metadata.get("explanation_translations")
+                    ),
                     finished_at=attempt.finished_at,
                 )
             )
@@ -694,13 +935,13 @@ def mock_test_questions(
             lesson_title_translations=_lesson_title_translations(row.lesson),
             question_type=row.question_type,
             prompt=row.prompt,
-            prompt_translations=metadata.get("prompt_translations")
-            if isinstance(metadata.get("prompt_translations"), dict)
-            else None,
+            prompt_translations=_text_translations(
+                metadata.get("prompt_translations")
+            ),
             options=row.options,
-            options_translations=metadata.get("options_translations")
-            if isinstance(metadata.get("options_translations"), dict)
-            else None,
+            options_translations=_options_translations(
+                metadata.get("options_translations")
+            ),
             sort_order=row.sort_order,
         ))(_question_translations(row))
         for row in rows
