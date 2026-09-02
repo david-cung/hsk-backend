@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.models import (
     ContentStatus,
     Exercise,
@@ -21,6 +22,13 @@ from app.models import (
     UserVocabularyProgress,
     VocabularyLearningStatus,
 )
+from app.writing_service import (
+    WRITING_FILL_TYPE,
+    WRITING_TYPES,
+    writing_evaluator,
+)
+
+SPEAKING_TYPES = {ExerciseType.SPEAKING, ExerciseType.PRONUNCIATION}
 
 LEGACY_TYPE_MAP: dict[str, ExerciseType] = {
     "multiple_choice": ExerciseType.MULTIPLE_CHOICE,
@@ -238,9 +246,71 @@ def validate_question_configuration(
     raise ValueError(f"unsupported exercise type: {exercise_type.value}")
 
 
+_WRITING_PUBLIC_KEYS = {
+    "items",
+    "tokens",
+    "placeholder",
+    "word_bank",
+    "required_vocabulary",
+    "required_grammar",
+    "required_keywords",
+    "min_characters",
+    "max_characters",
+    "min_chinese_ratio",
+    "rubric",
+    "writing",
+}
+_SPEAKING_PUBLIC_KEYS = {
+    "expected_text",
+    "display_text",
+    "pinyin",
+    "translation",
+    "audio_asset_id",
+    "pronunciation_mode",
+    "scoring_mode",
+    "minimum_acceptable_score",
+    "recording",
+    "reference_type",
+    "reference_id",
+    "feedback_thresholds",
+}
+
+
+def public_skill_configuration(
+    question_type: str | ExerciseType, configuration: dict[str, Any]
+) -> dict[str, Any] | None:
+    """Public config for phase 6-11 skill types; None if not a skill type."""
+    config = configuration or {}
+    if is_writing_question_type(question_type, config):
+        return {key: value for key, value in config.items() if key in _WRITING_PUBLIC_KEYS}
+    try:
+        exercise_type = canonical_exercise_type(question_type)
+    except ValueError:
+        return None
+    if exercise_type in SPEAKING_TYPES:
+        return {key: value for key, value in config.items() if key in _SPEAKING_PUBLIC_KEYS}
+    if exercise_type == ExerciseType.LISTENING:
+        answer_type = canonical_exercise_type(str(config.get("answer_type", "multiple_choice")))
+        visible: dict[str, Any] = {
+            "audio_asset_id": config.get("audio_asset_id"),
+            "answer_type": answer_type.value,
+            "replay_limit": config.get("replay_limit"),
+            "allow_seek": config.get("allow_seek", False),
+            "auto_play": config.get("auto_play", False),
+            "show_transcript_after_submit": config.get("show_transcript_after_submit", True),
+        }
+        nested = public_question_configuration(answer_type, config)
+        visible.update(nested)
+        return visible
+    return None
+
+
 def public_question_configuration(
     question_type: str | ExerciseType, configuration: dict[str, Any]
 ) -> dict[str, Any]:
+    skill_config = public_skill_configuration(question_type, configuration)
+    if skill_config is not None:
+        return skill_config
     validated = validate_question_configuration(question_type, configuration)
     if isinstance(validated, (ChoiceConfiguration, MultipleSelectConfiguration)):
         return {"options": [option.model_dump() for option in validated.options]}
@@ -278,13 +348,111 @@ def normalize_text_answer(value: str, config: NormalizationConfig) -> str:
     return unicodedata.normalize(config.unicode_form, result)
 
 
+def is_writing_question_type(
+    question_type: str | None, configuration: dict[str, Any] | None = None
+) -> bool:
+    upper = str(question_type or "").strip().upper()
+    if upper in WRITING_TYPES:
+        return True
+    return upper == WRITING_FILL_TYPE and bool((configuration or {}).get("writing"))
+
+
+def is_speaking_question_type(question_type: str | ExerciseType | None) -> bool:
+    try:
+        return canonical_exercise_type(question_type or "") in SPEAKING_TYPES
+    except ValueError:
+        return False
+
+
+def _answer_value(answer: Any) -> Any:
+    if isinstance(answer, dict) and "value" in answer:
+        return answer["value"]
+    return answer
+
+
+def _evaluate_writing_answer(
+    question: Question, answer: Any, configuration: dict[str, Any]
+) -> EvaluationResult:
+    evaluation = writing_evaluator().evaluate(
+        str(question.question_type), answer, configuration
+    )
+    points = question.points
+    score = int(round(points * evaluation.score_ratio))
+    score = max(0, min(score, points))
+    normalized = {
+        "value": evaluation.normalized_answer,
+        "raw_answer": _answer_value(answer),
+        "evaluation_source": writing_evaluator().provider_name,
+        "writing_evaluation": evaluation.feedback,
+    }
+    return EvaluationResult(
+        is_correct=evaluation.correct,
+        score=score,
+        max_score=points,
+        normalized_answer=normalized,
+        correct_answer=evaluation.correct_answer,
+    )
+
+
+def _evaluate_speaking_answer(
+    question: Question, answer: Any, configuration: dict[str, Any]
+) -> EvaluationResult:
+    submitted = _answer_value(answer)
+    provider_result = (
+        submitted.get("_provider_result") if isinstance(submitted, dict) else {}
+    )
+    if not isinstance(provider_result, dict):
+        provider_result = {}
+    score_value = provider_result.get("pronunciation_score")
+    minimum = float(
+        configuration.get(
+            "minimum_acceptable_score", settings.speech_minimum_acceptable_score
+        )
+    )
+    correct = isinstance(score_value, (int, float)) and float(score_value) >= minimum
+    normalized = {
+        "speech_analysis": provider_result,
+        "processing_status": provider_result.get("processing_status"),
+    }
+    correct_answer = (
+        configuration.get("expected_text")
+        or configuration.get("display_text")
+        or question.correct_answer
+    )
+    points = question.points
+    return EvaluationResult(
+        is_correct=correct,
+        score=points if correct else 0,
+        max_score=points,
+        normalized_answer=normalized,
+        correct_answer=correct_answer,
+    )
+
+
 def evaluate_answer(question: Question, answer: Any) -> EvaluationResult:
+    configuration_raw = question.configuration or {}
+    if is_writing_question_type(question.question_type, configuration_raw):
+        return _evaluate_writing_answer(question, answer, configuration_raw)
     exercise_type = canonical_exercise_type(question.question_type)
+    if exercise_type in SPEAKING_TYPES:
+        return _evaluate_speaking_answer(question, answer, configuration_raw)
+    if exercise_type == ExerciseType.LISTENING:
+        answer_type = canonical_exercise_type(
+            str(configuration_raw.get("answer_type", "multiple_choice"))
+        )
+        configuration = validate_question_configuration(answer_type, configuration_raw)
+        return _compare_configuration_answer(
+            configuration, _answer_value(answer), question.points
+        )
     configuration = validate_question_configuration(
         exercise_type, question.configuration
     )
-    points = question.points
+    return _compare_configuration_answer(configuration, answer, question.points)
 
+
+def _compare_configuration_answer(
+    configuration: "QuestionConfiguration", answer: Any, points: int
+) -> EvaluationResult:
     if isinstance(configuration, ChoiceConfiguration):
         if not isinstance(answer, str):
             raise ValueError("answer must be one option id")

@@ -10,6 +10,7 @@ from sqlalchemy import func, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.audio_router import router as audio_router
 from app.auth import (
     get_current_user,
     hash_opaque_token,
@@ -26,6 +27,8 @@ from app.content_router import router as content_router
 from app.content_security import public_lesson_content
 from app.database import SessionLocal, get_db
 from app.email import EmailSender, get_email_sender
+from app.exam_router import admin_router as exam_admin_router
+from app.exam_router import router as exam_router
 from app.google_auth import (
     GoogleConfigurationError,
     GoogleTokenError,
@@ -49,6 +52,8 @@ from app.models import (
     UserAchievement,
 )
 from app.practice_router import router as practice_router
+from app.progress_router import router as progress_router
+from app.review_router import router as review_router
 from app.schemas import (
     AchievementOut,
     AdminStatusOut,
@@ -81,6 +86,7 @@ from app.schemas import (
     UserOut,
 )
 from app.seed import _native_text_translations, seed_data
+from app.speaking_router import router as speaking_router
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +100,12 @@ app.add_middleware(
 )
 app.include_router(content_router)
 app.include_router(practice_router)
+app.include_router(audio_router)
+app.include_router(speaking_router)
+app.include_router(progress_router)
+app.include_router(review_router)
+app.include_router(exam_router)
+app.include_router(exam_admin_router)
 
 
 @app.on_event("startup")
