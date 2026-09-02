@@ -1,12 +1,14 @@
-from datetime import datetime
+from datetime import date, datetime
 from enum import StrEnum
 from typing import Any
 
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
+    Date,
     DateTime,
     Enum,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -159,6 +161,13 @@ class Profile(TimestampMixin, Base):
     current_hsk_level: Mapped[int] = mapped_column(Integer, default=1)
     daily_goal_minutes: Mapped[int] = mapped_column(Integer, default=30)
     study_streak_days: Mapped[int] = mapped_column(Integer, default=0)
+    longest_streak_days: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    last_active_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    timezone: Mapped[str] = mapped_column(
+        String(80), default="Asia/Ho_Chi_Minh", server_default="Asia/Ho_Chi_Minh"
+    )
+    daily_new_cards_limit: Mapped[int] = mapped_column(Integer, default=10, server_default="10")
+    daily_review_cards_limit: Mapped[int] = mapped_column(Integer, default=50, server_default="50")
     onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
 
     user: Mapped[User] = relationship(back_populates="profile")
@@ -276,6 +285,7 @@ class AudioAsset(TimestampMixin, Base):
     __tablename__ = "audio_assets"
     __table_args__ = (
         UniqueConstraint("storage_provider", "storage_key", name="uq_audio_storage_key"),
+        Index("ix_audio_assets_status_language", "status", "language"),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -285,6 +295,20 @@ class AudioAsset(TimestampMixin, Base):
     duration_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
     format: Mapped[str | None] = mapped_column(String(20), nullable=True)
     locale: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    provider: Mapped[str] = mapped_column(String(40), default="tts", server_default="tts")
+    mime_type: Mapped[str] = mapped_column(
+        String(120), default="audio/mpeg", server_default="audio/mpeg"
+    )
+    duration_seconds: Mapped[float | None] = mapped_column(Float, nullable=True)
+    language: Mapped[str] = mapped_column(
+        String(20), default="zh-CN", server_default="zh-CN", index=True
+    )
+    transcript: Mapped[str | None] = mapped_column(Text, nullable=True)
+    pinyin: Mapped[str | None] = mapped_column(Text, nullable=True)
+    translation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(40), default="READY", server_default="READY", index=True
+    )
     metadata_json: Mapped[dict[str, Any] | None] = mapped_column("metadata", JSONB, nullable=True)
 
 
@@ -629,6 +653,11 @@ class Question(TimestampMixin, Base):
     configuration: Mapped[dict[str, Any]] = mapped_column(
         JSONB, default=dict, server_default=text("'{}'::jsonb")
     )
+    reference_type: Mapped[str | None] = mapped_column(String(40), nullable=True, index=True)
+    reference_id: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    is_archived: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default="false", index=True
+    )
     sort_order: Mapped[int] = mapped_column(Integer, default=0)
     status: Mapped[ContentStatus] = mapped_column(
         Enum(ContentStatus, name="content_status", values_callable=enum_values),
@@ -660,6 +689,14 @@ class LessonProgress(TimestampMixin, Base):
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     last_viewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    speaking_attempts: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    speaking_acceptable_attempts: Mapped[int] = mapped_column(
+        Integer, default=0, server_default="0"
+    )
+    pronunciation_score_avg: Mapped[float | None] = mapped_column(Float, nullable=True)
+    last_speaking_practice: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
 
 class QuizAttempt(Base):
@@ -780,6 +817,9 @@ class QuestionAttempt(Base):
     max_score: Mapped[int] = mapped_column(Integer)
     time_spent_seconds: Mapped[int] = mapped_column(Integer, default=0)
     result_snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    attempt_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "attempt_metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
     attempted_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), index=True
     )
@@ -938,6 +978,249 @@ class MockTest(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
     hsk_level: Mapped[int] = mapped_column(Integer, index=True)
     duration_minutes: Mapped[int] = mapped_column(Integer)
     question_count: Mapped[int] = mapped_column(Integer)
+    exam_type: Mapped[str] = mapped_column(String(40), default="MOCK", server_default="MOCK")
+    status: Mapped[str] = mapped_column(
+        String(40), default="PUBLISHED", server_default="PUBLISHED", index=True
+    )
+    version: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
+    blueprint: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    scoring_config: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class SpeechRecording(TimestampMixin, Base):
+    __tablename__ = "speech_recordings"
+    __table_args__ = (
+        UniqueConstraint(
+            "storage_provider", "storage_key", name="uq_speech_recordings_storage_key"
+        ),
+        Index("ix_speech_recordings_user_status", "user_id", "status"),
+        Index("ix_speech_recordings_expires_at", "expires_at"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    storage_provider: Mapped[str] = mapped_column(String(40), default="mock")
+    storage_key: Mapped[str] = mapped_column(String(500))
+    original_filename: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    mime_type: Mapped[str] = mapped_column(String(120))
+    extension: Mapped[str] = mapped_column(String(20))
+    size_bytes: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    duration_seconds: Mapped[float | None] = mapped_column(Float, nullable=True)
+    language: Mapped[str] = mapped_column(String(20), default="zh-CN", index=True)
+    status: Mapped[str] = mapped_column(String(40), default="UPLOAD_AUTHORIZED", index=True)
+    upload_expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    uploaded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    recording_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+
+class SpeakingAttempt(Base):
+    __tablename__ = "speaking_attempts"
+    __table_args__ = (
+        UniqueConstraint(
+            "answer_attempt_id", name="uq_speaking_attempts_answer_attempt"
+        ),
+        Index("ix_speaking_attempts_user_status", "user_id", "processing_status"),
+        Index(
+            "ix_speaking_attempts_session_question",
+            "practice_session_id",
+            "question_id",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    practice_session_id: Mapped[int] = mapped_column(
+        ForeignKey("practice_sessions.id", ondelete="CASCADE"), index=True
+    )
+    question_id: Mapped[int] = mapped_column(
+        ForeignKey("questions.id", ondelete="RESTRICT"), index=True
+    )
+    answer_attempt_id: Mapped[int] = mapped_column(
+        ForeignKey("question_attempts.id", ondelete="CASCADE"), index=True
+    )
+    recording_id: Mapped[int] = mapped_column(
+        ForeignKey("speech_recordings.id", ondelete="RESTRICT"), index=True
+    )
+    provider: Mapped[str] = mapped_column(String(40))
+    provider_model_version: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    recognized_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    pronunciation_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    accuracy_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    fluency_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    completeness_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    word_feedback: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSONB, default=list, server_default=text("'[]'::jsonb")
+    )
+    tone_feedback: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    feedback_label: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    processing_status: Mapped[str] = mapped_column(String(40), default="PENDING", index=True)
+    error_code: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    analysis_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class ReviewCard(TimestampMixin, Base):
+    __tablename__ = "review_cards"
+    __table_args__ = (
+        CheckConstraint(
+            "(card_type = 'VOCABULARY' AND grammar_id IS NULL) "
+            "OR (card_type = 'GRAMMAR' AND grammar_id IS NOT NULL AND vocabulary_id IS NULL)",
+            name="ck_review_cards_one_content_ref",
+        ),
+        UniqueConstraint(
+            "user_id", "card_type", "content_key", name="uq_review_cards_user_content"
+        ),
+        Index("ix_review_cards_user_due", "user_id", "due_at"),
+        Index("ix_review_cards_user_type", "user_id", "card_type"),
+        Index("ix_review_cards_vocabulary", "vocabulary_id"),
+        Index("ix_review_cards_grammar", "grammar_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    card_type: Mapped[str] = mapped_column(String(40))
+    content_key: Mapped[str] = mapped_column(String(180))
+    vocabulary_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    grammar_id: Mapped[str | None] = mapped_column(String(180), nullable=True)
+    state: Mapped[str] = mapped_column(String(40), default="NEW", index=True)
+    due_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    last_reviewed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    reps: Mapped[int] = mapped_column(Integer, default=0)
+    lapses: Mapped[int] = mapped_column(Integer, default=0)
+    stability: Mapped[float | None] = mapped_column(Float, nullable=True)
+    difficulty: Mapped[float | None] = mapped_column(Float, nullable=True)
+    interval_days: Mapped[float] = mapped_column(Float, default=0)
+    scheduler_version: Mapped[str] = mapped_column(String(40), default="fsrs-5-default")
+    content_snapshot: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    card_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+
+class ReviewHistory(Base):
+    __tablename__ = "review_history"
+    __table_args__ = (
+        UniqueConstraint(
+            "user_id", "idempotency_key", name="uq_review_history_user_key"
+        ),
+        Index("ix_review_history_card_reviewed", "card_id", "reviewed_at"),
+        Index("ix_review_history_user_reviewed", "user_id", "reviewed_at"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    card_id: Mapped[int] = mapped_column(
+        ForeignKey("review_cards.id", ondelete="RESTRICT"), index=True
+    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    rating: Mapped[str] = mapped_column(String(20))
+    reviewed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    previous_state: Mapped[str] = mapped_column(String(40))
+    new_state: Mapped[str] = mapped_column(String(40))
+    previous_due_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    new_due_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    previous_stability: Mapped[float | None] = mapped_column(Float, nullable=True)
+    new_stability: Mapped[float | None] = mapped_column(Float, nullable=True)
+    previous_difficulty: Mapped[float | None] = mapped_column(Float, nullable=True)
+    new_difficulty: Mapped[float | None] = mapped_column(Float, nullable=True)
+    source: Mapped[str] = mapped_column(String(40), index=True)
+    idempotency_key: Mapped[str] = mapped_column(String(160))
+    review_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+
+class ExamAttempt(TimestampMixin, Base):
+    __tablename__ = "exam_attempts"
+    __table_args__ = (
+        Index("ix_exam_attempts_user_status", "user_id", "status"),
+        Index("ix_exam_attempts_user_created", "user_id", "created_at"),
+        Index("ix_exam_attempts_exam_user", "exam_id", "user_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    exam_id: Mapped[int] = mapped_column(
+        ForeignKey("mock_tests.id", ondelete="RESTRICT"), index=True
+    )
+    exam_version: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String(40), default="IN_PROGRESS", index=True)
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    percentage: Mapped[float | None] = mapped_column(Float, nullable=True)
+    passed: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    random_seed: Mapped[int] = mapped_column(Integer)
+    current_section: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    question_snapshot: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    section_results: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSONB, default=list, server_default=text("'[]'::jsonb")
+    )
+    result_summary: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+
+class ExamQuestionResult(Base):
+    __tablename__ = "exam_question_results"
+    __table_args__ = (
+        UniqueConstraint(
+            "exam_attempt_id",
+            "question_id",
+            name="uq_exam_question_results_attempt_question",
+        ),
+        Index("ix_exam_question_results_attempt", "exam_attempt_id"),
+        Index("ix_exam_question_results_question", "question_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    exam_attempt_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_attempts.id", ondelete="CASCADE"), index=True
+    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    question_id: Mapped[int] = mapped_column(
+        ForeignKey("questions.id", ondelete="RESTRICT"), index=True
+    )
+    section: Mapped[str] = mapped_column(String(40), index=True)
+    answer: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    correct: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    points: Mapped[float] = mapped_column(Float, default=0)
+    max_points: Mapped[float] = mapped_column(Float, default=1)
+    answered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    evaluated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    result_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
