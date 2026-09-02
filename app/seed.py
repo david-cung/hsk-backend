@@ -6,8 +6,17 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models import Achievement, HskLevel, Lesson, MockTest, Question
-
+from app.models import (
+    Achievement,
+    AudioAsset,
+    Exercise,
+    ExerciseSet,
+    HskLevel,
+    Lesson,
+    MockTest,
+    Question,
+)
+from app.practice_engine import build_legacy_question_config
 
 CONTENT_DIR = Path(__file__).resolve().parent / "content"
 LEVEL_CHARACTER_TOTALS = [150, 300, 600, 1200, 2500, 5000]
@@ -3239,6 +3248,178 @@ def _ensure_levels(db: Session) -> dict[int, HskLevel]:
     return levels
 
 
+def _upsert_listening_audio_asset(db: Session, source_id: str, content: dict[str, Any]) -> AudioAsset | None:
+    listening = content.get("listening")
+    if not isinstance(listening, dict) or not listening.get("script"):
+        return None
+    storage_key = f"tts/{source_id}/listening"
+    asset = db.scalar(select(AudioAsset).where(AudioAsset.provider == "tts", AudioAsset.storage_key == storage_key))
+    if asset is None:
+        asset = AudioAsset(provider="tts", storage_provider="tts", storage_key=storage_key)
+        db.add(asset)
+    asset.storage_provider = "tts"
+    asset.mime_type = "audio/mpeg"
+    asset.format = "mpeg"
+    asset.language = "zh-CN"
+    asset.locale = "zh-CN"
+    asset.transcript = str(listening.get("script", ""))
+    asset.pinyin = str(listening.get("pinyin", "")) or None
+    asset.translation = str(listening.get("english") or listening.get("vietnamese") or "") or None
+    asset.status = "READY"
+    asset.asset_metadata = {"source": "seed_listening", "lesson_source_id": source_id}
+    db.flush()
+    return asset
+
+
+def _listening_question_payload(audio_asset: AudioAsset, content: dict[str, Any]) -> dict[str, Any]:
+    listening = content.get("listening") if isinstance(content.get("listening"), dict) else {}
+    raw_answer = str(listening.get("answer") or audio_asset.transcript or "")
+    accepted_answers = [item.strip() for item in re.split(r"\s*(?:/|\||;|；)\s*", raw_answer) if item.strip()]
+    if not accepted_answers and audio_asset.transcript:
+        accepted_answers = [audio_asset.transcript]
+    return {
+        "type": "LISTENING",
+        "prompt": "听录音，写出你听到的关键词。",
+        "prompt_translations": _translations(
+            "Listen to the audio and type one key word you hear.",
+            "Nghe audio và nhập một từ khóa bạn nghe được.",
+        ),
+        "correct_answer": accepted_answers[0] if accepted_answers else "",
+        "explanation": "Replay the sentence and focus on the key vocabulary.",
+        "explanation_translations": _translations(
+            "Replay the sentence and focus on the key vocabulary.",
+            "Nghe lại câu và chú ý từ vựng chính.",
+        ),
+        "difficulty": 1,
+        "points": 1,
+        "reference_type": "LISTENING",
+        "reference_id": str(audio_asset.id),
+        "config": {
+            "audio_asset_id": audio_asset.id,
+            "answer_type": "TEXT_INPUT",
+            "accepted_answers": accepted_answers,
+            "normalization": {"trim": True, "case": "lower", "punctuation": "ignore", "spaces": "remove"},
+            "replay_limit": None,
+            "allow_seek": False,
+            "auto_play": False,
+            "show_transcript_after_submit": True,
+            "transcript": audio_asset.transcript,
+            "pinyin": audio_asset.pinyin,
+            "translation": audio_asset.translation,
+        },
+    }
+
+
+def _speaking_target_from_content(content: dict[str, Any]) -> dict[str, str | None] | None:
+    vocabulary = content.get("vocabulary")
+    if isinstance(vocabulary, list):
+        for item in vocabulary:
+            if isinstance(item, dict) and str(item.get("hanzi") or "").strip():
+                return {
+                    "text": str(item.get("hanzi")).strip(),
+                    "pinyin": str(item.get("pinyin") or "").strip() or None,
+                    "translation": str(item.get("meaning_en") or item.get("meaning") or item.get("meaning_vi") or "").strip() or None,
+                    "reference_type": "VOCABULARY",
+                    "reference_id": str(item.get("hanzi")).strip(),
+                }
+    dialogue = content.get("dialogue")
+    lines = dialogue.get("lines") if isinstance(dialogue, dict) else None
+    if isinstance(lines, list):
+        for line in lines:
+            if isinstance(line, dict) and str(line.get("chinese") or "").strip():
+                return {
+                    "text": str(line.get("chinese")).strip(),
+                    "pinyin": str(line.get("pinyin") or "").strip() or None,
+                    "translation": str(line.get("english") or line.get("vietnamese") or "").strip() or None,
+                    "reference_type": "DIALOGUE",
+                    "reference_id": str(content.get("source_id") or ""),
+                }
+    listening = content.get("listening")
+    if isinstance(listening, dict) and str(listening.get("script") or "").strip():
+        return {
+            "text": str(listening.get("script")).strip(),
+            "pinyin": str(listening.get("pinyin") or "").strip() or None,
+            "translation": str(listening.get("english") or listening.get("vietnamese") or "").strip() or None,
+            "reference_type": "LISTENING",
+            "reference_id": str(content.get("source_id") or ""),
+        }
+    return None
+
+
+def _speaking_question_payload(content: dict[str, Any], audio_asset: AudioAsset | None = None) -> dict[str, Any] | None:
+    speaking_tasks = content.get("speaking_tasks")
+    if not isinstance(speaking_tasks, list) or not speaking_tasks:
+        return None
+    target = _speaking_target_from_content(content)
+    if target is None or not target["text"]:
+        return None
+    mode = "REPEAT_AFTER_AUDIO" if audio_asset else "READ_ALOUD"
+    return {
+        "type": "PRONUNCIATION",
+        "prompt": str(speaking_tasks[0] or "Read aloud and record your pronunciation."),
+        "prompt_translations": _translations(
+            "Read aloud and record your pronunciation.",
+            "Đọc thành tiếng và ghi âm phát âm của bạn.",
+        ),
+        "correct_answer": target["text"],
+        "explanation": "Your pronunciation is scored by the configured speech provider.",
+        "explanation_translations": _translations(
+            "Your pronunciation is scored by the configured speech provider.",
+            "Phát âm của bạn được chấm bởi nhà cung cấp speech đã cấu hình.",
+        ),
+        "difficulty": 1,
+        "points": 1,
+        "reference_type": target["reference_type"],
+        "reference_id": target["reference_id"],
+        "config": {
+            "expected_text": target["text"],
+            "display_text": target["text"],
+            "pinyin": target["pinyin"],
+            "translation": target["translation"],
+            "audio_asset_id": audio_asset.id if audio_asset else None,
+            "pronunciation_mode": mode,
+            "scoring_mode": "PRONUNCIATION",
+            "minimum_acceptable_score": 70,
+            "recording": {"preferred_mime_type": "audio/mp4", "max_duration_seconds": 60},
+            "metadata": {"source": "seed_speaking"},
+        },
+    }
+
+
+def _writing_question_payload(content: dict[str, Any]) -> dict[str, Any] | None:
+    vocabulary = content.get("vocabulary") if isinstance(content.get("vocabulary"), list) else []
+    grammar = content.get("grammar_points") if isinstance(content.get("grammar_points"), list) else []
+    target = next((item for item in vocabulary if isinstance(item, dict) and item.get("hanzi")), None)
+    if not target:
+        return None
+    hanzi = str(target.get("hanzi"))
+    grammar_target = next((str(item.get("structure") or item.get("title")) for item in grammar if isinstance(item, dict) and (item.get("structure") or item.get("title"))), "")
+    return {
+        "type": "GUIDED_WRITING",
+        "prompt": f"Write a Chinese sentence using {hanzi}.",
+        "instruction": "Use Chinese input or paste Chinese text. This is a structured evaluation, not AI scoring.",
+        "correct_answer": "",
+        "explanation": "Structured writing checks focus on required vocabulary, grammar targets, length, and Chinese character usage.",
+        "difficulty": 1,
+        "points": 1,
+        "reference_type": "WRITING",
+        "reference_id": content.get("source_id"),
+        "config": {
+            "required_vocabulary": [hanzi],
+            "required_grammar": [grammar_target] if grammar_target else [],
+            "min_characters": 5,
+            "max_characters": 40,
+            "min_chinese_ratio": 0.6,
+            "passing_score": 60,
+            "placeholder": f"我喜欢{hanzi}。",
+            "rubric": {
+                "criteria": ["required_vocabulary", "required_grammar", "length", "chinese_character_ratio"],
+                "label": "STRUCTURED_EVALUATION",
+            },
+        },
+    }
+
+
 def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
     existing_by_source_id = {
         lesson.content.get("source_id"): lesson
@@ -3292,24 +3473,88 @@ def _upsert_content_lessons(db: Session, levels: dict[int, HskLevel]) -> None:
         lesson.duration_minutes = int(item["duration_minutes"])
         lesson.content = content
         db.flush()
+        question_items = list(item.get("questions", []))
+        audio_asset = _upsert_listening_audio_asset(db, source_id, content)
+        if audio_asset:
+            question_items.append(_listening_question_payload(audio_asset, content))
+        speaking_question = _speaking_question_payload(content, audio_asset)
+        if speaking_question:
+            question_items.append(speaking_question)
+        writing_question = _writing_question_payload(content)
+        if writing_question:
+            question_items.append(writing_question)
+
+        exercise_set = db.scalar(
+            select(ExerciseSet).where(ExerciseSet.lesson_id == lesson.id, ExerciseSet.slug == "lesson-practice")
+        )
+        if exercise_set is None:
+            exercise_set = ExerciseSet(
+                lesson_id=lesson.id,
+                slug="lesson-practice",
+                title=f"{lesson.title} Practice",
+                description="Generated from normalized lesson question rows; legacy JSONB is retained for display only.",
+                skill=item["lesson_type"],
+                sort_order=1,
+                config={"source": "questions"},
+            )
+            db.add(exercise_set)
+            db.flush()
+        else:
+            exercise_set.title = f"{lesson.title} Practice"
+            exercise_set.skill = item["lesson_type"]
+            exercise_set.is_archived = False
+
+        exercise = db.scalar(
+            select(Exercise).where(Exercise.exercise_set_id == exercise_set.id, Exercise.slug == "quiz")
+        )
+        if exercise is None:
+            exercise = Exercise(
+                exercise_set_id=exercise_set.id,
+                lesson_id=lesson.id,
+                slug="quiz",
+                title="Lesson practice",
+                exercise_type="MULTIPLE_CHOICE",
+                skill=item["lesson_type"],
+                sort_order=1,
+                config={"source": "questions"},
+            )
+            db.add(exercise)
+            db.flush()
+        else:
+            exercise.lesson_id = lesson.id
+            exercise.title = "Lesson practice"
+            exercise.skill = item["lesson_type"]
+            exercise.is_archived = False
 
         existing_questions = {
             question.sort_order: question
             for question in db.scalars(select(Question).where(Question.lesson_id == lesson.id)).all()
         }
-        for index, question_data in enumerate(item.get("questions", []), start=1):
+        for index, question_data in enumerate(question_items, start=1):
             question = existing_questions.get(index)
             if question is None:
                 question = Question(lesson_id=lesson.id, sort_order=index)
                 db.add(question)
             question.question_type = question_data.get("type", "multiple_choice")
+            question.exercise_id = exercise.id
             question.prompt = question_data.get("prompt", "")
+            question.instruction = question_data.get("instruction")
             question.options = question_data.get("options") or None
             question.correct_answer = question_data.get("correct_answer", "")
             question.explanation = question_data.get("explanation", "")
+            question.difficulty = int(question_data.get("difficulty", 1))
+            question.points = int(question_data.get("points", 1))
+            question.config = question_data.get("config") or build_legacy_question_config(
+                question.question_type,
+                question.options,
+                question.correct_answer,
+            )
+            question.reference_type = question_data.get("reference_type") or item["lesson_type"]
+            question.reference_id = question_data.get("reference_id") or content.get("source_id")
+            question.is_archived = False
         for sort_order, question in existing_questions.items():
-            if sort_order > len(item.get("questions", [])):
-                db.delete(question)
+            if sort_order > len(question_items):
+                question.is_archived = True
 
 
 def _upsert_achievements(db: Session) -> None:
@@ -3334,6 +3579,45 @@ def _upsert_mock_tests(db: Session) -> None:
         mock_test.hsk_level = item["hsk_level"]
         mock_test.duration_minutes = item["duration_minutes"]
         mock_test.question_count = item["question_count"]
+        mock_test.description = f"Estimated HSK {item['hsk_level']} practice exam using available course content."
+        mock_test.exam_type = "MOCK"
+        mock_test.status = "PUBLISHED"
+        mock_test.version = mock_test.version or 1
+        mock_test.instructions = "Once started, the timer cannot be paused. Writing is excluded until Phase 11."
+        mock_test.scoring_config = {"score_label": "Estimated Practice Score", "passing_percentage": 60}
+        mock_test.blueprint = _mock_exam_blueprint(
+            item["hsk_level"],
+            item["question_count"],
+            item["duration_minutes"],
+        )
+
+
+def _mock_exam_blueprint(_hsk_level: int, question_count: int, duration_minutes: int) -> dict[str, object]:
+    listening = max(1, round(question_count * 0.35))
+    reading = max(1, round(question_count * 0.25))
+    grammar = max(1, round(question_count * 0.2))
+    vocabulary = max(question_count - listening - reading - grammar, 0)
+    sections = [
+        ("LISTENING", "Listening", listening),
+        ("READING", "Reading", reading),
+        ("GRAMMAR", "Grammar", grammar),
+        ("VOCABULARY", "Vocabulary", vocabulary),
+    ]
+    return {
+        "randomized": False,
+        "allow_previous_section": True,
+        "sections": [
+            {
+                "type": section_type,
+                "title": title,
+                "question_count": count,
+                "duration_minutes": max(1, round(duration_minutes * count / max(question_count, 1))),
+                "allow_previous": True,
+            }
+            for section_type, title, count in sections
+            if count > 0
+        ],
+    }
 
 
 

@@ -5,9 +5,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.auth import create_access_token, get_current_user, hash_password, verify_password
+from app.audio_router import admin_router as audio_admin_router
+from app.audio_router import router as audio_router
+from app.auth import (
+    create_access_token,
+    get_current_user,
+    hash_password,
+    verify_password,
+)
 from app.config import settings
 from app.database import Base, SessionLocal, engine, get_db
+from app.exam_router import admin_router as exam_admin_router
+from app.exam_router import router as exam_router
 from app.models import (
     Achievement,
     HskLevel,
@@ -21,6 +30,13 @@ from app.models import (
     User,
     UserAchievement,
 )
+from app.practice_router import admin_router as practice_admin_router
+from app.practice_router import router as practice_router
+from app.progress_router import router as progress_router
+from app.progress_service import summary as progress_summary_payload
+from app.review_router import router as review_router
+from app.review_service import enroll_saved_word
+from app.schema_compat import ensure_phase5_schema
 from app.schemas import (
     AchievementOut,
     AuthIn,
@@ -28,11 +44,11 @@ from app.schemas import (
     LessonDetailOut,
     LessonListOut,
     MistakeOut,
-    MockTestQuestionOut,
     MockTestOut,
+    MockTestQuestionOut,
     ProfileOut,
-    ProgressDashboardOut,
     ProfileUpdate,
+    ProgressDashboardOut,
     QuestionOut,
     QuizResultItem,
     QuizSubmitIn,
@@ -44,7 +60,7 @@ from app.schemas import (
     UserOut,
 )
 from app.seed import _native_text_translations, seed_data
-
+from app.speaking_router import router as speaking_router
 
 app = FastAPI(title="HSK Mobile API", version="1.0.0")
 app.add_middleware(
@@ -54,11 +70,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(practice_router)
+app.include_router(practice_admin_router)
+app.include_router(audio_router)
+app.include_router(audio_admin_router)
+app.include_router(speaking_router)
+app.include_router(progress_router)
+app.include_router(review_router)
+app.include_router(exam_router)
+app.include_router(exam_admin_router)
 
 
 @app.on_event("startup")
 def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
+    ensure_phase5_schema(engine)
     with SessionLocal() as db:
         seed_data(db)
 
@@ -74,6 +100,11 @@ def profile_to_out(profile: Profile) -> ProfileOut:
         current_hsk_level=profile.current_hsk_level,
         daily_goal_minutes=profile.daily_goal_minutes,
         study_streak_days=profile.study_streak_days,
+        longest_streak_days=profile.longest_streak_days,
+        last_active_date=profile.last_active_date,
+        timezone=profile.timezone,
+        daily_new_cards_limit=profile.daily_new_cards_limit,
+        daily_review_cards_limit=profile.daily_review_cards_limit,
         onboarding_completed=profile.onboarding_completed,
     )
 
@@ -415,6 +446,7 @@ def submit_quiz(
 
 @app.get("/api/v1/progress/dashboard", response_model=ProgressDashboardOut)
 def progress_dashboard(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> ProgressDashboardOut:
+    summary_payload = progress_summary_payload(db, user)
     progress_rows = db.scalars(select(LessonProgress).where(LessonProgress.user_id == user.id)).all()
     progress_by_lesson = {progress.lesson_id: progress for progress in progress_rows}
 
@@ -490,7 +522,7 @@ def progress_dashboard(user: User = Depends(get_current_user), db: Session = Dep
         .all()
     )
 
-    return ProgressDashboardOut(
+    payload = ProgressDashboardOut(
         current_hsk_level=user.profile.current_hsk_level,
         target_hsk_level=user.profile.target_hsk_level,
         daily_goal_minutes=user.profile.daily_goal_minutes,
@@ -525,7 +557,35 @@ def progress_dashboard(user: User = Depends(get_current_user), db: Session = Dep
             }
             for attempt, lesson in attempt_rows
         ],
+        overall_progress_percent=summary_payload.overall_progress_percent,
+        today_questions=summary_payload.today_questions,
+        today_accuracy=summary_payload.today_accuracy,
+        longest_streak_days=summary_payload.longest_streak_days,
+        last_active_date=summary_payload.last_active_date,
+        cards_due=summary_payload.cards_due,
+        cards_overdue=summary_payload.cards_overdue,
+        cards_reviewed_today=summary_payload.cards_reviewed_today,
+        review_retention=summary_payload.review_retention,
+        review_streak_days=summary_payload.review_streak_days,
+        exams_attempted=summary_payload.exams_attempted,
+        exams_completed=summary_payload.exams_completed,
+        exam_best_score=summary_payload.exam_best_score,
+        exam_latest_score=summary_payload.exam_latest_score,
+        exam_average_score=summary_payload.exam_average_score,
+        exam_section_performance=summary_payload.exam_section_performance,
+        writing_exercises_attempted=summary_payload.writing_exercises_attempted,
+        writing_exercises_completed=summary_payload.writing_exercises_completed,
+        writing_accuracy=summary_payload.writing_accuracy,
+        writing_average_score=summary_payload.writing_average_score,
+        guided_writing_count=summary_payload.guided_writing_count,
+        translation_accuracy=summary_payload.translation_accuracy,
+        word_order_accuracy=summary_payload.word_order_accuracy,
+        recommended_practice=summary_payload.recommended_practice,
+        weak_areas=summary_payload.weak_skills,
+        skill_overview=summary_payload.skill_overview,
     )
+    db.commit()
+    return payload
 
 
 @app.get("/api/v1/learning/saved-words", response_model=list[SavedWordOut])
@@ -617,6 +677,7 @@ def add_saved_word(
     row = SavedWord(user_id=user.id, **payload.model_dump())
     db.add(row)
     db.flush()
+    enroll_saved_word(db, user, row)
     award_achievements(db, user.id)
     db.commit()
     db.refresh(row)
