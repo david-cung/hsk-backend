@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import Any, Literal
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 from app.models import ContentStatus
 from app.practice_engine import canonical_exercise_type, validate_question_configuration
@@ -65,8 +66,10 @@ class ProfileOut(BaseModel):
     target_hsk_level: int
     current_hsk_level: int
     daily_goal_minutes: int
+    daily_goal_type: str = "minutes"
     study_streak_days: int
     onboarding_completed: bool
+    timezone: str = "Asia/Ho_Chi_Minh"
 
 
 class ProfileUpdate(BaseModel):
@@ -76,7 +79,30 @@ class ProfileUpdate(BaseModel):
     target_hsk_level: int | None = Field(default=None, ge=1, le=6)
     current_hsk_level: int | None = Field(default=None, ge=1, le=6)
     daily_goal_minutes: int | None = Field(default=None, ge=1, le=240)
+    daily_goal_type: str | None = None
     onboarding_completed: bool | None = None
+    timezone: str | None = Field(default=None, max_length=80)
+
+    @field_validator("timezone")
+    @classmethod
+    def validate_timezone(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+        try:
+            ZoneInfo(value)
+        except ZoneInfoNotFoundError as exc:
+            raise ValueError("Invalid timezone") from exc
+        return value
+
+    @field_validator("daily_goal_type")
+    @classmethod
+    def validate_daily_goal_type(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+        kind = value.lower()
+        if kind not in {"minutes", "exercises", "xp", "lessons"}:
+            raise ValueError("Unsupported daily goal type")
+        return kind
 
 
 class HskLevelOut(BaseModel):

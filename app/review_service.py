@@ -38,7 +38,7 @@ from app.skill_schemas import (
 
 logger = logging.getLogger("hsk.review")
 SCHEDULER = SpacedRepetitionScheduler()
-REVIEW_SOURCES = {"MANUAL_REVIEW", "PRACTICE", "LISTENING", "SPEAKING", "WRITING"}
+REVIEW_SOURCES = {"MANUAL_REVIEW", "PRACTICE", "LISTENING", "SPEAKING", "WRITING", "AI_TUTOR"}
 
 
 def user_timezone(user: User) -> ZoneInfo:

@@ -10,6 +10,10 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.models import (
+    AiUsageEvent,
+    Conversation,
+    ConversationMessage,
+    ConversationMessageRole,
     ExamAttempt,
     HskLevel,
     Lesson,
@@ -536,13 +540,17 @@ def summary(db: Session, user: User) -> ProgressSummaryOut:
     continue_learning = _continue_lesson(db, user, levels, progress_by_lesson)
     today = datetime.now(UTC).date()
     activity = daily_activity(db, user.id, today - timedelta(days=60), today)
-    current_streak, longest_streak, last_active = streak_from_activity(activity, today)
+    _, _, activity_last_active = streak_from_activity(activity, today)
     review = review_summary(db, user)
     exam = _exam_metrics(db, user.id)
     writing = _writing_metrics(db, user.id)
-    user.profile.study_streak_days = current_streak
-    user.profile.longest_streak_days = max(user.profile.longest_streak_days or 0, longest_streak)
-    user.profile.last_active_date = date.fromisoformat(last_active) if last_active else None
+    current_streak = user.profile.study_streak_days or 0
+    longest_streak = user.profile.longest_streak_days or 0
+    last_active = (
+        user.profile.last_active_date.isoformat()
+        if user.profile.last_active_date
+        else activity_last_active
+    )
     today_item = activity[-1] if activity else DailyActivityOut(date=today.isoformat())
     return ProgressSummaryOut(
         current_hsk_level=user.profile.current_hsk_level,
@@ -552,7 +560,7 @@ def summary(db: Session, user: User) -> ProgressSummaryOut:
         today_questions=today_item.questions,
         today_accuracy=today_item.accuracy,
         current_streak_days=current_streak,
-        longest_streak_days=max(user.profile.longest_streak_days or 0, longest_streak),
+        longest_streak_days=longest_streak,
         last_active_date=last_active,
         cards_due=review.due_count,
         cards_overdue=review.overdue_count,
@@ -576,7 +584,31 @@ def summary(db: Session, user: User) -> ProgressSummaryOut:
         recommended_practice=_recommendations(weak, continue_learning, review_recommendation(db, user)),
         continue_learning=continue_learning,
         skill_overview=skill_metrics,
+        **_ai_metrics(db, user.id),
     )
+
+
+def _ai_metrics(db: Session, user_id: int) -> dict[str, int]:
+    conversations = db.scalar(select(func.count(Conversation.id)).where(Conversation.user_id == user_id)) or 0
+    messages = db.scalar(
+        select(func.count(ConversationMessage.id))
+        .join(Conversation, ConversationMessage.conversation_id == Conversation.id)
+        .where(
+            Conversation.user_id == user_id,
+            ConversationMessage.role != ConversationMessageRole.SYSTEM.value,
+        )
+    ) or 0
+    corrections = db.scalar(
+        select(func.count(AiUsageEvent.id)).where(
+            AiUsageEvent.user_id == user_id,
+            AiUsageEvent.operation.in_(("sentence_check", "grammar_explain", "writing_feedback")),
+        )
+    ) or 0
+    return {
+        "ai_conversations": int(conversations),
+        "ai_messages": int(messages),
+        "ai_corrections": int(corrections),
+    }
 
 
 def _exam_metrics(db: Session, user_id: int) -> dict[str, Any]:

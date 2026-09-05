@@ -25,6 +25,7 @@ from app.models import (
 from app.writing_service import (
     WRITING_FILL_TYPE,
     WRITING_TYPES,
+    supplementary_writing_evaluator,
     writing_evaluator,
 )
 
@@ -376,13 +377,17 @@ def _evaluate_writing_answer(
     evaluation = writing_evaluator().evaluate(
         str(question.question_type), answer, configuration
     )
+    if str(question.question_type).upper() == "GUIDED_WRITING" and settings.ai_writing_feedback_enabled:
+        evaluation = supplementary_writing_evaluator().evaluate(
+            str(question.question_type), answer, configuration
+        )
     points = question.points
     score = int(round(points * evaluation.score_ratio))
     score = max(0, min(score, points))
     normalized = {
         "value": evaluation.normalized_answer,
         "raw_answer": _answer_value(answer),
-        "evaluation_source": writing_evaluator().provider_name,
+        "evaluation_source": "DETERMINISTIC",
         "writing_evaluation": evaluation.feedback,
     }
     return EvaluationResult(

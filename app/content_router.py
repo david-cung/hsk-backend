@@ -11,6 +11,7 @@ from app.auth import get_current_user, get_optional_user, require_admin
 from app.content_import import ContentImporter, ImportValidationError
 from app.content_security import public_lesson_content
 from app.database import get_db
+from app.gamification_service import record_event
 from app.models import (
     AudioAsset,
     ContentStatus,
@@ -212,6 +213,31 @@ def _lesson_list_out(
         lesson_number=lesson.sort_order,
         difficulty=lesson.difficulty,
         content_status=_value(lesson.content_status),
+    )
+
+
+def _admin_lesson_detail_out(lesson: Lesson) -> LessonDetailOut:
+    content = public_lesson_content(lesson.content)
+    return LessonDetailOut(
+        id=lesson.id,
+        hsk_level_id=lesson.hsk_level_id,
+        course_id=lesson.course_id,
+        title=lesson.title,
+        title_translations=content.get("title_translations"),
+        description=lesson.description,
+        description_translations=content.get("description_translations"),
+        lesson_type=lesson.lesson_type,
+        lesson_number=lesson.sort_order,
+        duration_minutes=lesson.duration_minutes,
+        difficulty=lesson.difficulty,
+        content_status=_value(lesson.content_status),
+        content=content,
+        vocabulary=[],
+        grammar=[],
+        reading=content.get("reading") or content.get("passage"),
+        listening=content.get("listening") or content.get("transcript"),
+        listening_audio=_audio_out(lesson.listening_audio_asset),
+        practice=content.get("practice_exercises"),
     )
 
 
@@ -826,6 +852,15 @@ def complete_lesson(
     progress.started_at = progress.started_at or now
     progress.last_viewed_at = now
     progress.completed_at = now
+    lesson = db.get(Lesson, lesson_id)
+    record_event(
+        db,
+        user,
+        "LESSON_COMPLETED",
+        f"lesson:{lesson_id}",
+        minutes=lesson.duration_minutes if lesson else 1,
+        lessons=1,
+    )
     db.commit()
     return LearningProgressOut(
         item_id=lesson_id,
@@ -1286,7 +1321,8 @@ def admin_create_lesson(
     )
     db.add(lesson)
     _commit(db)
-    return get_lesson(lesson.id, None, db)
+    db.refresh(lesson)
+    return _admin_lesson_detail_out(lesson)
 
 
 @router.patch("/admin/content/lessons/{lesson_id}", response_model=LessonDetailOut)
@@ -1321,9 +1357,8 @@ def admin_update_lesson(
             value = ContentStatus(value)
         setattr(lesson, target, value)
     _commit(db)
-    if lesson.content_status == ContentStatus.ARCHIVED:
-        raise HTTPException(status_code=404, detail="Lesson archived")
-    return get_lesson(lesson.id, None, db)
+    db.refresh(lesson)
+    return _admin_lesson_detail_out(lesson)
 
 
 @router.delete(
