@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.auth import get_current_user, require_admin
 from app.database import get_db
+from app.gamification_service import record_event
 from app.models import (
     ContentStatus,
     Exercise,
@@ -514,8 +515,42 @@ def complete_practice_session(
         if session.score >= 60 and session.answered_questions:
             progress.status = "completed"
             progress.completed_at = now
+        _emit_practice_events(db, user, session)
         db.commit()
     return _results_out(db, session)
+
+
+SKILL_EVENTS = {
+    "WRITING": "WRITING_COMPLETED",
+    "LISTENING": "LISTENING_COMPLETED",
+    "SPEAKING": "SPEAKING_COMPLETED",
+}
+
+
+def _emit_practice_events(db: Session, user: User, session: PracticeSession) -> None:
+    minutes = max(round(session.time_spent_seconds / 60), 0)
+    perfect = bool(session.answered_questions and session.score == 100)
+    record_event(
+        db,
+        user,
+        "PRACTICE_COMPLETED",
+        f"practice:{session.id}",
+        minutes=minutes,
+        exercises=session.answered_questions,
+        metadata={"perfect": perfect, "score": session.score},
+    )
+    skill = str((session.selection_config or {}).get("skill") or "").upper()
+    skill_event = SKILL_EVENTS.get(skill)
+    if skill_event:
+        record_event(db, user, skill_event, f"practice-skill:{session.id}")
+    if session.score >= 60 and session.answered_questions:
+        record_event(
+            db,
+            user,
+            "LESSON_COMPLETED",
+            f"lesson:{session.lesson_id}",
+            lessons=1,
+        )
 
 
 def _results_out(db: Session, session: PracticeSession) -> PracticeResultsOut:

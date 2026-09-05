@@ -5,6 +5,8 @@ import unicodedata
 from dataclasses import dataclass
 from typing import Any, Protocol
 
+from app.config import settings
+
 WRITING_TYPES = {
     "WORD_ORDER",
     "SENTENCE_REORDER",
@@ -257,6 +259,54 @@ class DeterministicWritingEvaluator:
 
 
 def writing_evaluator() -> WritingEvaluationProvider:
+    return DeterministicWritingEvaluator()
+
+
+class AIWritingEvaluator:
+    provider_name = "AI"
+
+    def __init__(self, provider: Any | None = None) -> None:
+        self.provider = provider
+
+    def evaluate(self, question_type: str, answer: Any, config: dict[str, Any]) -> WritingEvaluation:
+        deterministic = DeterministicWritingEvaluator().evaluate(question_type, answer, config)
+        if question_type.upper() != "GUIDED_WRITING":
+            return deterministic
+        try:
+            from app.ai_prompts import writing_system_prompt
+            from app.ai_provider import WRITING_SCHEMA_NAME, get_ai_provider
+            from app.ai_service import writing_payload_to_out
+
+            provider = self.provider or get_ai_provider()
+            result = provider.generate_response(
+                [{"role": "user", "content": _raw_text(answer)}],
+                system_prompt=writing_system_prompt(
+                    int(config.get("hsk_level") or 1), {"prompt": config.get("prompt")}
+                ),
+                schema_name=WRITING_SCHEMA_NAME,
+                max_tokens=settings.ai_max_tokens,
+                temperature=settings.ai_temperature,
+                timeout=settings.ai_timeout,
+            )
+            ai = writing_payload_to_out(result.payload)
+            return WritingEvaluation(
+                correct=deterministic.correct,
+                score_ratio=deterministic.score_ratio,
+                normalized_answer=deterministic.normalized_answer,
+                correct_answer=deterministic.correct_answer,
+                feedback={
+                    **deterministic.feedback,
+                    "ai_feedback": ai.model_dump(),
+                    "ai_feedback_label": "AI Feedback",
+                },
+            )
+        except Exception:
+            return deterministic
+
+
+def supplementary_writing_evaluator() -> WritingEvaluationProvider:
+    if settings.ai_writing_feedback_enabled:
+        return AIWritingEvaluator()
     return DeterministicWritingEvaluator()
 
 

@@ -9,7 +9,7 @@ field name) without clashing with main's normalized content schemas
 from datetime import date, datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # ---------------------------------------------------------------------------
@@ -113,6 +113,9 @@ class ProgressSummaryOut(BaseModel):
     recommended_practice: list[RecommendationOut] = Field(default_factory=list)
     continue_learning: ContinueLearningOut | None = None
     skill_overview: list[SkillPerformanceOut] = Field(default_factory=list)
+    ai_conversations: int = 0
+    ai_messages: int = 0
+    ai_corrections: int = 0
 
 
 class HskProgressOut(BaseModel):
@@ -513,6 +516,311 @@ class AdminExamIn(BaseModel):
     scoring_config: dict[str, Any] = Field(default_factory=dict)
     instructions: str | None = None
     status: str = Field(default="DRAFT", pattern="^(DRAFT|PUBLISHED|ARCHIVED)$")
+
+
+# ---------------------------------------------------------------------------
+# AI tutor (Phase 12)
+# ---------------------------------------------------------------------------
+class RolePlayScenarioOut(BaseModel):
+    id: str
+    title: str
+    title_translations: dict[str, str] | None = None
+    description: str | None = None
+    description_translations: dict[str, str] | None = None
+
+
+class ConversationCreateIn(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    mode: str
+    lesson_id: int | None = None
+    course_id: int | None = None
+    hsk_level: int | None = Field(default=None, ge=1, le=6)
+    scenario_id: str | None = None
+    explanation_language: str = "zh"
+    title: str | None = Field(default=None, max_length=180)
+
+
+class ConversationMessageIn(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    content: str = Field(min_length=1, max_length=4000)
+    action: str | None = None
+    idempotency_key: str | None = Field(default=None, max_length=160)
+
+
+class ConversationMessageOut(BaseModel):
+    id: int
+    role: str
+    content: str
+    chinese_text: str | None = None
+    pinyin: str | None = None
+    translation: str | None = None
+    corrections: list[dict[str, Any]] = Field(default_factory=list)
+    vocabulary_notes: list[dict[str, Any]] = Field(default_factory=list)
+    grammar_notes: list[dict[str, Any]] = Field(default_factory=list)
+    prompt_version: str | None = None
+    created_at: datetime
+
+
+class ConversationOut(BaseModel):
+    id: int
+    mode: str
+    hsk_level: int
+    course_id: int | None = None
+    lesson_id: int | None = None
+    title: str
+    scenario_id: str | None = None
+    explanation_language: str
+    created_at: datetime
+    updated_at: datetime
+    messages: list[ConversationMessageOut] = Field(default_factory=list)
+
+
+class ConversationListOut(BaseModel):
+    items: list[ConversationOut]
+    total: int
+    limit: int
+    offset: int
+
+
+class ConversationMessageResultOut(BaseModel):
+    conversation: ConversationOut
+    user_message: ConversationMessageOut
+    assistant_message: ConversationMessageOut
+
+
+class SentenceCheckIn(BaseModel):
+    sentence: str = Field(min_length=1, max_length=2000)
+    lesson_id: int | None = None
+
+
+class SentenceCheckOut(BaseModel):
+    corrected_sentence: str
+    is_correct: bool
+    explanation: str
+    alternatives: list[str] = Field(default_factory=list)
+    vocabulary_notes: list[dict[str, Any]] = Field(default_factory=list)
+    grammar_notes: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class GrammarExplainIn(BaseModel):
+    grammar_point: str = Field(min_length=1, max_length=200)
+    sentence: str | None = Field(default=None, max_length=2000)
+    lesson_id: int | None = None
+
+
+class GrammarExplainOut(BaseModel):
+    is_correct: bool | None = None
+    corrected_sentence: str | None = None
+    explanation: str
+    examples: list[str] = Field(default_factory=list)
+    difficulty: str | None = None
+
+
+class WritingFeedbackIn(BaseModel):
+    answer: str = Field(min_length=1, max_length=2000)
+    prompt: str | None = None
+    lesson_id: int | None = None
+
+
+class WritingFeedbackOut(BaseModel):
+    label: str = "AI Feedback"
+    score: int | None = None
+    corrected_answer: str | None = None
+    strengths: list[str] = Field(default_factory=list)
+    mistakes: list[str] = Field(default_factory=list)
+    grammar_feedback: list[str] = Field(default_factory=list)
+    vocabulary_feedback: list[str] = Field(default_factory=list)
+    suggestions: list[str] = Field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
+# Gamification & notifications (Phase 13)
+# ---------------------------------------------------------------------------
+class GamificationProfileOut(BaseModel):
+    xp: int
+    level: int
+    xp_into_level: int
+    xp_to_next_level: int
+    level_xp_required: int
+    progress_percent: float
+    streak_days: int
+    longest_streak_days: int
+    timezone: str
+    daily_goal_type: str
+    daily_goal_target: int
+    daily_goal_current: int
+    daily_goal_completed: bool
+    today_xp: int
+    today_minutes: int
+    today_exercises: int
+    today_lessons: int
+    today_reviews: int
+    today: str
+
+
+class XPHistoryItemOut(BaseModel):
+    id: int
+    event_type: str
+    source_id: str
+    xp: int
+    created_at: datetime
+
+
+class XPHistoryOut(BaseModel):
+    items: list[XPHistoryItemOut]
+    total: int
+    limit: int
+    offset: int
+
+
+class DailyGoalOut(BaseModel):
+    date: str
+    timezone: str
+    xp: int
+    minutes: int
+    exercises: int
+    lessons: int
+    reviews: int
+    goal_type: str
+    goal_target: int
+    goal_current: int
+    goal_completed: bool
+    streak_days: int
+
+
+class DailyGoalUpdateIn(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    goal_type: str | None = None
+    target: int | None = Field(default=None, ge=1, le=500)
+
+
+class GamificationAchievementOut(BaseModel):
+    id: int
+    code: str
+    title: str
+    description: str | None
+    icon: str | None
+    earned: bool
+    earned_at: datetime | None
+    progress: dict[str, int] | None = None
+
+
+class DeviceTokenIn(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    token: str = Field(min_length=8, max_length=255)
+    platform: str = "local"
+
+
+class DeviceTokenOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    token: str
+    platform: str
+    active: bool
+
+
+class NotificationPreferencesOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    daily_reminder: bool
+    streak_reminder: bool
+    srs_reminder: bool
+    exam_reminder: bool
+    achievement_notification: bool
+
+
+class NotificationPreferencesUpdateIn(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    daily_reminder: bool | None = None
+    streak_reminder: bool | None = None
+    srs_reminder: bool | None = None
+    exam_reminder: bool | None = None
+    achievement_notification: bool | None = None
+
+
+# ---------------------------------------------------------------------------
+# Admin CMS (Phase 14)
+# ---------------------------------------------------------------------------
+class AdminDashboardMetricOut(BaseModel):
+    key: str
+    label: str
+    value: int | float
+
+
+class AdminDashboardOut(BaseModel):
+    metrics: list[AdminDashboardMetricOut]
+    content_status: dict[str, int]
+    import_errors: int
+    audio_coverage: dict[str, int | float]
+
+
+class AdminSearchItemOut(BaseModel):
+    id: str
+    entity_type: str
+    title: str
+    subtitle: str | None = None
+    hsk_level: int | None = None
+    status: str | None = None
+    updated_at: datetime | None = None
+
+
+class AdminSearchOut(BaseModel):
+    items: list[AdminSearchItemOut]
+    total: int
+    page: int
+    page_size: int
+    pages: int
+
+
+class AdminValidationIssueOut(BaseModel):
+    severity: str = "error"
+    field: str
+    message: str
+
+
+class AdminValidationOut(BaseModel):
+    entity_type: str
+    entity_id: str | None = None
+    valid: bool
+    issues: list[AdminValidationIssueOut]
+
+
+class AdminStatusChangeIn(BaseModel):
+    expected_updated_at: datetime | None = None
+
+
+class AdminAuditOut(BaseModel):
+    id: int
+    admin_user_id: int | None
+    action: str
+    entity_type: str
+    entity_id: str | None
+    metadata: dict[str, Any]
+    created_at: datetime
+
+
+class AdminAuditListOut(BaseModel):
+    items: list[AdminAuditOut]
+    total: int
+    limit: int
+    offset: int
+
+
+class AdminImportPreviewIn(BaseModel):
+    entity_type: str
+    source_format: str
+    data: Any
+
+
+class AdminImportPreviewOut(BaseModel):
+    entity_type: str
+    source_format: str
+    total_records: int
+    records_to_create: int
+    records_to_update: int
+    duplicates: int
+    invalid_records: int
+    warnings: list[dict[str, Any]]
+    errors: list[dict[str, Any]]
 
 
 # Exam questions reuse the skill question contract (codex ``config`` naming).

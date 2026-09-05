@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.auth import get_current_user
 from app.database import get_db
+from app.gamification_service import record_event
 from app.models import User
 from app.review_scheduler import ReviewRating
 from app.review_service import (
@@ -48,7 +49,7 @@ def submit_review(
     db: Session = Depends(get_db),
 ) -> ReviewSubmitOut:
     try:
-        card, _history, _duplicate = review_card(
+        card, history, duplicate = review_card(
             db,
             user,
             card_id,
@@ -58,6 +59,14 @@ def submit_review(
         )
     except ValueError as exc:
         raise HTTPException(status_code=404 if "not found" in str(exc).lower() else 422, detail=str(exc)) from exc
+    if not duplicate:
+        record_event(
+            db,
+            user,
+            "SRS_REVIEW_COMPLETED",
+            f"review:{history.id}",
+            reviews=1,
+        )
     db.commit()
     db.refresh(card)
     summary = review_summary(db, user)

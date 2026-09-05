@@ -26,9 +26,94 @@ SORT_OFFSETS = {
 }
 
 ACHIEVEMENTS = [
-    {"code": "first_quiz", "title": "First Quiz", "description": "Submit your first quiz.", "icon": "school"},
-    {"code": "first_word", "title": "Word Collector", "description": "Save your first word.", "icon": "bookmark"},
-    {"code": "three_lessons", "title": "Momentum", "description": "Complete three lessons.", "icon": "flame"},
+    {
+        "code": "first_quiz",
+        "title": "First Quiz",
+        "description": "Submit your first quiz.",
+        "icon": "school",
+        "criteria": {"type": "first_quiz"},
+        "sort_order": 10,
+    },
+    {
+        "code": "first_word",
+        "title": "Word Collector",
+        "description": "Save your first word.",
+        "icon": "bookmark",
+        "criteria": {"type": "first_word"},
+        "sort_order": 20,
+    },
+    {
+        "code": "three_lessons",
+        "title": "Momentum",
+        "description": "Complete three lessons.",
+        "icon": "flame",
+        "criteria": {"type": "three_lessons"},
+        "sort_order": 30,
+    },
+    {
+        "code": "first_lesson",
+        "title": "First Lesson",
+        "description": "Complete your first lesson.",
+        "icon": "book",
+        "criteria": {"type": "event_count", "event": "LESSON_COMPLETED", "count": 1},
+        "sort_order": 40,
+    },
+    {
+        "code": "first_100_xp",
+        "title": "First 100 XP",
+        "description": "Earn your first 100 XP.",
+        "icon": "star",
+        "criteria": {"type": "xp_total", "count": 100},
+        "sort_order": 50,
+    },
+    {
+        "code": "streak_7",
+        "title": "7 Day Streak",
+        "description": "Study seven days in a row.",
+        "icon": "flame",
+        "criteria": {"type": "streak", "count": 7},
+        "sort_order": 60,
+    },
+    {
+        "code": "streak_30",
+        "title": "30 Day Streak",
+        "description": "Study thirty days in a row.",
+        "icon": "trophy",
+        "criteria": {"type": "streak", "count": 30},
+        "sort_order": 70,
+    },
+    {
+        "code": "reviews_100",
+        "title": "100 Vocabulary Reviews",
+        "description": "Complete 100 vocabulary reviews.",
+        "icon": "refresh",
+        "criteria": {"type": "event_count", "event": "SRS_REVIEW_COMPLETED", "count": 100},
+        "sort_order": 80,
+    },
+    {
+        "code": "first_exam",
+        "title": "First Mock Exam",
+        "description": "Complete your first mock exam.",
+        "icon": "document",
+        "criteria": {"type": "event_count", "event": "EXAM_COMPLETED", "count": 1},
+        "sort_order": 90,
+    },
+    {
+        "code": "perfect_practice",
+        "title": "First Perfect Practice",
+        "description": "Score 100% on a practice session.",
+        "icon": "checkmark",
+        "criteria": {"type": "perfect_practice"},
+        "sort_order": 100,
+    },
+    {
+        "code": "complete_hsk_1",
+        "title": "Complete HSK 1",
+        "description": "Complete every HSK 1 lesson.",
+        "icon": "ribbon",
+        "criteria": {"type": "hsk_complete", "level": 1},
+        "sort_order": 110,
+    },
 ]
 
 MOCK_TESTS = [
@@ -3400,13 +3485,19 @@ def _upsert_content_lessons(
 def _upsert_achievements(db: Session) -> None:
     existing = {achievement.code: achievement for achievement in db.scalars(select(Achievement)).all()}
     for item in ACHIEVEMENTS:
-        achievement = existing.get(item["code"])
+        code = str(item["code"])
+        achievement = existing.get(code)
         if achievement is None:
-            achievement = Achievement(code=item["code"])
+            achievement = Achievement(code=code)
             db.add(achievement)
-        achievement.title = item["title"]
-        achievement.description = item["description"]
-        achievement.icon = item["icon"]
+        description = item.get("description")
+        icon = item.get("icon")
+        criteria = item.get("criteria")
+        achievement.title = str(item["title"])
+        achievement.description = str(description) if description is not None else None
+        achievement.icon = str(icon) if icon is not None else None
+        achievement.criteria = criteria if isinstance(criteria, dict) else {}
+        achievement.sort_order = int(str(item.get("sort_order") or 0))
 
 
 def _upsert_mock_tests(db: Session) -> None:

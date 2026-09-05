@@ -8,6 +8,7 @@ from fastapi import HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.gamification_service import record_event
 from app.models import (
     ExamAttempt,
     ExamQuestionResult,
@@ -520,6 +521,18 @@ def _snapshot_question_ids(attempt: ExamAttempt) -> list[int]:
 
 def _finalize(db: Session, user: User, attempt: ExamAttempt, exam: MockTest, expired: bool = False) -> None:
     ExamScoringService().finalize(db, user, attempt, exam, expired=expired)
+    started = _utc(attempt.started_at)
+    ended = _utc(attempt.submitted_at or datetime.now(UTC))
+    minutes = max(round((ended - started).total_seconds() / 60), 0)
+    record_event(
+        db,
+        user,
+        "EXAM_COMPLETED",
+        f"exam-attempt:{attempt.id}",
+        minutes=minutes,
+        exercises=len(_snapshot_question_ids(attempt)),
+        metadata={"expired": expired, "percentage": attempt.percentage},
+    )
 
 
 def _expire_if_needed(db: Session, user: User, attempt: ExamAttempt, exam: MockTest) -> None:

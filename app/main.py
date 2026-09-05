@@ -10,6 +10,8 @@ from sqlalchemy import func, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.admin_cms_router import router as admin_cms_router
+from app.ai_router import router as ai_router
 from app.audio_router import router as audio_router
 from app.auth import (
     get_current_user,
@@ -29,6 +31,8 @@ from app.database import SessionLocal, get_db
 from app.email import EmailSender, get_email_sender
 from app.exam_router import admin_router as exam_admin_router
 from app.exam_router import router as exam_router
+from app.gamification_router import router as gamification_router
+from app.gamification_service import evaluate_achievements
 from app.google_auth import (
     GoogleConfigurationError,
     GoogleTokenError,
@@ -51,6 +55,7 @@ from app.models import (
     User,
     UserAchievement,
 )
+from app.notification_router import router as notification_router
 from app.practice_router import router as practice_router
 from app.progress_router import router as progress_router
 from app.review_router import router as review_router
@@ -106,6 +111,10 @@ app.include_router(progress_router)
 app.include_router(review_router)
 app.include_router(exam_router)
 app.include_router(exam_admin_router)
+app.include_router(ai_router)
+app.include_router(gamification_router)
+app.include_router(notification_router)
+app.include_router(admin_cms_router)
 
 
 @app.on_event("startup")
@@ -125,8 +134,10 @@ def profile_to_out(profile: Profile) -> ProfileOut:
         target_hsk_level=profile.target_hsk_level,
         current_hsk_level=profile.current_hsk_level,
         daily_goal_minutes=profile.daily_goal_minutes,
+        daily_goal_type=profile.daily_goal_type or "minutes",
         study_streak_days=profile.study_streak_days,
         onboarding_completed=profile.onboarding_completed,
+        timezone=profile.timezone or "Asia/Ho_Chi_Minh",
     )
 
 
@@ -205,36 +216,10 @@ def _mock_test_title_translations(title: str) -> dict[str, str]:
 
 
 def award_achievements(db: Session, user_id: int) -> None:
-    earned_codes = set(
-        db.scalars(
-            select(Achievement.code)
-            .join(UserAchievement, UserAchievement.achievement_id == Achievement.id)
-            .where(UserAchievement.user_id == user_id)
-        )
-    )
-    completed_count = db.scalar(
-        select(func.count()).select_from(LessonProgress).where(
-            LessonProgress.user_id == user_id, LessonProgress.status == "completed"
-        )
-    ) or 0
-    saved_count = db.scalar(
-        select(func.count()).select_from(SavedWord).where(SavedWord.user_id == user_id)
-    ) or 0
-    attempt_count = db.scalar(
-        select(func.count()).select_from(QuizAttempt).where(QuizAttempt.user_id == user_id)
-    ) or 0
-    unlocks = []
-    if attempt_count and "first_quiz" not in earned_codes:
-        unlocks.append("first_quiz")
-    if saved_count and "first_word" not in earned_codes:
-        unlocks.append("first_word")
-    if completed_count >= 3 and "three_lessons" not in earned_codes:
-        unlocks.append("three_lessons")
-    if not unlocks:
+    user = db.get(User, user_id)
+    if user is None:
         return
-    achievements = db.scalars(select(Achievement).where(Achievement.code.in_(unlocks))).all()
-    for achievement in achievements:
-        db.add(UserAchievement(user_id=user_id, achievement_id=achievement.id))
+    evaluate_achievements(db, user)
 
 
 def score_questions(

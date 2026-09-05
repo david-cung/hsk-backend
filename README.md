@@ -51,6 +51,21 @@ Optional:
 - `PASSWORD_RESET_EXPIRE_MINUTES` (default: `30`)
 - `PASSWORD_RESET_URL` (default: `hsk://reset-password`)
 
+AI tutor (Phase 12) — backend-only, never sent to the mobile app:
+
+- `AI_PROVIDER` (default: `mock`; use `openrouter` in production)
+- `AI_MODEL` (default: `openai/gpt-4o-mini`)
+- `AI_API_KEY` (required when `AI_PROVIDER=openrouter`)
+- `AI_BASE_URL` (default: `https://openrouter.ai/api/v1`)
+- `AI_MAX_TOKENS` (default: `800`)
+- `AI_TEMPERATURE` (default: `0.7`)
+- `AI_TIMEOUT` (default: `30`)
+- `AI_MAX_HISTORY_MESSAGES` (default: `12`)
+- `AI_MAX_INPUT_CHARACTERS` (default: `2000`)
+- `AI_RATE_LIMIT_PER_MINUTE` (default: `20`)
+- `AI_TUTOR_PROMPT_VERSION` (default: `v1`)
+- `AI_WRITING_FEEDBACK_ENABLED` (default: `false`; supplementary GUIDED_WRITING comments only)
+
 Password-reset delivery currently uses the development `LoggingEmailSender`.
 Replace the `EmailSender` dependency with a production email-provider adapter
 before deploying password reset publicly.
@@ -115,6 +130,18 @@ for evaluation. The server removes answer keys before returning active-session
 questions. Legacy `lesson.content.practice_exercises` remains unchanged and is
 normalized idempotently for compatibility; legacy quiz routes continue to use
 the existing `Question` rows during the mobile transition.
+
+Phase 12 AI tutor endpoints (mobile never calls the AI provider directly):
+
+- `GET /api/v1/ai/scenarios`
+- `GET /api/v1/ai/conversations`
+- `POST /api/v1/ai/conversations`
+- `GET /api/v1/ai/conversations/{id}`
+- `DELETE /api/v1/ai/conversations/{id}`
+- `POST /api/v1/ai/conversations/{id}/messages`
+- `POST /api/v1/ai/sentence-check`
+- `POST /api/v1/ai/grammar-explain`
+- `POST /api/v1/ai/writing-feedback`
 
 ## Content Import
 

@@ -38,6 +38,34 @@ class Settings(BaseSettings):
     review_speaking_again_threshold: float = 60
     review_speaking_hard_threshold: float = 75
     review_speaking_good_threshold: float = 90
+    # Phase 12 — AI tutor
+    ai_provider: str = "mock"
+    ai_model: str = "openai/gpt-4o-mini"
+    ai_api_key: str | None = None
+    ai_base_url: str = "https://openrouter.ai/api/v1"
+    ai_max_tokens: int = 800
+    ai_temperature: float = 0.7
+    ai_timeout: float = 30
+    ai_max_history_messages: int = 12
+    ai_max_input_characters: int = 2000
+    ai_rate_limit_per_minute: int = 20
+    ai_retry_attempts: int = 2
+    ai_tutor_prompt_version: str = "v1"
+    ai_writing_feedback_enabled: bool = False
+    # Phase 13 — gamification
+    xp_lesson_completed: int = 20
+    xp_practice_completed: int = 10
+    xp_exam_completed: int = 50
+    xp_srs_review_completed: int = 2
+    xp_writing_completed: int = 0
+    xp_listening_completed: int = 0
+    xp_speaking_completed: int = 0
+    xp_ai_conversation_completed: int = 5
+    xp_question_correct: int = 0
+    xp_daily_goal_bonus: int = 15
+    xp_level_base: int = 100
+    xp_level_step: int = 50
+    notification_provider: str = "mock"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
