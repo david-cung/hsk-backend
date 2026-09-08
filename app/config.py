@@ -5,6 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     environment: str = "development"
     database_url: str = "postgresql+psycopg://hsk:hsk@postgres:5432/hsk"
+    public_api_url: str = "http://localhost:8000"
+    release: str = "dev"
     jwt_secret: str = "change-me-in-production"
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 45
@@ -13,6 +15,7 @@ class Settings(BaseSettings):
     password_reset_url: str = "hsk://reset-password"
     google_client_id: str | None = None
     cors_origins: list[str] = ["*"]
+    sentry_dsn: str | None = None
 
     # Phase 6 — Listening / audio delivery
     audio_url_expire_minutes: int = 15
@@ -72,6 +75,14 @@ class Settings(BaseSettings):
     exam_import_storage_dir: str = "/tmp/hsk-exam-imports"
     exam_import_max_bytes: int = 25 * 1024 * 1024
     exam_import_ai_enabled: bool = False
+    media_storage_provider: str = "local"
+    media_storage_dir: str = "/tmp/hsk-media"
+    media_public_base_url: str | None = None
+    s3_bucket: str | None = None
+    s3_region: str | None = None
+    s3_endpoint_url: str | None = None
+    s3_access_key_id: str | None = None
+    s3_secret_access_key: str | None = None
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
@@ -82,6 +93,16 @@ class Settings(BaseSettings):
                 raise ValueError("JWT_SECRET must be set to a non-development value in production")
             if "*" in self.cors_origins:
                 raise ValueError("CORS_ORIGINS must list explicit origins in production")
+            if not self.public_api_url.startswith("https://") or any(
+                host in self.public_api_url.lower() for host in ("localhost", "127.0.0.1")
+            ):
+                raise ValueError("PUBLIC_API_URL must be a public HTTPS URL in production")
+            if self.media_storage_provider.lower() != "s3":
+                raise ValueError("MEDIA_STORAGE_PROVIDER must be s3 in production")
+            if not self.s3_bucket:
+                raise ValueError("S3_BUCKET must be set in production")
+            if not self.sentry_dsn:
+                raise ValueError("SENTRY_DSN must be set in production")
         return self
 
 

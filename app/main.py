@@ -1,13 +1,15 @@
 import logging
 import secrets
+import time
 from collections.abc import Sequence
 from datetime import UTC, datetime, timedelta
 from typing import Any
+from uuid import uuid4
 
-from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import func, select, update
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy import func, select, text, update
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.admin_cms_router import router as admin_cms_router
@@ -63,6 +65,7 @@ from app.notification_router import router as notification_router
 from app.practice_router import router as practice_router
 from app.progress_router import router as progress_router
 from app.question_bank_router import router as question_bank_router
+from app.request_safety import client_key, limiter, rate_limit_for
 from app.review_router import router as review_router
 from app.schemas import (
     AchievementOut,
@@ -103,6 +106,56 @@ from app.specification_service import upsert_learning_target
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="HSK Mobile API", version="1.0.0")
+
+if settings.sentry_dsn:
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=settings.sentry_dsn,
+        environment=settings.environment,
+        release=settings.release,
+        send_default_pii=False,
+        traces_sample_rate=0.0,
+    )
+
+
+@app.middleware("http")
+async def request_observability(request: Request, call_next: Any) -> Response:
+    request_id = request.headers.get("x-request-id") or uuid4().hex
+    request.state.request_id = request_id
+    started = time.perf_counter()
+    rule = rate_limit_for(request.url.path, request.method)
+    if rule and settings.environment.lower() in {"staging", "production", "prod"}:
+        bucket, limit = rule
+        allowed, retry_after = limiter.allow(client_key(request), bucket, limit)
+        if not allowed:
+            response = Response(status_code=429, content="Too many requests")
+            response.headers["Retry-After"] = str(retry_after)
+            response.headers["X-Request-ID"] = request_id
+            return response
+    try:
+        response = await call_next(request)
+    except Exception:
+        logger.exception(
+            "request_failed request_id=%s route=%s method=%s duration_ms=%.2f",
+            request_id,
+            request.url.path,
+            request.method,
+            (time.perf_counter() - started) * 1000,
+        )
+        raise
+    response.headers["X-Request-ID"] = request_id
+    logger.info(
+        "request_complete request_id=%s route=%s method=%s status=%s duration_ms=%.2f",
+        request_id,
+        request.url.path,
+        request.method,
+        response.status_code,
+        (time.perf_counter() - started) * 1000,
+    )
+    return response
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -137,6 +190,21 @@ def on_startup() -> None:
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/health/live")
+def health_live() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/health/ready")
+def health_ready(db: Session = Depends(get_db)) -> dict[str, str]:
+    try:
+        db.execute(text("SELECT 1"))
+    except SQLAlchemyError as exc:
+        logger.warning("readiness_failed error_type=%s", type(exc).__name__)
+        raise HTTPException(status_code=503, detail="Database is not ready") from exc
+    return {"status": "ready"}
 
 
 def profile_to_out(profile: Profile, target: UserLearningTarget | None = None) -> ProfileOut:
@@ -940,7 +1008,7 @@ def mock_tests(db: Session = Depends(get_db)) -> list[MockTestOut]:
             id=row.id,
             title=row.title,
             title_translations=_mock_test_title_translations(row.title),
-            hsk_level=row.hsk_level,
+            hsk_level=row.hsk_level or 1,
             duration_minutes=row.duration_minutes,
             question_count=row.question_count,
         )

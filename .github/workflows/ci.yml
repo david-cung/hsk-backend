@@ -1,0 +1,34 @@
+name: backend-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: hsk
+          POSTGRES_USER: hsk
+          POSTGRES_PASSWORD: hsk
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U hsk -d hsk"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://hsk:hsk@localhost:5432/hsk
+      JWT_SECRET: ci-only-secret
+      CORS_ORIGINS: '["http://localhost:8081"]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check app tests
+      - run: mypy app
+      - run: alembic check
+      - run: pytest -q

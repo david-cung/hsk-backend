@@ -17,6 +17,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.media_storage import get_media_storage
 from app.models import (
     LessonProgress,
     PracticeSession,
@@ -247,10 +248,18 @@ def verify_recording_upload_signature(recording_id: int, user_id: int, expires_a
 def upload_contract(recording: SpeechRecording) -> dict[str, Any]:
     expires_at = int(recording.upload_expires_at.timestamp())
     signature = sign_recording_upload(recording.id, recording.user_id, expires_at)
+    if settings.media_storage_provider.lower() == "s3":
+        upload_url = get_media_storage().get_upload_url(
+            recording.storage_key,
+            recording.mime_type,
+            max(60, int((recording.upload_expires_at - datetime.now(UTC)).total_seconds())),
+        )
+    else:
+        upload_url = f"mock-upload://{recording.storage_key}?expires={expires_at}&signature={signature}"
     return {
         "recording_id": recording.id,
         "storage_key": recording.storage_key,
-        "upload_url": f"mock-upload://{recording.storage_key}?expires={expires_at}&signature={signature}",
+        "upload_url": upload_url,
         "headers": {"Content-Type": recording.mime_type},
         "expires_at": recording.upload_expires_at.isoformat(),
         "max_size_bytes": settings.speech_max_upload_bytes,

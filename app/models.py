@@ -1688,6 +1688,13 @@ class ExamAttempt(TimestampMixin, Base):
         Index("ix_exam_attempts_user_status", "user_id", "status"),
         Index("ix_exam_attempts_user_created", "user_id", "created_at"),
         Index("ix_exam_attempts_exam_user", "exam_id", "user_id"),
+        Index(
+            "uq_exam_attempts_one_active",
+            "user_id",
+            "exam_id",
+            unique=True,
+            postgresql_where=text("status = 'IN_PROGRESS'"),
+        ),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)

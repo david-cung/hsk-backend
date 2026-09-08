@@ -21,6 +21,7 @@ from app.exam_import_parser import (
     parse_answer_key_text,
     parse_exam_pages,
 )
+from app.media_storage import get_media_storage
 from app.models import (
     AudioAsset,
     ContentMembership,
@@ -86,6 +87,15 @@ def write_upload(relative_path: str, content: bytes, max_bytes: int | None = Non
     target = storage_path(relative_path)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(content)
+
+
+def validate_audio_bytes(content: bytes, suffix: str) -> None:
+    if suffix == ".mp3":
+        valid = content.startswith(b"ID3") or (len(content) >= 2 and content[0] == 0xFF and content[1] & 0xE0 == 0xE0)
+    else:
+        valid = len(content) >= 8 and content[4:8] == b"ftyp"
+    if not valid:
+        raise HTTPException(status_code=422, detail="Uploaded audio does not match a supported audio format")
 
 
 def new_storage_name(suffix: str) -> str:
@@ -291,14 +301,15 @@ def _create_audio_asset(db: Session, job: ExamImportJob) -> AudioAsset | None:
     if not job.source_audio_file:
         return None
     relative = f"audio/{Path(job.source_audio_file).name}"
-    existing = db.scalar(select(AudioAsset).where(AudioAsset.storage_provider == "local", AudioAsset.storage_key == relative))
+    provider = settings.media_storage_provider.lower()
+    existing = db.scalar(select(AudioAsset).where(AudioAsset.storage_provider == provider, AudioAsset.storage_key == relative))
     if existing:
         job.source_audio_asset_id = existing.id
         return existing
     asset = AudioAsset(
-        storage_provider="local",
+        storage_provider=provider,
         storage_key=relative,
-        provider="local",
+        provider=provider,
         mime_type=mimetypes.guess_type(relative)[0] or "audio/mpeg",
         format=Path(relative).suffix.lstrip("."),
         language="zh-CN",
@@ -307,9 +318,13 @@ def _create_audio_asset(db: Session, job: ExamImportJob) -> AudioAsset | None:
     )
     db.add(asset)
     db.flush()
-    target = storage_path(relative)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(storage_path(job.source_audio_file), target)
+    source = storage_path(job.source_audio_file)
+    if provider == "s3":
+        get_media_storage().put_bytes(relative, source.read_bytes(), asset.mime_type)
+    else:
+        target = storage_path(relative)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
     job.source_audio_asset_id = asset.id
     return asset
 

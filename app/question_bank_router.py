@@ -58,7 +58,10 @@ def _membership(db: Session, question_id: int) -> tuple[ContentMembership | None
         .where(ContentMembership.content_type == "question", ContentMembership.content_id == question_id)
         .order_by(ContentMembership.id)
     ).first()
-    return row if row else (None, None, None, None)
+    if row is None:
+        return None, None, None, None
+    membership, level, revision, specification = row
+    return membership, level, revision, specification
 
 
 def _item(db: Session, question: Question, version: QuestionVersion | None = None) -> QuestionBankItemOut:

@@ -7,6 +7,7 @@ from typing import Any
 
 from fastapi import HTTPException
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.exam_builder_service import latest_version, validate_version
@@ -56,7 +57,7 @@ def canonical_type_value(question_type: str) -> str:
         return str(question_type or "").strip().lower()
 
 
-def public_question_config(question: Question) -> dict[str, Any]:
+def public_question_config(question: Question | QuestionVersion) -> dict[str, Any]:
     return public_question_configuration(question.question_type, question.configuration or {})
 
 
@@ -253,6 +254,16 @@ def start_exam(db: Session, user: User, exam_id: int) -> ExamAttemptOut:
     exam = _exam_or_404(db, exam_id)
     if exam.status != "PUBLISHED":
         raise HTTPException(status_code=409, detail="Exam is not available")
+    existing = db.scalar(
+        select(ExamAttempt)
+        .where(ExamAttempt.user_id == user.id, ExamAttempt.exam_id == exam.id, ExamAttempt.status == "IN_PROGRESS")
+        .order_by(ExamAttempt.started_at.desc(), ExamAttempt.id.desc())
+        .with_for_update()
+    )
+    if existing is not None:
+        _expire_if_needed(db, user, existing, exam)
+        if existing.status == "IN_PROGRESS":
+            return attempt_to_out(db, existing, exam)
     validate_exam_content(db, exam)
     now = datetime.now(UTC)
     seed = random.SystemRandom().randint(1, 2_147_483_647)
@@ -276,7 +287,19 @@ def start_exam(db: Session, user: User, exam_id: int) -> ExamAttemptOut:
         question_snapshot=snapshot,
     )
     db.add(attempt)
-    db.flush()
+    try:
+        db.flush()
+    except IntegrityError:
+        # The partial unique index closes the race between concurrent start requests.
+        db.rollback()
+        existing = db.scalar(
+            select(ExamAttempt)
+            .where(ExamAttempt.user_id == user.id, ExamAttempt.exam_id == exam.id, ExamAttempt.status == "IN_PROGRESS")
+            .order_by(ExamAttempt.started_at.desc(), ExamAttempt.id.desc())
+        )
+        if existing is None:
+            raise
+        return attempt_to_out(db, existing, exam)
     for section in snapshot.get("sections", []):
         for question in section.get("questions", []):
             db.add(
@@ -577,7 +600,7 @@ def _build_canonical_snapshot(db: Session, exam: MockTest, version: ExamVersion,
     sections = []
     sections_meta = [section.model_dump() for section in sections_from_exam(exam, db)]
     for section_index, section in enumerate(version.sections):
-        questions = []
+        questions: list[dict[str, Any]] = []
         for part in section.parts:
             assignments = list(part.questions)
             if randomized:

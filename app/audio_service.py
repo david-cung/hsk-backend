@@ -12,6 +12,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.media_storage import get_media_storage
 from app.models import AudioAsset
 
 logger = logging.getLogger("hsk.audio")
@@ -61,6 +62,8 @@ def audio_asset_url(asset: AudioAsset, expires_minutes: int | None = None) -> di
     elif asset.provider == "tts":
         # The mobile app treats this controlled URL as a TTS-backed audio source.
         url = f"tts://zh-CN/{quote(asset.transcript or asset.storage_key)}"
+    elif asset.provider == "s3":
+        url = get_media_storage().get_download_url(asset.storage_key, max(60, int((expires - datetime.now(UTC)).total_seconds())))
     else:
         url = f"/api/v1/audio/{asset.id}/media?expires={expires_at}&signature={signature}"
     return {
@@ -82,9 +85,16 @@ def get_ready_audio_asset(db: Session, audio_asset_id: int) -> AudioAsset:
 
 def local_audio_path(storage_key: str) -> Path:
     """Resolve server-owned local audio keys without accepting client paths."""
-    root = Path(settings.exam_import_storage_dir).resolve()
+    root = Path(settings.media_storage_dir).resolve()
     candidate = (root / storage_key).resolve()
     if root == candidate or root not in candidate.parents:
+        raise HTTPException(status_code=400, detail="Invalid audio storage key")
+    if candidate.exists():
+        return candidate
+    # Keep serving Phase 4 local imports while deployments migrate the directory.
+    root = Path(settings.exam_import_storage_dir).resolve()
+    candidate = (root / storage_key).resolve()
+    if root != candidate and root not in candidate.parents:
         raise HTTPException(status_code=400, detail="Invalid audio storage key")
     if candidate.exists():
         return candidate

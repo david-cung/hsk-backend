@@ -30,6 +30,7 @@ from app.exam_import_service import (
     retry_job,
     run_import,
     source_hash,
+    validate_audio_bytes,
     validate_upload_metadata,
     write_upload,
 )
@@ -75,6 +76,7 @@ async def create_import(
     if listening_audio is not None:
         suffix = validate_upload_metadata(listening_audio.filename, listening_audio.content_type, ALLOWED_AUDIO_EXTENSIONS)
         audio_bytes = await listening_audio.read(settings_max_bytes(db) + 1)
+        validate_audio_bytes(audio_bytes, suffix)
         audio_path = new_storage_name(suffix)
         write_upload(audio_path, audio_bytes, settings_max_bytes(db))
     job = create_job(

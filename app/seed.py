@@ -3531,7 +3531,8 @@ def _upsert_mock_tests(db: Session) -> None:
         mock_test.question_count = int(str(item["question_count"]))
         if revision:
             mock_test.exam_revision_id = revision.id
-            mock_test.exam_level_id = levels.get(mock_test.hsk_level).id if levels.get(mock_test.hsk_level) else None
+            level = levels.get(mock_test.hsk_level)
+            mock_test.exam_level_id = level.id if level else None
         if scoring_policy:
             mock_test.scoring_policy_id = scoring_policy.id
         mock_test.question_version_ids = [
