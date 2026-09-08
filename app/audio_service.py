@@ -80,6 +80,21 @@ def get_ready_audio_asset(db: Session, audio_asset_id: int) -> AudioAsset:
     return asset
 
 
+def local_audio_path(storage_key: str) -> Path:
+    """Resolve server-owned local audio keys without accepting client paths."""
+    root = Path(settings.exam_import_storage_dir).resolve()
+    candidate = (root / storage_key).resolve()
+    if root == candidate or root not in candidate.parents:
+        raise HTTPException(status_code=400, detail="Invalid audio storage key")
+    if candidate.exists():
+        return candidate
+    legacy_root = Path(__file__).resolve().parent / "media"
+    legacy_candidate = (legacy_root / storage_key).resolve()
+    if legacy_root == legacy_candidate or legacy_root not in legacy_candidate.parents:
+        raise HTTPException(status_code=400, detail="Invalid audio storage key")
+    return legacy_candidate
+
+
 def transcript_payload(asset: AudioAsset | None) -> dict[str, str | None]:
     if not asset:
         return {"transcript": None, "pinyin": None, "translation": None}

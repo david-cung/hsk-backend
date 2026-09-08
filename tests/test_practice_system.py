@@ -15,6 +15,7 @@ from app.models import (
     GrammarPoint,
     HskLevel,
     Lesson,
+    MockTest,
     PracticeSession,
     Question,
     QuestionAttempt,
@@ -588,3 +589,54 @@ def test_exercise_import_upsert_duplicate_and_rollback(
             select(func.count())
             .select_from(PracticeSession)
         ) == 0
+
+
+def test_exam_detail_only_resumes_in_progress_attempts(
+    client: TestClient, practice_rows: PracticeRows
+) -> None:
+    headers = _headers(client, "exam-resume@example.com")
+    with SessionLocal() as db:
+        exam = MockTest(
+            title="HSK 1 Resume Check",
+            hsk_level=1,
+            duration_minutes=10,
+            question_count=1,
+            status="PUBLISHED",
+            blueprint={
+                "sections": [
+                    {
+                        "type": "VOCABULARY",
+                        "title": "Vocabulary",
+                        "question_count": 1,
+                        "duration_minutes": 10,
+                        "allow_previous": True,
+                    }
+                ],
+                "allow_previous_section": True,
+            },
+            scoring_config={"score_label": "Estimated Practice Score"},
+        )
+        db.add(exam)
+        db.commit()
+        exam_id = exam.id
+
+    detail = client.get(f"/api/v1/exams/{exam_id}", headers=headers)
+    assert detail.status_code == 200
+    assert detail.json()["latest_attempt_id"] is None
+
+    started = client.post(f"/api/v1/exams/{exam_id}/start", headers=headers)
+    assert started.status_code == 201, started.text
+    attempt_id = started.json()["attempt_id"]
+
+    detail = client.get(f"/api/v1/exams/{exam_id}", headers=headers)
+    assert detail.status_code == 200
+    assert detail.json()["latest_attempt_id"] == attempt_id
+
+    submitted = client.post(
+        f"/api/v1/exam-attempts/{attempt_id}/submit", headers=headers
+    )
+    assert submitted.status_code == 200, submitted.text
+
+    detail = client.get(f"/api/v1/exams/{exam_id}", headers=headers)
+    assert detail.status_code == 200
+    assert detail.json()["latest_attempt_id"] is None

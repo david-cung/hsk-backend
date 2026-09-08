@@ -10,11 +10,15 @@ from app.models import (
     Achievement,
     ContentStatus,
     Course,
+    ExamLevel,
+    ExamRevision,
     HskLevel,
     Lesson,
     MockTest,
     Question,
+    ScoringPolicy,
 )
+from app.question_service import sync_question_version
 
 CONTENT_DIR = Path(__file__).resolve().parent / "content"
 LEVEL_CHARACTER_TOTALS = [150, 300, 600, 1200, 2500, 5000]
@@ -3502,6 +3506,20 @@ def _upsert_achievements(db: Session) -> None:
 
 def _upsert_mock_tests(db: Session) -> None:
     existing = {mock_test.title: mock_test for mock_test in db.scalars(select(MockTest)).all()}
+    revision = db.scalar(select(ExamRevision).where(ExamRevision.code == "CURRENT_LEGACY_HSK_CONTENT"))
+    scoring_policy = db.scalar(
+        select(ScoringPolicy).where(
+            ScoringPolicy.code == "GENERIC_PRACTICE",
+            ScoringPolicy.version == "1",
+        )
+    )
+    levels = {}
+    if revision:
+        levels = {
+            level.level_number: level
+            for level in db.scalars(select(ExamLevel).where(ExamLevel.revision_id == revision.id)).all()
+            if level.level_number is not None
+        }
     for item in MOCK_TESTS:
         title = str(item["title"])
         mock_test = existing.get(title)
@@ -3511,6 +3529,35 @@ def _upsert_mock_tests(db: Session) -> None:
         mock_test.hsk_level = int(str(item["hsk_level"]))
         mock_test.duration_minutes = int(str(item["duration_minutes"]))
         mock_test.question_count = int(str(item["question_count"]))
+        if revision:
+            mock_test.exam_revision_id = revision.id
+            mock_test.exam_level_id = levels.get(mock_test.hsk_level).id if levels.get(mock_test.hsk_level) else None
+        if scoring_policy:
+            mock_test.scoring_policy_id = scoring_policy.id
+        mock_test.question_version_ids = [
+            question.current_version_id
+            for question in db.scalars(
+                select(Question)
+                .join(Lesson, Lesson.id == Question.lesson_id)
+                .join(HskLevel, HskLevel.id == Lesson.hsk_level_id)
+                .where(HskLevel.level_number == mock_test.hsk_level)
+                .order_by(Question.id)
+            ).all()
+            if question.current_version_id is not None
+        ]
+        mock_test.blueprint_schema_version = 1
+        mock_test.blueprint = {
+            "schema_version": 1,
+            "revision_id": revision.id if revision else None,
+            "randomized": False,
+            "allow_previous_section": True,
+            "sections": [
+                {"type": "LISTENING", "title": "Listening", "question_count": max(1, round(mock_test.question_count * 0.35)), "duration_minutes": max(1, round(mock_test.duration_minutes * 0.35)), "allow_previous": True},
+                {"type": "READING", "title": "Reading", "question_count": max(1, round(mock_test.question_count * 0.25)), "duration_minutes": max(1, round(mock_test.duration_minutes * 0.25)), "allow_previous": True},
+                {"type": "GRAMMAR", "title": "Grammar", "question_count": max(1, round(mock_test.question_count * 0.2)), "duration_minutes": max(1, round(mock_test.duration_minutes * 0.2)), "allow_previous": True},
+                {"type": "VOCABULARY", "title": "Vocabulary", "question_count": max(1, mock_test.question_count - round(mock_test.question_count * 0.35) - round(mock_test.question_count * 0.25) - round(mock_test.question_count * 0.2)), "duration_minutes": max(1, mock_test.duration_minutes - round(mock_test.duration_minutes * 0.35) - round(mock_test.duration_minutes * 0.25) - round(mock_test.duration_minutes * 0.2)), "allow_previous": True},
+            ],
+        }
 
 
 
@@ -3524,6 +3571,8 @@ def seed_data(db: Session) -> None:
     _upsert_content_lessons(db, levels, courses, content_lessons)
     backfill_normalized_content(db)
     backfill_exercise_engine(db)
+    for question in db.scalars(select(Question)).all():
+        sync_question_version(db, question)
     _upsert_achievements(db)
     _upsert_mock_tests(db)
     db.commit()

@@ -21,6 +21,7 @@ from app.models import (
     PracticeSessionStatus,
     Question,
     QuestionAttempt,
+    QuestionVersion,
     User,
     Vocabulary,
 )
@@ -36,6 +37,7 @@ from app.practice_engine import (
     update_content_progress,
     validate_question_configuration,
 )
+from app.question_service import create_version, current_version_for_id, ensure_current_version
 from app.schemas import (
     AdminExerciseOut,
     AdminQuestionOut,
@@ -63,7 +65,7 @@ def _value(value: Any) -> str:
     return str(getattr(value, "value", value))
 
 
-def _question_metadata(question: Question, key: str) -> dict[str, str] | None:
+def _question_metadata(question: Question | QuestionVersion, key: str) -> dict[str, str] | None:
     value = (question.metadata_json or {}).get(key)
     if not isinstance(value, dict):
         return None
@@ -74,24 +76,28 @@ def _question_metadata(question: Question, key: str) -> dict[str, str] | None:
     } or None
 
 
-def _practice_question(question: Question) -> PracticeQuestionOut:
+def _practice_question(
+    question: Question, version: QuestionVersion | None = None
+) -> PracticeQuestionOut:
     if question.exercise_id is None:
         raise HTTPException(
             status_code=500, detail=f"Question {question.id} is not normalized"
         )
+    content = version or question
     return PracticeQuestionOut(
         id=question.id,
+        question_version_id=getattr(content, "id", None) if version is not None else question.current_version_id,
         exercise_id=question.exercise_id,
-        question_type=question.question_type,
-        prompt=question.prompt,
-        prompt_translations=_question_metadata(question, "prompt_translations"),
-        instruction=question.instruction,
-        explanation_available=bool(question.explanation),
-        difficulty=question.difficulty,
-        points=question.points,
+        question_type=content.question_type,
+        prompt=content.prompt,
+        prompt_translations=_question_metadata(content, "prompt_translations"),
+        instruction=content.instruction,
+        explanation_available=bool(content.explanation),
+        difficulty=content.difficulty,
+        points=content.points,
         order=question.sort_order,
         configuration=public_question_configuration(
-            question.question_type, question.configuration
+            content.question_type, content.configuration
         ),
     )
 
@@ -222,16 +228,36 @@ def _session_questions(db: Session, session: PracticeSession) -> list[Question]:
     return [by_id[item_id] for item_id in session.question_ids if item_id in by_id]
 
 
+def _session_question_versions(
+    db: Session, session: PracticeSession, questions: list[Question]
+) -> dict[int, QuestionVersion]:
+    version_ids = [int(item) for item in session.question_version_ids or []]
+    versions = db.scalars(
+        select(QuestionVersion).where(QuestionVersion.id.in_(version_ids or [0]))
+    ).all()
+    by_version_id = {version.id: version for version in versions}
+    result: dict[int, QuestionVersion] = {}
+    for index, question in enumerate(questions):
+        version_id = version_ids[index] if index < len(version_ids) else None
+        version = by_version_id.get(version_id) if version_id is not None else None
+        if version is None:
+            version = ensure_current_version(db, question)
+        result[question.id] = version
+    return result
+
+
 def _session_out(db: Session, session: PracticeSession) -> PracticeSessionOut:
     answered_question_ids = list(_latest_attempts(db, session.id))
+    questions = _session_questions(db, session)
+    versions = _session_question_versions(db, session, questions)
     return PracticeSessionOut(
         id=session.id,
         lesson_id=session.lesson_id,
         exercise_set_id=session.exercise_set_id,
         status=_value(session.status),
         questions=[
-            _practice_question(question)
-            for question in _session_questions(db, session)
+            _practice_question(question, versions.get(question.id))
+            for question in questions
         ],
         total_questions=session.total_questions,
         answered_questions=session.answered_questions,
@@ -305,12 +331,14 @@ def create_practice_session(
             status_code=409,
             detail="No published questions match the requested practice filters",
         )
+    versions = [ensure_current_version(db, question) for question in questions]
     session = PracticeSession(
         user_id=user.id,
         lesson_id=lesson.id,
         exercise_set_id=exercise_set.id,
         status=PracticeSessionStatus.IN_PROGRESS,
         question_ids=[question.id for question in questions],
+        question_version_ids=[version.id for version in versions],
         selection_config=selection_config,
         total_questions=len(questions),
         answered_questions=0,
@@ -434,26 +462,37 @@ def submit_practice_answer(
     )
     if question is None or question.exercise is None:
         raise HTTPException(status_code=404, detail="Question not found")
+    version_ids = [int(item) for item in session.question_version_ids or []]
     try:
-        result = evaluate_answer(question, payload.answer)
+        version_index = session.question_ids.index(question.id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Question does not belong to this session") from None
+    version_id = version_ids[version_index] if version_index < len(version_ids) else None
+    version = current_version_for_id(db, question.id, version_id)
+    if version is None:
+        raise HTTPException(status_code=404, detail="Question version not found")
+    try:
+        result = evaluate_answer(version, payload.answer)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     snapshot = {
-        "prompt": question.prompt,
+        "question_version_id": version.id,
+        "prompt": version.prompt,
         "prompt_translations": _question_metadata(
-            question, "prompt_translations"
+            version, "prompt_translations"
         ),
         "correct_answer": result.correct_answer,
-        "explanation": question.explanation,
+        "explanation": version.explanation,
         "explanation_translations": _question_metadata(
-            question, "explanation_translations"
+            version, "explanation_translations"
         ),
     }
     attempt = QuestionAttempt(
         user_id=user.id,
         practice_session_id=session.id,
         question_id=question.id,
+        question_version_id=version.id,
         idempotency_key=payload.idempotency_key,
         submitted_answer=payload.answer,
         normalized_answer=result.normalized_answer,
@@ -613,22 +652,27 @@ def practice_session_results(
     return _results_out(db, session)
 
 
-def _admin_question(question: Question) -> AdminQuestionOut:
+def _admin_question(
+    question: Question, version: QuestionVersion | None = None
+) -> AdminQuestionOut:
+    content = version or question
     return AdminQuestionOut(
         id=question.id,
+        question_version_id=getattr(content, "id", None) if version is not None else question.current_version_id,
+        version_number=getattr(content, "version_number", None),
         exercise_id=question.exercise_id,
         lesson_id=question.lesson_id,
         external_id=question.external_id,
-        question_type=question.question_type,
-        prompt=question.prompt,
-        instruction=question.instruction,
-        explanation=question.explanation,
-        difficulty=question.difficulty,
-        points=question.points,
+        question_type=content.question_type,
+        prompt=content.prompt,
+        instruction=content.instruction,
+        explanation=content.explanation,
+        difficulty=content.difficulty,
+        points=content.points,
         order=question.sort_order,
-        configuration=question.configuration,
-        status=_value(question.status),
-        metadata=question.metadata_json,
+        configuration=content.configuration,
+        status=_value(content.status),
+        metadata=content.metadata_json,
     )
 
 
@@ -895,6 +939,8 @@ def admin_create_question(
     )
     db.add(question)
     try:
+        db.flush()
+        version = create_version(db, question, status=payload.status)
         db.commit()
     except IntegrityError as exc:
         db.rollback()
@@ -902,7 +948,7 @@ def admin_create_question(
             status_code=409, detail="Question order conflicts in this exercise"
         ) from exc
     db.refresh(question)
-    return _admin_question(question)
+    return _admin_question(question, version)
 
 
 def _question_row(db: Session, question_id: int) -> Question:
@@ -948,6 +994,7 @@ def admin_update_question(
     question.options = options
     question.correct_answer = correct_answer
     try:
+        version = create_version(db, question, status=question.status)
         db.commit()
     except IntegrityError as exc:
         db.rollback()
@@ -955,7 +1002,7 @@ def admin_update_question(
             status_code=409, detail="Question order conflicts in this exercise"
         ) from exc
     db.refresh(question)
-    return _admin_question(question)
+    return _admin_question(question, version)
 
 
 @router.delete(

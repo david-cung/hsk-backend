@@ -18,6 +18,7 @@ from app.models import (
     Lesson,
     Question,
     QuestionAttempt,
+    QuestionVersion,
     UserGrammarProgress,
     UserVocabularyProgress,
     VocabularyLearningStatus,
@@ -72,6 +73,15 @@ IMPLEMENTED_TYPES = (
         ExerciseType.ORDERING,
     }
 )
+
+LISTENING_METADATA_KEYS = {
+    "audio_asset_id",
+    "answer_type",
+    "replay_limit",
+    "allow_seek",
+    "auto_play",
+    "show_transcript_after_submit",
+}
 
 
 class AnswerOptionConfig(BaseModel):
@@ -232,6 +242,16 @@ def validate_question_configuration(
     question_type: str | ExerciseType, configuration: dict[str, Any]
 ) -> QuestionConfiguration:
     exercise_type = canonical_exercise_type(question_type)
+    if exercise_type == ExerciseType.LISTENING:
+        answer_type = canonical_exercise_type(
+            str(configuration.get("answer_type", "multiple_choice"))
+        )
+        answer_configuration = {
+            key: value
+            for key, value in configuration.items()
+            if key not in LISTENING_METADATA_KEYS
+        }
+        return validate_question_configuration(answer_type, answer_configuration)
     if exercise_type not in IMPLEMENTED_TYPES:
         raise ValueError(f"{exercise_type.value} exercises are reserved for a later phase")
     if exercise_type in CHOICE_TYPES:
@@ -300,7 +320,14 @@ def public_skill_configuration(
             "auto_play": config.get("auto_play", False),
             "show_transcript_after_submit": config.get("show_transcript_after_submit", True),
         }
-        nested = public_question_configuration(answer_type, config)
+        nested = public_question_configuration(
+            answer_type,
+            {
+                key: value
+                for key, value in config.items()
+                if key not in LISTENING_METADATA_KEYS
+            },
+        )
         visible.update(nested)
         return visible
     return None
@@ -372,7 +399,7 @@ def _answer_value(answer: Any) -> Any:
 
 
 def _evaluate_writing_answer(
-    question: Question, answer: Any, configuration: dict[str, Any]
+    question: Question | QuestionVersion, answer: Any, configuration: dict[str, Any]
 ) -> EvaluationResult:
     evaluation = writing_evaluator().evaluate(
         str(question.question_type), answer, configuration
@@ -400,7 +427,7 @@ def _evaluate_writing_answer(
 
 
 def _evaluate_speaking_answer(
-    question: Question, answer: Any, configuration: dict[str, Any]
+    question: Question | QuestionVersion, answer: Any, configuration: dict[str, Any]
 ) -> EvaluationResult:
     submitted = _answer_value(answer)
     provider_result = (
@@ -434,7 +461,7 @@ def _evaluate_speaking_answer(
     )
 
 
-def evaluate_answer(question: Question, answer: Any) -> EvaluationResult:
+def evaluate_answer(question: Question | QuestionVersion, answer: Any) -> EvaluationResult:
     configuration_raw = question.configuration or {}
     if is_writing_question_type(question.question_type, configuration_raw):
         return _evaluate_writing_answer(question, answer, configuration_raw)
@@ -445,7 +472,14 @@ def evaluate_answer(question: Question, answer: Any) -> EvaluationResult:
         answer_type = canonical_exercise_type(
             str(configuration_raw.get("answer_type", "multiple_choice"))
         )
-        configuration = validate_question_configuration(answer_type, configuration_raw)
+        configuration = validate_question_configuration(
+            answer_type,
+            {
+                key: value
+                for key, value in configuration_raw.items()
+                if key not in LISTENING_METADATA_KEYS
+            },
+        )
         return _compare_configuration_answer(
             configuration, _answer_value(answer), question.points
         )

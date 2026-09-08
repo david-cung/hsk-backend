@@ -19,6 +19,22 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+
+def include_object(object_, name, type_, reflected, compare_to):
+    """Keep the manually-managed current-version FK out of ORM autogenerate.
+
+    The database constraint is created by the Phase 2 migration. The ORM keeps
+    the pointer scalar-only because mapping both sides creates a metadata cycle
+    that prevents the test schema's drop_all from ordering tables safely.
+    """
+    if (
+        type_ == "foreign_key_constraint"
+        and reflected
+        and name == "fk_questions_current_version_id"
+    ):
+        return False
+    return True
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -45,6 +61,7 @@ def run_migrations_offline() -> None:
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
         compare_server_default=True,
+        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -70,6 +87,7 @@ def run_migrations_online() -> None:
             target_metadata=target_metadata,
             compare_type=True,
             compare_server_default=True,
+            include_object=include_object,
         )
 
         with context.begin_transaction():

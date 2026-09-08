@@ -2,20 +2,26 @@ from __future__ import annotations
 
 import random
 from datetime import UTC, datetime, timedelta
+from math import ceil
 from typing import Any
 
 from fastapi import HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.exam_builder_service import latest_version, validate_version
 from app.gamification_service import record_event
 from app.models import (
+    ContentMembership,
     ExamAttempt,
     ExamQuestionResult,
+    ExamVersion,
     HskLevel,
     Lesson,
     MockTest,
     Question,
+    QuestionVersion,
+    ScoringPolicy,
     User,
 )
 from app.practice_engine import (
@@ -23,12 +29,14 @@ from app.practice_engine import (
     evaluate_answer,
     public_question_configuration,
 )
+from app.question_service import current_version_for_id, ensure_current_version
 from app.review_service import content_review_signal
 from app.skill_schemas import (
     ExamAttemptHistoryOut,
     ExamAttemptOut,
     ExamDetailOut,
     ExamListOut,
+    ExamPartOut,
     ExamQuestionOut,
     ExamQuestionResultOut,
     ExamResultOut,
@@ -37,6 +45,7 @@ from app.skill_schemas import (
     RecommendationOut,
     WeakAreaOut,
 )
+from app.specification_schemas import normalize_blueprint
 
 
 def canonical_type_value(question_type: str) -> str:
@@ -84,6 +93,8 @@ def default_blueprint(exam: MockTest) -> dict[str, Any]:
         if count > 0
     ]
     return {
+        "schema_version": 1,
+        "revision_id": exam.exam_revision_id,
         "hsk_level": exam.hsk_level,
         "randomized": False,
         "allow_previous_section": True,
@@ -91,8 +102,35 @@ def default_blueprint(exam: MockTest) -> dict[str, Any]:
     }
 
 
-def sections_from_exam(exam: MockTest) -> list[ExamSectionOut]:
+def sections_from_exam(exam: MockTest, db: Session | None = None) -> list[ExamSectionOut]:
+    canonical = latest_version(db, exam.id, published_only=True) if db is not None else None
+    if canonical is not None:
+        return [
+            ExamSectionOut(
+                type=section.code,
+                code=section.code,
+                title=section.title,
+                skill=section.skill,
+                duration_minutes=max(0, ceil(section.duration_seconds / 60)),
+                duration_seconds=section.duration_seconds,
+                question_count=sum(len(part.questions) for part in section.parts),
+                allow_previous=bool((section.configuration or {}).get("allow_previous", True)),
+                instructions=section.instructions,
+                parts=[
+                    ExamPartOut(
+                        id=part.id,
+                        code=part.code,
+                        title=part.title,
+                        instructions=part.instructions,
+                        sort_order=part.sort_order,
+                    )
+                    for part in section.parts
+                ],
+            )
+            for section in canonical.sections
+        ]
     blueprint = exam.blueprint if isinstance(exam.blueprint, dict) and exam.blueprint.get("sections") else default_blueprint(exam)
+    blueprint = normalize_blueprint(blueprint, revision_id=exam.exam_revision_id)
     return [
         ExamSectionOut(
             type=str(section.get("type", "")).upper(),
@@ -108,13 +146,19 @@ def sections_from_exam(exam: MockTest) -> list[ExamSectionOut]:
 def validate_exam_content(db: Session, exam: MockTest) -> None:
     if exam.status == "ARCHIVED":
         raise HTTPException(status_code=409, detail="Exam is archived")
+    canonical = latest_version(db, exam.id, published_only=True)
+    if canonical is not None:
+        validation = validate_version(db, canonical, require_publishable=False)
+        if not validation.valid:
+            raise HTTPException(status_code=422, detail=validation.model_dump())
+        return
     sections = sections_from_exam(exam)
     if not sections:
         raise HTTPException(status_code=422, detail="Exam has no sections")
     for section in sections:
         if section.type not in SUPPORTED_EXAM_SECTIONS:
             raise HTTPException(status_code=422, detail=f"Section {section.type} is not supported in Phase 10")
-        available = len(_eligible_questions(db, exam.hsk_level, section.type))
+        available = len(_eligible_question_versions(db, exam, section.type))
         if available < section.question_count:
             raise HTTPException(
                 status_code=422,
@@ -122,10 +166,21 @@ def validate_exam_content(db: Session, exam: MockTest) -> None:
             )
 
 
-def list_exams(db: Session, user: User | None, hsk_level: int | None = None, published: bool = True) -> list[ExamListOut]:
+def list_exams(
+    db: Session,
+    user: User | None,
+    hsk_level: int | None = None,
+    published: bool = True,
+    exam_revision_id: int | None = None,
+    exam_level_id: int | None = None,
+) -> list[ExamListOut]:
     stmt = select(MockTest)
     if hsk_level is not None:
         stmt = stmt.where(MockTest.hsk_level == hsk_level)
+    if exam_revision_id is not None:
+        stmt = stmt.where(MockTest.exam_revision_id == exam_revision_id)
+    if exam_level_id is not None:
+        stmt = stmt.where(MockTest.exam_level_id == exam_level_id)
     if published:
         stmt = stmt.where(MockTest.status == "PUBLISHED")
     rows = db.scalars(stmt.order_by(MockTest.hsk_level, MockTest.id)).all()
@@ -143,10 +198,14 @@ def list_exams(db: Session, user: User | None, hsk_level: int | None = None, pub
             title=exam.title,
             description=exam.description,
             hsk_level=exam.hsk_level,
+            exam_revision_id=exam.exam_revision_id,
+            exam_level_id=exam.exam_level_id,
+            scoring_policy_id=exam.scoring_policy_id,
+            blueprint_schema_version=exam.blueprint_schema_version,
             exam_type=exam.exam_type,
             duration_minutes=exam.duration_minutes,
             question_count=exam.question_count,
-            sections=sections_from_exam(exam),
+            sections=sections_from_exam(exam, db),
             attempt_count=attempts.get(exam.id, (0, None))[0],
             best_percentage=attempts.get(exam.id, (0, None))[1],
             status=exam.status,
@@ -160,6 +219,7 @@ def exam_detail(db: Session, user: User, exam_id: int) -> ExamDetailOut:
     latest = db.scalar(
         select(ExamAttempt)
         .where(ExamAttempt.user_id == user.id, ExamAttempt.exam_id == exam.id)
+        .where(ExamAttempt.status == "IN_PROGRESS")
         .order_by(ExamAttempt.started_at.desc(), ExamAttempt.id.desc())
     )
     return ExamDetailOut(
@@ -167,10 +227,14 @@ def exam_detail(db: Session, user: User, exam_id: int) -> ExamDetailOut:
         title=exam.title,
         description=exam.description,
         hsk_level=exam.hsk_level,
+        exam_revision_id=exam.exam_revision_id,
+        exam_level_id=exam.exam_level_id,
+        scoring_policy_id=exam.scoring_policy_id,
+        blueprint_schema_version=exam.blueprint_schema_version,
         exam_type=exam.exam_type,
         duration_minutes=exam.duration_minutes,
         question_count=exam.question_count,
-        sections=sections_from_exam(exam),
+        sections=sections_from_exam(exam, db),
         attempt_count=int(
             db.scalar(select(func.count()).select_from(ExamAttempt).where(ExamAttempt.user_id == user.id, ExamAttempt.exam_id == exam.id))
             or 0
@@ -193,13 +257,20 @@ def start_exam(db: Session, user: User, exam_id: int) -> ExamAttemptOut:
     now = datetime.now(UTC)
     seed = random.SystemRandom().randint(1, 2_147_483_647)
     snapshot = _build_snapshot(db, exam, seed)
+    canonical = latest_version(db, exam.id, published_only=True)
+    duration_seconds = canonical.duration_seconds if canonical is not None else exam.duration_minutes * 60
     attempt = ExamAttempt(
         user_id=user.id,
         exam_id=exam.id,
         exam_version=exam.version,
+        exam_version_id=canonical.id if canonical is not None else None,
+        exam_revision_id=exam.exam_revision_id,
+        exam_level_id=exam.exam_level_id,
+        scoring_policy_id=exam.scoring_policy_id,
+        blueprint_schema_version=exam.blueprint_schema_version,
         status="IN_PROGRESS",
         started_at=now,
-        expires_at=now + timedelta(minutes=exam.duration_minutes),
+        expires_at=now + timedelta(seconds=duration_seconds),
         random_seed=seed,
         current_section=(snapshot.get("sections") or [{}])[0].get("type"),
         question_snapshot=snapshot,
@@ -213,6 +284,7 @@ def start_exam(db: Session, user: User, exam_id: int) -> ExamAttemptOut:
                     exam_attempt_id=attempt.id,
                     user_id=user.id,
                     question_id=int(question["id"]),
+                    question_version_id=int(question["question_version_id"]),
                     section=str(section["type"]),
                     max_points=float(question.get("points", 1)),
                 )
@@ -269,12 +341,21 @@ def result_for_attempt(db: Session, user: User, attempt_id: int) -> ExamResultOu
         raise HTTPException(status_code=409, detail="Exam attempt is not submitted")
     rows = _result_rows(db, attempt.id)
     questions = {row.id: row for row in db.scalars(select(Question).where(Question.id.in_([r.question_id for r in rows] or [0]))).all()}
+    snapshot_questions = {
+        int(item["id"]): item
+        for section in attempt.question_snapshot.get("sections", [])
+        for item in section.get("questions", [])
+    }
     return ExamResultOut(
         attempt_id=attempt.id,
         exam_id=exam.id,
         title=exam.title,
         hsk_level=exam.hsk_level,
+        exam_revision_id=attempt.exam_revision_id or exam.exam_revision_id,
+        exam_level_id=attempt.exam_level_id or exam.exam_level_id,
+        scoring_policy_id=attempt.scoring_policy_id or exam.scoring_policy_id,
         status=attempt.status,
+        score_label=(attempt.result_summary or {}).get("score_label", "Estimated Practice Score"),
         raw_score=float(attempt.score or 0),
         total_points=float((attempt.result_summary or {}).get("total_points", len(rows))),
         percentage=float(attempt.percentage or 0),
@@ -287,14 +368,15 @@ def result_for_attempt(db: Session, user: User, attempt_id: int) -> ExamResultOu
         questions=[
             ExamQuestionResultOut(
                 question_id=row.question_id,
+                question_version_id=row.question_version_id,
                 section=row.section,
-                prompt=questions[row.question_id].prompt if row.question_id in questions else None,
+                prompt=snapshot_questions.get(row.question_id, {}).get("prompt") or (questions[row.question_id].prompt if row.question_id in questions else None),
                 user_answer=(row.answer or {}).get("value") if isinstance(row.answer, dict) else None,
-                correct_answer=_correct_answer_for_question(questions.get(row.question_id)),
+                correct_answer=(row.result_metadata or {}).get("correct_answer") or _correct_answer_for_question(questions.get(row.question_id)),
                 correct=row.correct,
                 points=row.points,
                 max_points=row.max_points,
-                explanation=questions[row.question_id].explanation if row.question_id in questions else None,
+                explanation=snapshot_questions.get(row.question_id, {}).get("explanation") or (questions[row.question_id].explanation if row.question_id in questions else None),
                 evaluation_source=(row.result_metadata or {}).get("evaluation_source"),
                 writing_evaluation=(row.result_metadata or {}).get("writing_evaluation"),
             )
@@ -320,6 +402,9 @@ def attempt_history(db: Session, user: User, limit: int = 50, offset: int = 0) -
             exam_id=exam.id,
             title=exam.title,
             hsk_level=exam.hsk_level,
+            exam_revision_id=attempt.exam_revision_id,
+            exam_level_id=attempt.exam_level_id,
+            scoring_policy_id=attempt.scoring_policy_id,
             status=attempt.status,
             score=attempt.score,
             percentage=attempt.percentage,
@@ -335,16 +420,20 @@ class ExamScoringService:
     def finalize(self, db: Session, user: User, attempt: ExamAttempt, exam: MockTest, expired: bool = False) -> None:
         rows = _result_rows(db, attempt.id)
         questions = {row.id: row for row in db.scalars(select(Question).where(Question.id.in_([r.question_id for r in rows] or [0]))).all()}
+        versions = {row.id: row for row in db.scalars(select(QuestionVersion).where(QuestionVersion.id.in_([r.question_version_id for r in rows if r.question_version_id] or [0]))).all()}
         section_totals: dict[str, dict[str, float | int]] = {}
         now = datetime.now(UTC)
         for row in rows:
             question = questions.get(row.question_id)
-            max_points = float(question.points if question else row.max_points or 1)
+            version = versions.get(row.question_version_id) if row.question_version_id else None
+            if version is None and question is not None:
+                version = current_version_for_id(db, question.id)
+            max_points = float(version.points if version else row.max_points or 1)
             correct = False
             points = 0.0
-            if question and row.answer is not None:
+            if version and row.answer is not None:
                 try:
-                    evaluation = evaluate_answer(question, (row.answer or {}).get("value"))
+                    evaluation = evaluate_answer(version, (row.answer or {}).get("value"))
                 except ValueError as exc:
                     raise HTTPException(status_code=422, detail=str(exc)) from exc
                 correct = bool(evaluation.is_correct)
@@ -357,6 +446,11 @@ class ExamScoringService:
                         "writing_evaluation": normalized.get("writing_evaluation"),
                         "normalized_answer": normalized.get("value"),
                     }
+                row.result_metadata = {
+                    **(row.result_metadata or {}),
+                    "correct_answer": evaluation.correct_answer,
+                    "evaluation_source": (row.result_metadata or {}).get("evaluation_source", "CANONICAL"),
+                }
             row.correct = correct
             row.points = points
             row.max_points = max_points
@@ -387,7 +481,12 @@ class ExamScoringService:
         attempt.submitted_at = now
         attempt.score = round(total_points, 2)
         attempt.percentage = percentage
-        passing = (exam.scoring_config or {}).get("passing_percentage", 60) if isinstance(exam.scoring_config, dict) else 60
+        scoring = exam.scoring_config if isinstance(exam.scoring_config, dict) else {}
+        if exam.scoring_policy_id:
+            policy = db.get(ScoringPolicy, exam.scoring_policy_id)
+            if policy:
+                scoring = policy.configuration or scoring
+        passing = scoring.get("passing_percentage", 60)
         attempt.passed = percentage >= float(passing)
         attempt.section_results = [
             {
@@ -403,7 +502,12 @@ class ExamScoringService:
             }
             for section, bucket in section_totals.items()
         ]
-        attempt.result_summary = {"score_label": "Estimated Practice Score", "total_points": round(max_points, 2)}
+        attempt.result_summary = {
+            "score_label": scoring.get("score_label", "Estimated Practice Score"),
+            "scoring_policy_code": "GENERIC_PRACTICE" if exam.scoring_policy_id else None,
+            "scoring_policy_id": exam.scoring_policy_id,
+            "total_points": round(max_points, 2),
+        }
 
 
 def attempt_to_out(db: Session, attempt: ExamAttempt, exam: MockTest) -> ExamAttemptOut:
@@ -418,9 +522,14 @@ def attempt_to_out(db: Session, attempt: ExamAttempt, exam: MockTest) -> ExamAtt
         attempt_id=attempt.id,
         exam_id=exam.id,
         exam_version=attempt.exam_version,
+        exam_version_id=attempt.exam_version_id,
         status=attempt.status,
         title=exam.title,
         hsk_level=exam.hsk_level,
+        exam_revision_id=attempt.exam_revision_id,
+        exam_level_id=attempt.exam_level_id,
+        scoring_policy_id=attempt.scoring_policy_id,
+        blueprint_schema_version=attempt.blueprint_schema_version,
         duration_minutes=exam.duration_minutes,
         sections=[ExamSectionOut(**section) for section in attempt.question_snapshot.get("sections_meta", [])],
         questions=_questions_from_snapshot(attempt),
@@ -436,12 +545,15 @@ def attempt_to_out(db: Session, attempt: ExamAttempt, exam: MockTest) -> ExamAtt
 
 
 def _build_snapshot(db: Session, exam: MockTest, seed: int) -> dict[str, Any]:
+    canonical = latest_version(db, exam.id, published_only=True)
+    if canonical is not None:
+        return _build_canonical_snapshot(db, exam, canonical, seed)
     rng = random.Random(seed)
     randomized = bool((exam.blueprint or {}).get("randomized", False)) if isinstance(exam.blueprint, dict) else False
     sections = []
     sections_meta = []
     for index, section in enumerate(sections_from_exam(exam)):
-        rows = _eligible_questions(db, exam.hsk_level, section.type)
+        rows = _eligible_question_versions(db, exam, section.type)
         if randomized:
             rng.shuffle(rows)
         selected = rows[: section.question_count]
@@ -450,25 +562,88 @@ def _build_snapshot(db: Session, exam: MockTest, seed: int) -> dict[str, Any]:
             {
                 "type": section.type,
                 "section_index": index,
-                "questions": [_question_snapshot(row, section.type, index, qindex) for qindex, row in enumerate(selected)],
+                "questions": [
+                    _question_snapshot(question, version, section.type, index, qindex)
+                    for qindex, (question, version) in enumerate(selected)
+                ],
             }
         )
     return {"exam_version": exam.version, "seed": seed, "sections_meta": sections_meta, "sections": sections}
 
 
-def _eligible_questions(db: Session, hsk_level: int, section_type: str) -> list[Question]:
+def _build_canonical_snapshot(db: Session, exam: MockTest, version: ExamVersion, seed: int) -> dict[str, Any]:
+    rng = random.Random(seed)
+    randomized = bool((version.configuration or {}).get("randomized", False))
+    sections = []
+    sections_meta = [section.model_dump() for section in sections_from_exam(exam, db)]
+    for section_index, section in enumerate(version.sections):
+        questions = []
+        for part in section.parts:
+            assignments = list(part.questions)
+            if randomized:
+                rng.shuffle(assignments)
+            for _question_index, assignment in enumerate(assignments):
+                question_version = assignment.question_version
+                question = db.get(Question, question_version.question_id)
+                if question is None:
+                    continue
+                questions.append(
+                    _question_snapshot(
+                        question, question_version, section.code, section_index, len(questions),
+                        part_id=part.id, part_code=part.code, part_title=part.title,
+                        points=assignment.points,
+                    )
+                )
+        sections.append({"type": section.code, "section_index": section_index, "questions": questions})
+    return {
+        "exam_version": version.version_number,
+        "exam_version_id": version.id,
+        "seed": seed,
+        "sections_meta": sections_meta,
+        "sections": sections,
+        "allow_previous_section": bool((version.configuration or {}).get("allow_previous_section", True)),
+    }
+
+
+def _eligible_questions(db: Session, exam: MockTest | int, section_type: str) -> list[Question]:
+    return [question for question, _ in _eligible_question_versions(db, exam, section_type)]
+
+
+def _eligible_question_versions(
+    db: Session, exam: MockTest | int, section_type: str
+) -> list[tuple[Question, QuestionVersion]]:
+    for question in db.scalars(select(Question).where(Question.current_version_id.is_(None))).all():
+        ensure_current_version(db, question)
+    level_id = exam.exam_level_id if isinstance(exam, MockTest) else None
+    hsk_level = exam.hsk_level if isinstance(exam, MockTest) else exam
+    version_ids = {int(item) for item in (exam.question_version_ids or [])} if isinstance(exam, MockTest) else set()
+    version_scope = [] if version_ids else [QuestionVersion.id == Question.current_version_id]
     rows = (
-        db.scalars(
-            select(Question)
+        db.execute(
+            select(Question, QuestionVersion)
+            .join(QuestionVersion, QuestionVersion.question_id == Question.id)
             .join(Lesson, Lesson.id == Question.lesson_id)
             .join(HskLevel, HskLevel.id == Lesson.hsk_level_id)
-            .where(HskLevel.level_number == hsk_level, Question.is_archived.is_(False))
+            .where(Question.is_archived.is_(False), QuestionVersion.status == "published", *version_scope)
             .order_by(Lesson.sort_order, Lesson.id, Question.sort_order, Question.id)
         )
-        .unique()
         .all()
     )
-    return [row for row in rows if _section_for_question(row).upper() == section_type.upper()]
+    if version_ids:
+        rows = [row for row in rows if row[1].id in version_ids]
+    elif level_id is not None:
+        memberships = db.scalars(
+            select(ContentMembership).where(ContentMembership.exam_level_id == level_id)
+        ).all()
+        question_ids = {row.content_id for row in memberships if row.content_type == "question"}
+        lesson_ids = {row.content_id for row in memberships if row.content_type == "lesson"}
+        rows = [row for row in rows if row[0].id in question_ids or row[0].lesson_id in lesson_ids]
+    elif hsk_level is not None:
+        rows = [
+            row for row in rows
+            if row[0].lesson and row[0].lesson.hsk_level and row[0].lesson.hsk_level.level_number == hsk_level
+        ]
+    return [(question, version) for question, version in rows if _section_for_question(question).upper() == section_type.upper()]
 
 
 def _section_for_question(question: Question) -> str:
@@ -489,21 +664,37 @@ def _section_for_question(question: Question) -> str:
     return "VOCABULARY"
 
 
-def _question_snapshot(question: Question, section: str, section_index: int, question_index: int) -> dict[str, Any]:
+def _question_snapshot(
+    question: Question,
+    version: QuestionVersion,
+    section: str,
+    section_index: int,
+    question_index: int,
+    *,
+    part_id: int | None = None,
+    part_code: str | None = None,
+    part_title: str | None = None,
+    points: int | None = None,
+) -> dict[str, Any]:
     return {
         "id": question.id,
+        "question_version_id": version.id,
         "section": section,
         "section_index": section_index,
         "question_index": question_index,
         "exercise_id": question.exercise_id,
-        "question_type": canonical_type_value(question.question_type),
-        "prompt": question.prompt,
-        "instruction": question.instruction,
-        "difficulty": question.difficulty or 1,
-        "points": question.points or 1,
+        "question_type": canonical_type_value(version.question_type),
+        "prompt": version.prompt,
+        "instruction": version.instruction,
+        "difficulty": version.difficulty or 1,
+        "points": points or version.points or 1,
         "order": question.sort_order,
-        "config": public_question_config(question),
+        "config": public_question_config(version),
+        "explanation": version.explanation,
         "lesson_title": question.lesson.title if question.lesson else None,
+        "part_id": part_id,
+        "part_code": part_code,
+        "part_title": part_title,
     }
 
 

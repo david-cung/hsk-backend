@@ -70,6 +70,8 @@ class ProfileOut(BaseModel):
     study_streak_days: int
     onboarding_completed: bool
     timezone: str = "Asia/Ho_Chi_Minh"
+    target_exam_revision_id: int | None = None
+    target_exam_level_id: int | None = None
 
 
 class ProfileUpdate(BaseModel):
@@ -82,6 +84,8 @@ class ProfileUpdate(BaseModel):
     daily_goal_type: str | None = None
     onboarding_completed: bool | None = None
     timezone: str | None = Field(default=None, max_length=80)
+    target_exam_revision_id: int | None = Field(default=None, ge=1)
+    target_exam_level_id: int | None = Field(default=None, ge=1)
 
     @field_validator("timezone")
     @classmethod
@@ -459,6 +463,7 @@ class ImportJobOut(BaseModel):
 
 class PracticeQuestionOut(BaseModel):
     id: int
+    question_version_id: int | None = None
     exercise_id: int
     question_type: str
     prompt: str
@@ -668,6 +673,8 @@ class QuestionReorderIn(BaseModel):
 
 class AdminQuestionOut(BaseModel):
     id: int
+    question_version_id: int | None = None
+    version_number: int | None = None
     exercise_id: int | None
     lesson_id: int
     external_id: str | None = None
@@ -681,6 +688,35 @@ class AdminQuestionOut(BaseModel):
     configuration: dict[str, Any]
     status: str
     metadata: dict[str, Any] | None = None
+
+
+class QuestionBankCreate(QuestionCreate):
+    lesson_id: int = Field(ge=1)
+    exercise_id: int = Field(ge=1)
+    exam_revision_id: int = Field(ge=1)
+    exam_level_id: int = Field(ge=1)
+    skill: str = Field(min_length=1, max_length=40)
+
+
+class QuestionBankUpdate(QuestionUpdate):
+    exam_revision_id: int | None = Field(default=None, ge=1)
+    exam_level_id: int | None = Field(default=None, ge=1)
+    skill: str | None = Field(default=None, min_length=1, max_length=40)
+
+
+class QuestionBankItemOut(AdminQuestionOut):
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    specification_id: int | None = None
+    skill: str | None = None
+
+
+class QuestionBankListOut(BaseModel):
+    items: list[QuestionBankItemOut]
+    total: int
+    page: int
+    page_size: int
+    pages: int
 
 
 class AdminExerciseOut(ExerciseSummaryOut):

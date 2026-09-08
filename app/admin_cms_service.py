@@ -17,7 +17,9 @@ from app.models import (
     AudioAsset,
     ContentStatus,
     Course,
+    ExamLevel,
     ExampleSentence,
+    ExamRevision,
     Exercise,
     ExerciseSet,
     GrammarPoint,
@@ -145,6 +147,8 @@ def global_search(
     content_type: str | None,
     status_filter: str | None,
     hsk_level: int | None,
+    exam_revision_id: int | None = None,
+    exam_level_id: int | None = None,
     page: int,
     page_size: int,
     sort: str,
@@ -154,7 +158,12 @@ def global_search(
     for entity_type in entity_types:
         if entity_type not in ENTITY_MODELS:
             raise HTTPException(status_code=422, detail="Unsupported content type")
-        items.extend(_search_entity(db, entity_type, query, status_filter, hsk_level, sort))
+        items.extend(
+            _search_entity(
+                db, entity_type, query, status_filter, hsk_level, sort,
+                exam_revision_id, exam_level_id,
+            )
+        )
     offset = (page - 1) * page_size
     page_items = items[offset : offset + page_size]
     return {
@@ -341,6 +350,8 @@ def _search_entity(
     status_filter: str | None,
     hsk_level: int | None,
     sort: str,
+    exam_revision_id: int | None = None,
+    exam_level_id: int | None = None,
 ) -> list[dict[str, Any]]:
     model = ENTITY_MODELS[entity_type]
     stmt: Select[Any] = select(model)
@@ -361,6 +372,22 @@ def _search_entity(
             )
         elif entity_type == "exams":
             stmt = stmt.where(MockTest.hsk_level == hsk_level)
+    if entity_type in {"lessons", "vocabulary", "grammar", "courses"} and (
+        exam_revision_id is not None or exam_level_id is not None
+    ):
+        if hsk_level is None:
+            stmt = stmt.join(HskLevel, model.hsk_level_id == HskLevel.id)
+        if exam_level_id is not None:
+            stmt = stmt.where(HskLevel.exam_level_id == exam_level_id)
+        else:
+            stmt = stmt.join(ExamLevel, HskLevel.exam_level_id == ExamLevel.id).join(
+                ExamRevision, ExamLevel.revision_id == ExamRevision.id
+            ).where(ExamRevision.id == exam_revision_id)
+    elif entity_type == "exams":
+        if exam_revision_id is not None:
+            stmt = stmt.where(MockTest.exam_revision_id == exam_revision_id)
+        if exam_level_id is not None:
+            stmt = stmt.where(MockTest.exam_level_id == exam_level_id)
     if query:
         value = f"%{query.strip()}%"
         if entity_type == "vocabulary":
@@ -418,6 +445,8 @@ def _search_item(entity_type: str, row: Any) -> dict[str, Any]:
         "title": str(title),
         "subtitle": subtitle,
         "hsk_level": getattr(row, "hsk_level_id", None) or getattr(row, "hsk_level", None),
+        "exam_revision_id": getattr(row, "exam_revision_id", None),
+        "exam_level_id": getattr(row, "exam_level_id", None),
         "status": _row_status(row, entity_type),
         "updated_at": getattr(row, "updated_at", None),
     }

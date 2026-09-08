@@ -1,7 +1,9 @@
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    environment: str = "development"
     database_url: str = "postgresql+psycopg://hsk:hsk@postgres:5432/hsk"
     jwt_secret: str = "change-me-in-production"
     jwt_algorithm: str = "HS256"
@@ -66,8 +68,21 @@ class Settings(BaseSettings):
     xp_level_base: int = 100
     xp_level_step: int = 50
     notification_provider: str = "mock"
+    # Phase 4 - PDF/audio exam import
+    exam_import_storage_dir: str = "/tmp/hsk-exam-imports"
+    exam_import_max_bytes: int = 25 * 1024 * 1024
+    exam_import_ai_enabled: bool = False
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+    @model_validator(mode="after")
+    def validate_production_security(self) -> "Settings":
+        if self.environment.lower() in {"production", "prod"}:
+            if self.jwt_secret in {"change-me-in-production", "dev-hsk-mobile-secret"}:
+                raise ValueError("JWT_SECRET must be set to a non-development value in production")
+            if "*" in self.cors_origins:
+                raise ValueError("CORS_ORIGINS must list explicit origins in production")
+        return self
 
 
 settings = Settings()

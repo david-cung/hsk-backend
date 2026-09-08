@@ -9,7 +9,7 @@ field name) without clashing with main's normalized content schemas
 from datetime import date, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 # ---------------------------------------------------------------------------
@@ -137,7 +137,7 @@ class CourseProgressOut(BaseModel):
     course_id: int
     title: str
     title_translations: dict[str, str] | None = None
-    hsk_level: int
+    hsk_level: int | None
     total_lessons: int
     completed_lessons: int
     progress_percent: float
@@ -152,7 +152,7 @@ class LessonProgressAnalyticsOut(BaseModel):
     lesson_id: int
     title: str
     title_translations: dict[str, str] | None = None
-    hsk_level: int
+    hsk_level: int | None
     lesson_type: str
     started: bool
     completed: bool
@@ -372,6 +372,7 @@ class SpeakingAttemptOut(BaseModel):
 # ---------------------------------------------------------------------------
 class SkillQuestionOut(BaseModel):
     id: int
+    question_version_id: int | None = None
     exercise_id: int | None = None
     question_type: str
     prompt: str
@@ -389,6 +390,20 @@ class ExamSectionOut(BaseModel):
     duration_minutes: int
     question_count: int
     allow_previous: bool = True
+    code: str | None = None
+    skill: str | None = None
+    duration_seconds: int | None = None
+    instructions: str | None = None
+    parts: list["ExamPartOut"] = Field(default_factory=list)
+
+
+class ExamPartOut(BaseModel):
+    id: int | None = None
+    code: str | None = None
+    title: str
+    instructions: str | None = None
+    sort_order: int = 0
+    questions: list["ExamQuestionOut"] = Field(default_factory=list)
 
 
 class ExamListOut(BaseModel):
@@ -396,11 +411,15 @@ class ExamListOut(BaseModel):
     title: str
     title_translations: dict[str, str] | None = None
     description: str | None = None
-    hsk_level: int
+    hsk_level: int | None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    scoring_policy_id: int | None = None
+    blueprint_schema_version: int = 1
     exam_type: str
     duration_minutes: int
     question_count: int
-    sections: list[ExamSectionOut] = Field(default_factory=list)
+    sections: list[ExamSectionOut] = Field(min_length=1)
     attempt_count: int = 0
     best_percentage: float | None = None
     status: str
@@ -416,6 +435,9 @@ class ExamQuestionOut(SkillQuestionOut):
     section: str
     section_index: int
     question_index: int
+    part_id: int | None = None
+    part_code: str | None = None
+    part_title: str | None = None
     lesson_title: str | None = None
     lesson_title_translations: dict[str, str] | None = None
 
@@ -424,10 +446,15 @@ class ExamAttemptOut(BaseModel):
     attempt_id: int
     exam_id: int
     exam_version: int
+    exam_version_id: int | None = None
     status: str
     title: str
     title_translations: dict[str, str] | None = None
-    hsk_level: int
+    hsk_level: int | None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    scoring_policy_id: int | None = None
+    blueprint_schema_version: int = 1
     duration_minutes: int
     sections: list[ExamSectionOut] = Field(default_factory=list)
     questions: list[ExamQuestionOut] = Field(default_factory=list)
@@ -448,6 +475,7 @@ class ExamAnswerIn(BaseModel):
 
 class ExamQuestionResultOut(BaseModel):
     question_id: int
+    question_version_id: int | None = None
     section: str
     prompt: str | None = None
     user_answer: Any = None
@@ -476,7 +504,10 @@ class ExamResultOut(BaseModel):
     attempt_id: int
     exam_id: int
     title: str
-    hsk_level: int
+    hsk_level: int | None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    scoring_policy_id: int | None = None
     status: str
     score_label: str = "Estimated Practice Score"
     raw_score: float
@@ -497,7 +528,10 @@ class ExamAttemptHistoryOut(BaseModel):
     attempt_id: int
     exam_id: int
     title: str
-    hsk_level: int
+    hsk_level: int | None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    scoring_policy_id: int | None = None
     status: str
     score: float | None = None
     percentage: float | None = None
@@ -509,13 +543,156 @@ class ExamAttemptHistoryOut(BaseModel):
 class AdminExamIn(BaseModel):
     title: str = Field(min_length=1, max_length=180)
     description: str | None = None
-    hsk_level: int = Field(ge=1, le=6)
+    hsk_level: int | None = Field(default=None, ge=1, le=6)
+    exam_revision_id: int | None = Field(default=None, ge=1)
+    exam_level_id: int | None = Field(default=None, ge=1)
+    scoring_policy_id: int | None = Field(default=None, ge=1)
     duration_minutes: int = Field(ge=1, le=240)
     question_count: int = Field(ge=1, le=200)
     sections: list[ExamSectionOut] = Field(default_factory=list)
     scoring_config: dict[str, Any] = Field(default_factory=dict)
     instructions: str | None = None
     status: str = Field(default="DRAFT", pattern="^(DRAFT|PUBLISHED|ARCHIVED)$")
+
+    @model_validator(mode="after")
+    def validate_scope(self) -> "AdminExamIn":
+        if self.hsk_level is None and not self.exam_level_id:
+            raise ValueError("An exam level or legacy HSK level is required")
+        if (self.exam_revision_id is None) != (self.exam_level_id is None):
+            raise ValueError("Both exam revision and exam level are required")
+        return self
+
+
+# ---------------------------------------------------------------------------
+# Versioned exam builder (Phase 3)
+# ---------------------------------------------------------------------------
+class AdminExamQuestionIn(BaseModel):
+    question_version_id: int = Field(ge=1)
+    sort_order: int = Field(default=0, ge=0)
+    points: int = Field(default=1, ge=1)
+    required: bool = True
+    configuration: dict[str, Any] = Field(default_factory=dict)
+
+
+class AdminExamPartIn(BaseModel):
+    code: str | None = Field(default=None, max_length=80)
+    title: str = Field(min_length=1, max_length=180)
+    instructions: str | None = None
+    sort_order: int = Field(default=0, ge=0)
+    configuration: dict[str, Any] = Field(default_factory=dict)
+    questions: list[AdminExamQuestionIn] = Field(default_factory=list)
+
+
+class AdminExamSectionIn(BaseModel):
+    code: str = Field(min_length=1, max_length=80)
+    title: str = Field(min_length=1, max_length=180)
+    skill: str | None = Field(default=None, max_length=40)
+    sort_order: int = Field(default=0, ge=0)
+    duration_seconds: int = Field(default=0, ge=0)
+    instructions: str | None = None
+    configuration: dict[str, Any] = Field(default_factory=dict)
+    parts: list[AdminExamPartIn] = Field(default_factory=list)
+
+
+class AdminExamDocumentIn(BaseModel):
+    title: str = Field(min_length=1, max_length=180)
+    description: str | None = None
+    exam_revision_id: int = Field(ge=1)
+    exam_level_id: int = Field(ge=1)
+    scoring_policy_id: int = Field(ge=1)
+    duration_seconds: int = Field(ge=1, le=86400)
+    instructions: str | None = None
+    blueprint_schema_version: int = Field(default=1, ge=1)
+    configuration: dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    sections: list[AdminExamSectionIn] = Field(default_factory=list)
+
+
+class AdminExamQuestionOut(BaseModel):
+    id: int
+    question_version_id: int
+    sort_order: int
+    points: int
+    required: bool
+    question_id: int
+    question_type: str
+    skill: str | None = None
+    prompt: str
+    instruction: str | None = None
+    configuration: dict[str, Any] = Field(default_factory=dict)
+
+
+class AdminExamPartOut(BaseModel):
+    id: int
+    code: str | None = None
+    title: str
+    instructions: str | None = None
+    sort_order: int
+    configuration: dict[str, Any] = Field(default_factory=dict)
+    questions: list[AdminExamQuestionOut] = Field(default_factory=list)
+
+
+class AdminExamSectionOut(BaseModel):
+    id: int
+    code: str
+    title: str
+    skill: str | None = None
+    sort_order: int
+    duration_seconds: int
+    instructions: str | None = None
+    configuration: dict[str, Any] = Field(default_factory=dict)
+    parts: list[AdminExamPartOut] = Field(default_factory=list)
+
+
+class ExamValidationIssue(BaseModel):
+    code: str
+    field: str
+    message: str
+
+
+class ExamValidationOut(BaseModel):
+    valid: bool
+    errors: list[ExamValidationIssue] = Field(default_factory=list)
+
+
+class AdminExamVersionOut(BaseModel):
+    id: int
+    exam_id: int
+    version_number: int
+    status: str
+    title: str
+    description: str | None = None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    scoring_policy_id: int | None = None
+    duration_seconds: int
+    instructions: str | None = None
+    blueprint_schema_version: int
+    configuration: dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    sections: list[AdminExamSectionOut] = Field(default_factory=list)
+
+
+class AdminExamListItem(BaseModel):
+    id: int
+    title: str
+    description: str | None = None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
+    scoring_policy_id: int | None = None
+    version_number: int
+    version_id: int
+    status: str
+    duration_seconds: int
+    question_count: int
+
+
+class AdminExamListOut(BaseModel):
+    items: list[AdminExamListItem] = Field(default_factory=list)
+    total: int
+    page: int
+    page_size: int
+    pages: int
 
 
 # ---------------------------------------------------------------------------
@@ -759,6 +936,8 @@ class AdminSearchItemOut(BaseModel):
     title: str
     subtitle: str | None = None
     hsk_level: int | None = None
+    exam_revision_id: int | None = None
+    exam_level_id: int | None = None
     status: str | None = None
     updated_at: datetime | None = None
 
@@ -821,6 +1000,31 @@ class AdminImportPreviewOut(BaseModel):
     invalid_records: int
     warnings: list[dict[str, Any]]
     errors: list[dict[str, Any]]
+
+
+class ExamImportSummaryOut(BaseModel):
+    sections: int = 0
+    questions: int = 0
+    answers_matched: int = 0
+    warnings: int = 0
+    review_required: bool = False
+
+
+class ExamImportJobOut(BaseModel):
+    id: int
+    status: str
+    exam_revision_id: int
+    exam_level_id: int
+    exam_name: str
+    created_exam_id: int | None = None
+    created_exam_version_id: int | None = None
+    progress: int = 0
+    warnings: list[dict[str, Any]] = Field(default_factory=list)
+    errors: list[dict[str, Any]] = Field(default_factory=list)
+    created_at: datetime
+    updated_at: datetime
+    summary: ExamImportSummaryOut = Field(default_factory=ExamImportSummaryOut)
+    parsed_document: dict[str, Any] | None = None
 
 
 # Exam questions reuse the skill question contract (codex ``config`` naming).

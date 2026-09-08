@@ -41,6 +41,7 @@ from app.practice_engine import (
     canonical_exercise_type,
     validate_question_configuration,
 )
+from app.question_service import sync_question_version
 
 COURSE_TYPE_ORDER = {
     "mixed": 1,
@@ -768,6 +769,8 @@ class ContentImporter:
             question.sort_order = question_item.order
             question.status = question_item.status
             question.metadata_json = question_item.metadata
+            self.db.flush()
+            sync_question_version(self.db, question)
         return created
 
 

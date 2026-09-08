@@ -29,7 +29,9 @@ from app.content_router import router as content_router
 from app.content_security import public_lesson_content
 from app.database import SessionLocal, get_db
 from app.email import EmailSender, get_email_sender
+from app.exam_import_router import router as exam_import_router
 from app.exam_router import admin_router as exam_admin_router
+from app.exam_router import builder_router as exam_builder_router
 from app.exam_router import router as exam_router
 from app.gamification_router import router as gamification_router
 from app.gamification_service import evaluate_achievements
@@ -41,6 +43,7 @@ from app.google_auth import (
 )
 from app.models import (
     Achievement,
+    ExamLevel,
     HskLevel,
     Lesson,
     LessonProgress,
@@ -54,10 +57,12 @@ from app.models import (
     SavedWord,
     User,
     UserAchievement,
+    UserLearningTarget,
 )
 from app.notification_router import router as notification_router
 from app.practice_router import router as practice_router
 from app.progress_router import router as progress_router
+from app.question_bank_router import router as question_bank_router
 from app.review_router import router as review_router
 from app.schemas import (
     AchievementOut,
@@ -92,6 +97,8 @@ from app.schemas import (
 )
 from app.seed import _native_text_translations, seed_data
 from app.speaking_router import router as speaking_router
+from app.specification_router import router as specification_router
+from app.specification_service import upsert_learning_target
 
 logger = logging.getLogger(__name__)
 
@@ -105,12 +112,16 @@ app.add_middleware(
 )
 app.include_router(content_router)
 app.include_router(practice_router)
+app.include_router(question_bank_router)
 app.include_router(audio_router)
 app.include_router(speaking_router)
 app.include_router(progress_router)
 app.include_router(review_router)
+app.include_router(specification_router)
 app.include_router(exam_router)
 app.include_router(exam_admin_router)
+app.include_router(exam_builder_router)
+app.include_router(exam_import_router)
 app.include_router(ai_router)
 app.include_router(gamification_router)
 app.include_router(notification_router)
@@ -128,7 +139,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-def profile_to_out(profile: Profile) -> ProfileOut:
+def profile_to_out(profile: Profile, target: UserLearningTarget | None = None) -> ProfileOut:
     return ProfileOut(
         learning_goal=profile.learning_goal,
         target_hsk_level=profile.target_hsk_level,
@@ -138,6 +149,8 @@ def profile_to_out(profile: Profile) -> ProfileOut:
         study_streak_days=profile.study_streak_days,
         onboarding_completed=profile.onboarding_completed,
         timezone=profile.timezone or "Asia/Ho_Chi_Minh",
+        target_exam_revision_id=target.exam_revision_id if target else None,
+        target_exam_level_id=target.exam_level_id if target else None,
     )
 
 
@@ -480,8 +493,13 @@ def admin_status(_: User = Depends(require_admin)) -> AdminStatusOut:
 
 
 @app.get("/api/v1/auth/me/profile", response_model=ProfileOut)
-def my_profile(user: User = Depends(get_current_user)) -> ProfileOut:
-    return profile_to_out(user.profile)
+def my_profile(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> ProfileOut:
+    target = db.scalar(
+        select(UserLearningTarget).where(
+            UserLearningTarget.user_id == user.id, UserLearningTarget.is_primary.is_(True)
+        )
+    )
+    return profile_to_out(user.profile, target)
 
 
 @app.patch("/api/v1/profile", response_model=ProfileOut)
@@ -491,11 +509,27 @@ def update_profile(
     db: Session = Depends(get_db),
 ) -> ProfileOut:
     updates = payload.model_dump(exclude_unset=True)
+    revision_id = updates.pop("target_exam_revision_id", None)
+    level_id = updates.pop("target_exam_level_id", None)
+    if (revision_id is None) != (level_id is None):
+        raise HTTPException(status_code=422, detail="Both target exam revision and level are required")
+    target = None
+    if revision_id is not None and level_id is not None:
+        target = upsert_learning_target(db, user, revision_id, level_id)
+        target_level = db.get(ExamLevel, level_id)
+        if target_level and target_level.level_number is not None:
+            updates["target_hsk_level"] = target_level.level_number
     for key, value in updates.items():
         setattr(user.profile, key, value)
     db.commit()
     db.refresh(user.profile)
-    return profile_to_out(user.profile)
+    if target is None:
+        target = db.scalar(
+            select(UserLearningTarget).where(
+                UserLearningTarget.user_id == user.id, UserLearningTarget.is_primary.is_(True)
+            )
+        )
+    return profile_to_out(user.profile, target)
 
 
 @app.get("/api/v1/content/levels", response_model=list[HskLevelOut])
@@ -952,18 +986,12 @@ def submit_mock_test(
     _user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> QuizSubmitOut:
-    mock_test = db.get(MockTest, mock_test_id)
-    if not mock_test:
-        raise HTTPException(status_code=404, detail="Mock test not found")
-    rows = get_mock_test_questions(db, mock_test)
-    if not rows:
-        raise HTTPException(status_code=400, detail="Mock test has no questions")
-
-    score, correct_count, results = score_questions(rows, payload.answers)
-    return QuizSubmitOut(
-        attempt_id=mock_test.id,
-        score=score,
-        total_questions=len(rows),
-        correct_count=correct_count,
-        results=results,
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail="Legacy mock-test submission is retired; use /api/v1/exams and /api/v1/exam-attempts",
+        headers={
+            "Deprecation": "true",
+            "Sunset": "2027-01-01",
+            "Link": '</api/v1/exams>; rel="successor-version"',
+        },
     )

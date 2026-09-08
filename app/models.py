@@ -129,6 +129,9 @@ class User(TimestampMixin, Base):
     conversations: Mapped[list["Conversation"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
+    learning_targets: Mapped[list["UserLearningTarget"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 class RefreshToken(Base):
@@ -192,6 +195,187 @@ class Profile(TimestampMixin, Base):
     user: Mapped[User] = relationship(back_populates="profile")
 
 
+class ExamStandard(TimestampMixin, Base):
+    __tablename__ = "exam_standards"
+    __table_args__ = (UniqueConstraint("code", name="uq_exam_standards_code"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    code: Mapped[str] = mapped_column(String(80), index=True)
+    name: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.PUBLISHED,
+        server_default=ContentStatus.PUBLISHED.value,
+        index=True,
+    )
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    specifications: Mapped[list["ExamSpecification"]] = relationship(
+        back_populates="standard", cascade="all, delete-orphan"
+    )
+
+
+class ExamSpecification(TimestampMixin, Base):
+    __tablename__ = "exam_specifications"
+    __table_args__ = (UniqueConstraint("standard_id", "code", name="uq_exam_specs_standard_code"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    standard_id: Mapped[int] = mapped_column(ForeignKey("exam_standards.id", ondelete="RESTRICT"), index=True)
+    code: Mapped[str] = mapped_column(String(80))
+    name: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.PUBLISHED,
+        server_default=ContentStatus.PUBLISHED.value,
+        index=True,
+    )
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    standard: Mapped[ExamStandard] = relationship(back_populates="specifications")
+    revisions: Mapped[list["ExamRevision"]] = relationship(
+        back_populates="specification", cascade="all, delete-orphan"
+    )
+
+
+class ExamRevision(TimestampMixin, Base):
+    __tablename__ = "exam_revisions"
+    __table_args__ = (
+        UniqueConstraint("specification_id", "code", name="uq_exam_revisions_spec_code"),
+        Index("ix_exam_revisions_spec_status", "specification_id", "status"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    specification_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_specifications.id", ondelete="RESTRICT"), index=True
+    )
+    code: Mapped[str] = mapped_column(String(120))
+    version: Mapped[str] = mapped_column(String(40))
+    name: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.PUBLISHED,
+        server_default=ContentStatus.PUBLISHED.value,
+        index=True,
+    )
+    is_default: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", index=True)
+    effective_from: Mapped[date | None] = mapped_column(Date, nullable=True)
+    effective_to: Mapped[date | None] = mapped_column(Date, nullable=True)
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    specification: Mapped[ExamSpecification] = relationship(back_populates="revisions")
+    levels: Mapped[list["ExamLevel"]] = relationship(
+        back_populates="revision", cascade="all, delete-orphan"
+    )
+    scoring_policies: Mapped[list["ScoringPolicy"]] = relationship(
+        back_populates="revision", cascade="all, delete-orphan"
+    )
+
+
+class ExamLevel(TimestampMixin, Base):
+    __tablename__ = "exam_levels"
+    __table_args__ = (
+        UniqueConstraint("revision_id", "code", name="uq_exam_levels_revision_code"),
+        UniqueConstraint("revision_id", "level_number", name="uq_exam_levels_revision_number"),
+        CheckConstraint("level_number IS NULL OR level_number > 0", name="ck_exam_levels_number_positive"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    revision_id: Mapped[int] = mapped_column(ForeignKey("exam_revisions.id", ondelete="RESTRICT"), index=True)
+    code: Mapped[str] = mapped_column(String(80))
+    level_number: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    display_name: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.PUBLISHED,
+        server_default=ContentStatus.PUBLISHED.value,
+        index=True,
+    )
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    revision: Mapped[ExamRevision] = relationship(back_populates="levels")
+
+
+class ScoringPolicy(TimestampMixin, Base):
+    __tablename__ = "scoring_policies"
+    __table_args__ = (
+        UniqueConstraint("revision_id", "code", "version", name="uq_scoring_policies_identity"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    revision_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    code: Mapped[str] = mapped_column(String(80))
+    name: Mapped[str] = mapped_column(String(180))
+    version: Mapped[str] = mapped_column(String(40))
+    policy_type: Mapped[str] = mapped_column(String(80))
+    configuration: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.PUBLISHED,
+        server_default=ContentStatus.PUBLISHED.value,
+        index=True,
+    )
+
+    revision: Mapped[ExamRevision | None] = relationship(back_populates="scoring_policies")
+
+
+class ContentMembership(TimestampMixin, Base):
+    __tablename__ = "content_memberships"
+    __table_args__ = (
+        UniqueConstraint("content_type", "content_id", "exam_level_id", name="uq_content_membership_level"),
+        Index("ix_content_memberships_level_type", "exam_level_id", "content_type"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    content_type: Mapped[str] = mapped_column(String(60), index=True)
+    content_id: Mapped[int] = mapped_column(Integer, index=True)
+    exam_level_id: Mapped[int] = mapped_column(ForeignKey("exam_levels.id", ondelete="CASCADE"), index=True)
+    introduced_in_revision_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    retired_in_revision_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+
+class UserLearningTarget(TimestampMixin, Base):
+    __tablename__ = "user_learning_targets"
+    __table_args__ = (
+        UniqueConstraint("user_id", "exam_revision_id", "exam_level_id", name="uq_user_learning_target"),
+        Index("ix_user_learning_targets_user_primary", "user_id", "is_primary"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    exam_revision_id: Mapped[int] = mapped_column(ForeignKey("exam_revisions.id", ondelete="RESTRICT"), index=True)
+    exam_level_id: Mapped[int] = mapped_column(ForeignKey("exam_levels.id", ondelete="RESTRICT"), index=True)
+    is_primary: Mapped[bool] = mapped_column(Boolean, default=True, server_default="true", index=True)
+    metadata_json: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    user: Mapped[User] = relationship(back_populates="learning_targets")
+
+
 class HskLevel(TimestampMixin, Base):
     __tablename__ = "hsk_levels"
     __table_args__ = (
@@ -213,9 +397,13 @@ class HskLevel(TimestampMixin, Base):
         index=True,
     )
     metadata_json: Mapped[dict[str, Any] | None] = mapped_column("metadata", JSONB, nullable=True)
+    exam_level_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_levels.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
 
     lessons: Mapped[list["Lesson"]] = relationship(back_populates="hsk_level")
     courses: Mapped[list["Course"]] = relationship(back_populates="hsk_level")
+    exam_level: Mapped[ExamLevel | None] = relationship()
 
 
 class Course(TimestampMixin, Base):
@@ -687,9 +875,93 @@ class Question(TimestampMixin, Base):
     metadata_json: Mapped[dict[str, Any] | None] = mapped_column(
         "metadata", JSONB, nullable=True
     )
+    current_version_id: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True,
+        index=True,
+    )
 
     lesson: Mapped[Lesson] = relationship(back_populates="questions")
     exercise: Mapped[Exercise | None] = relationship(back_populates="questions")
+    versions: Mapped[list["QuestionVersion"]] = relationship(
+        back_populates="question",
+        foreign_keys="QuestionVersion.question_id",
+        order_by="QuestionVersion.version_number",
+        cascade="all, delete-orphan",
+    )
+
+
+class QuestionVersion(TimestampMixin, Base):
+    __tablename__ = "question_versions"
+    __table_args__ = (
+        UniqueConstraint("question_id", "version_number", name="uq_question_versions_number"),
+        Index("ix_question_versions_question_status", "question_id", "status"),
+        CheckConstraint("version_number > 0", name="ck_question_versions_number_positive"),
+        CheckConstraint("points > 0", name="ck_question_versions_points"),
+        CheckConstraint("length(trim(prompt)) > 0", name="ck_question_versions_prompt_not_empty"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    question_id: Mapped[int] = mapped_column(
+        ForeignKey("questions.id", ondelete="RESTRICT"), index=True
+    )
+    version_number: Mapped[int] = mapped_column(Integer)
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.DRAFT,
+        server_default=ContentStatus.DRAFT.value,
+        index=True,
+    )
+    question_type: Mapped[str] = mapped_column(String(40))
+    skill: Mapped[str | None] = mapped_column(String(40), nullable=True, index=True)
+    prompt: Mapped[str] = mapped_column(Text)
+    instruction: Mapped[str | None] = mapped_column(Text, nullable=True)
+    correct_answer: Mapped[str] = mapped_column(Text, default="", server_default="")
+    explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    difficulty: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    points: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
+    configuration: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    reference_type: Mapped[str | None] = mapped_column(String(40), nullable=True, index=True)
+    reference_id: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    metadata_json: Mapped[dict[str, Any] | None] = mapped_column(
+        "metadata", JSONB, nullable=True
+    )
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    question: Mapped[Question] = relationship(
+        back_populates="versions", foreign_keys=[question_id]
+    )
+    options: Mapped[list["QuestionOption"]] = relationship(
+        back_populates="question_version",
+        order_by="QuestionOption.sort_order",
+        cascade="all, delete-orphan",
+    )
+
+
+class QuestionOption(TimestampMixin, Base):
+    __tablename__ = "question_options"
+    __table_args__ = (
+        UniqueConstraint(
+            "question_version_id", "option_group", "option_id",
+            name="uq_question_options_identity",
+        ),
+        Index("ix_question_options_version_group", "question_version_id", "option_group"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    question_version_id: Mapped[int] = mapped_column(
+        ForeignKey("question_versions.id", ondelete="CASCADE"), index=True
+    )
+    option_group: Mapped[str] = mapped_column(String(40), default="options", server_default="options")
+    option_id: Mapped[str] = mapped_column(String(120))
+    text: Mapped[str] = mapped_column(Text)
+    translations: Mapped[dict[str, str] | None] = mapped_column(JSONB, nullable=True)
+    is_correct: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+
+    question_version: Mapped[QuestionVersion] = relationship(back_populates="options")
 
 
 class LessonProgress(TimestampMixin, Base):
@@ -773,6 +1045,7 @@ class PracticeSession(TimestampMixin, Base):
         index=True,
     )
     question_ids: Mapped[list[int]] = mapped_column(JSONB)
+    question_version_ids: Mapped[list[int] | None] = mapped_column(JSONB, nullable=True)
     selection_config: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
     total_questions: Mapped[int] = mapped_column(Integer)
     answered_questions: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
@@ -827,6 +1100,9 @@ class QuestionAttempt(Base):
     )
     question_id: Mapped[int] = mapped_column(
         ForeignKey("questions.id", ondelete="RESTRICT"), index=True
+    )
+    question_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("question_versions.id", ondelete="RESTRICT"), nullable=True, index=True
     )
     idempotency_key: Mapped[str] = mapped_column(String(80))
     submitted_answer: Mapped[Any] = mapped_column(JSONB)
@@ -970,6 +1246,54 @@ class ImportJob(TimestampMixin, Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+class ExamImportJob(TimestampMixin, Base):
+    """Persistent, review-first import state for text-based exam packages."""
+
+    __tablename__ = "exam_import_jobs"
+    __table_args__ = (
+        Index("ix_exam_import_jobs_status_updated", "status", "updated_at"),
+        Index("ix_exam_import_jobs_source_hash", "source_hash"),
+        UniqueConstraint(
+            "source_hash", "exam_revision_id", "exam_level_id", "exam_name",
+            name="uq_exam_import_jobs_idempotency",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    status: Mapped[str] = mapped_column(String(40), default="UPLOADING", server_default="UPLOADING", index=True)
+    exam_revision_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), index=True
+    )
+    exam_level_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_levels.id", ondelete="RESTRICT"), index=True
+    )
+    exam_name: Mapped[str] = mapped_column(String(180))
+    source_hash: Mapped[str] = mapped_column(String(64))
+    source_exam_file: Mapped[str] = mapped_column(String(500))
+    source_answer_file: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    source_audio_file: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    source_audio_asset_id: Mapped[int | None] = mapped_column(
+        ForeignKey("audio_assets.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    created_exam_id: Mapped[int | None] = mapped_column(
+        ForeignKey("mock_tests.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    created_exam_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_versions.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    created_by: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    progress: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    warnings: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSONB, default=list, server_default=text("'[]'::jsonb")
+    )
+    errors: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSONB, default=list, server_default=text("'[]'::jsonb")
+    )
+    parsed_document: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+
+
 class AdminAuditLog(Base):
     __tablename__ = "admin_audit_logs"
     __table_args__ = (
@@ -1024,7 +1348,16 @@ class MockTest(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(180))
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    hsk_level: Mapped[int] = mapped_column(Integer, index=True)
+    hsk_level: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    exam_revision_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    exam_level_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_levels.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    scoring_policy_id: Mapped[int | None] = mapped_column(
+        ForeignKey("scoring_policies.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
     duration_minutes: Mapped[int] = mapped_column(Integer)
     question_count: Mapped[int] = mapped_column(Integer)
     exam_type: Mapped[str] = mapped_column(String(40), default="MOCK", server_default="MOCK")
@@ -1035,12 +1368,158 @@ class MockTest(Base):
     blueprint: Mapped[dict[str, Any]] = mapped_column(
         JSONB, default=dict, server_default=text("'{}'::jsonb")
     )
+    question_version_ids: Mapped[list[int]] = mapped_column(
+        JSONB, default=list, server_default=text("'[]'::jsonb")
+    )
+    blueprint_schema_version: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
     scoring_config: Mapped[dict[str, Any]] = mapped_column(
         JSONB, default=dict, server_default=text("'{}'::jsonb")
     )
     instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
     published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    exam_versions: Mapped[list["ExamVersion"]] = relationship(
+        back_populates="exam",
+        order_by="ExamVersion.version_number",
+        cascade="all, delete-orphan",
+    )
+
+
+class ExamVersion(TimestampMixin, Base):
+    """Versioned exam document behind the legacy MockTest identity."""
+
+    __tablename__ = "exam_versions"
+    __table_args__ = (
+        UniqueConstraint("exam_id", "version_number", name="uq_exam_versions_number"),
+        Index("ix_exam_versions_exam_status", "exam_id", "status"),
+        CheckConstraint("version_number > 0", name="ck_exam_versions_number_positive"),
+        CheckConstraint("duration_seconds > 0", name="ck_exam_versions_duration_positive"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    exam_id: Mapped[int] = mapped_column(
+        ForeignKey("mock_tests.id", ondelete="RESTRICT"), index=True
+    )
+    version_number: Mapped[int] = mapped_column(Integer)
+    status: Mapped[ContentStatus] = mapped_column(
+        Enum(ContentStatus, name="content_status", values_callable=enum_values),
+        default=ContentStatus.DRAFT,
+        server_default=ContentStatus.DRAFT.value,
+        index=True,
+    )
+    exam_revision_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    exam_level_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_levels.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    scoring_policy_id: Mapped[int | None] = mapped_column(
+        ForeignKey("scoring_policies.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    title: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    duration_seconds: Mapped[int] = mapped_column(Integer)
+    instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
+    blueprint_schema_version: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
+    configuration: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+    metadata_json: Mapped[dict[str, Any] | None] = mapped_column(
+        "metadata", JSONB, nullable=True
+    )
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    exam: Mapped[MockTest] = relationship(back_populates="exam_versions")
+    sections: Mapped[list["ExamSection"]] = relationship(
+        back_populates="exam_version",
+        order_by="ExamSection.sort_order",
+        cascade="all, delete-orphan",
+    )
+
+
+class ExamSection(TimestampMixin, Base):
+    __tablename__ = "exam_sections"
+    __table_args__ = (
+        UniqueConstraint("exam_version_id", "code", name="uq_exam_sections_code"),
+        UniqueConstraint("exam_version_id", "sort_order", name="uq_exam_sections_order"),
+        CheckConstraint("sort_order >= 0", name="ck_exam_sections_order_nonnegative"),
+        CheckConstraint("duration_seconds >= 0", name="ck_exam_sections_duration_nonnegative"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    exam_version_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_versions.id", ondelete="CASCADE"), index=True
+    )
+    code: Mapped[str] = mapped_column(String(80))
+    title: Mapped[str] = mapped_column(String(180))
+    skill: Mapped[str | None] = mapped_column(String(40), nullable=True, index=True)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    duration_seconds: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
+    configuration: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    exam_version: Mapped[ExamVersion] = relationship(back_populates="sections")
+    parts: Mapped[list["ExamPart"]] = relationship(
+        back_populates="section",
+        order_by="ExamPart.sort_order",
+        cascade="all, delete-orphan",
+    )
+
+
+class ExamPart(TimestampMixin, Base):
+    __tablename__ = "exam_parts"
+    __table_args__ = (
+        UniqueConstraint("exam_section_id", "sort_order", name="uq_exam_parts_order"),
+        CheckConstraint("sort_order >= 0", name="ck_exam_parts_order_nonnegative"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    exam_section_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_sections.id", ondelete="CASCADE"), index=True
+    )
+    code: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    title: Mapped[str] = mapped_column(String(180))
+    instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    configuration: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    section: Mapped[ExamSection] = relationship(back_populates="parts")
+    questions: Mapped[list["ExamQuestion"]] = relationship(
+        back_populates="part",
+        order_by="ExamQuestion.sort_order",
+        cascade="all, delete-orphan",
+    )
+
+
+class ExamQuestion(Base):
+    __tablename__ = "exam_questions"
+    __table_args__ = (
+        UniqueConstraint("exam_part_id", "sort_order", name="uq_exam_questions_order"),
+        CheckConstraint("sort_order >= 0", name="ck_exam_questions_order_nonnegative"),
+        CheckConstraint("points > 0", name="ck_exam_questions_points"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    exam_part_id: Mapped[int] = mapped_column(
+        ForeignKey("exam_parts.id", ondelete="CASCADE"), index=True
+    )
+    question_version_id: Mapped[int] = mapped_column(
+        ForeignKey("question_versions.id", ondelete="RESTRICT"), index=True
+    )
+    sort_order: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    points: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
+    required: Mapped[bool] = mapped_column(Boolean, default=True, server_default="true")
+    configuration: Mapped[dict[str, Any]] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
+
+    part: Mapped[ExamPart] = relationship(back_populates="questions")
+    question_version: Mapped[QuestionVersion] = relationship()
 
 
 class SpeechRecording(TimestampMixin, Base):
@@ -1217,6 +1696,19 @@ class ExamAttempt(TimestampMixin, Base):
         ForeignKey("mock_tests.id", ondelete="RESTRICT"), index=True
     )
     exam_version: Mapped[int] = mapped_column(Integer)
+    exam_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_versions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    exam_revision_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_revisions.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    exam_level_id: Mapped[int | None] = mapped_column(
+        ForeignKey("exam_levels.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    scoring_policy_id: Mapped[int | None] = mapped_column(
+        ForeignKey("scoring_policies.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    blueprint_schema_version: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
     status: Mapped[str] = mapped_column(String(40), default="IN_PROGRESS", index=True)
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
@@ -1258,6 +1750,9 @@ class ExamQuestionResult(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     question_id: Mapped[int] = mapped_column(
         ForeignKey("questions.id", ondelete="RESTRICT"), index=True
+    )
+    question_version_id: Mapped[int | None] = mapped_column(
+        ForeignKey("question_versions.id", ondelete="RESTRICT"), nullable=True, index=True
     )
     section: Mapped[str] = mapped_column(String(40), index=True)
     answer: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)

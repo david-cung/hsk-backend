@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from app.audio_service import (
     audio_asset_url,
     get_ready_audio_asset,
+    local_audio_path,
     validate_audio_asset_payload,
     verify_audio_signature,
 )
@@ -75,9 +76,9 @@ def get_audio_media(
     asset = get_ready_audio_asset(db, audio_asset_id)
     if asset.provider != "local":
         raise HTTPException(status_code=404, detail="Audio media is not stored locally")
-    media_path = Path(asset.storage_key)
-    if not media_path.is_absolute():
-        media_path = Path(__file__).resolve().parent / "media" / asset.storage_key
+    if Path(asset.storage_key).is_absolute():
+        raise HTTPException(status_code=404, detail="Audio media is not stored locally")
+    media_path = local_audio_path(asset.storage_key)
     if not media_path.exists() or not media_path.is_file():
         logger.warning("local_audio_missing", extra={"audio_asset_id": audio_asset_id})
         raise HTTPException(status_code=404, detail="Audio file not found")
